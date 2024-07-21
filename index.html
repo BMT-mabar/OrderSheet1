@@ -160,11 +160,11 @@
 <div class="container">
     <div class="form-container">
         <h1>הזמנה</h1>
-        <form style="direction: rtl" id="orderForm">
-            <label>שם המזמין:
-                <input type="text" id="customerName" required>
+        <form id="orderForm">
+            <label style="direction: rtl">שם המזמין:
+                <input style="direction: rtl" type="text" id="customerName" required>
             </label>
-            <label>בית מרקחת:
+            <label style="direction: rtl">בית מרקחת:
                 <select id="placeType" required onchange="updateForm()">
                     <option value="" disabled selected>-- בחר/י --</option>
                     <option value="pharmacy">בית מרקחת</option>
@@ -172,10 +172,10 @@
                     <option value="shrem_pharmacy">בית מרקחת - שרמ</option>
                 </select>
             </label>
-            <label id="placeNameLabel">שם בית המרקחת:
+            <label style="direction: rtl" id="placeNameLabel">שם בית המרקחת:
                 <input type="text" id="placeName" required>
             </label>
-            <label>מספר פלאפון של המזמין:
+            <label style="direction: rtl">מספר פלאפון של המזמין:
                 <input type="tel" id="phoneNumber" required>
             </label>
 
