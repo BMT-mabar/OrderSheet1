@@ -326,15 +326,15 @@
         document.getElementById('totalPriceWithTax').innerText = `סה"כ כולל מע"מ: ${taxTotal.toFixed(2)} ש"ח`;
     }
 
-      function updateImage() {
+    function updateImage() {
         const pharmacyImage = document.getElementById('pharmacyImage');
         const placeType = document.getElementById('placeType').value;
         if (placeType === 'pharmacy') {
-            pharmacyImage.src = 'https://github.com/BMT-mabar/OrderSheet1/blob/5d5f291c7d203a94fd38ffe25f04fb573c89ca7c/%D7%91%D7%AA%D7%99%20%D7%9E%D7%A8%D7%A7%D7%97%D7%AA.jpeg'; // החלף לכתובת התמונה האמיתית
+            pharmacyImage.src = 'https://github.com/BMT-mabar/OrderSheet1/blob/66f02677fa7c8fa0e73daa631872d68445f0281f/%D7%91%D7%AA%D7%99%20%D7%9E%D7%A8%D7%A7%D7%97%D7%AA.jpeg'; // החלף לכתובת התמונה האמיתית
         } else if (placeType === 'future_pharmacy') {
-            pharmacyImage.src = 'https://github.com/BMT-mabar/OrderSheet1/blob/5d5f291c7d203a94fd38ffe25f04fb573c89ca7c/%D7%A8%D7%95%D7%A7%D7%97%D7%99%D7%9D%20%D7%A2%D7%AA%D7%99%D7%93.jpeg'; // החלף לכתובת התמונה האמיתית
+            pharmacyImage.src = 'https://github.com/BMT-mabar/OrderSheet1/blob/66f02677fa7c8fa0e73daa631872d68445f0281f/%D7%A8%D7%95%D7%A7%D7%97%D7%99%D7%9D%20%D7%A2%D7%AA%D7%99%D7%93.jpeg'; // החלף לכתובת התמונה האמיתית
         } else if (placeType === 'shrem_pharmacy') {
-            pharmacyImage.src = 'file:///C:/Users/orent/Downloads/%D7%A2%D7%99%D7%A6%D7%95%D7%91%20%D7%9C%D7%9C%D7%90%20%D7%A9%D7%9D.svg'; // החלף לכתובת התמונה האמיתית
+            pharmacyImage.src = 'https://github.com/BMT-mabar/OrderSheet1/blob/66f02677fa7c8fa0e73daa631872d68445f0281f/%D7%91%D7%AA%D7%99%20%D7%9E%D7%A8%D7%A7%D7%97%D7%AA.jpeg'; // החלף לכתובת התמונה האמיתית
         }
         pharmacyImage.style.display = placeType ? 'block' : 'none';
     }
