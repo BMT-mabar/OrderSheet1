@@ -20,9 +20,24 @@
             justify-content: flex-end;
             align-items: flex-start;
         }
+
         body.align-center {
             justify-content: center;
             align-items: center;
+        }
+
+        .image-container.show {
+            display: flex;
+        }
+
+        .image-container.hide {
+            display: none;
+        }
+
+        body.align-top {
+            justify-content: right;
+            align-items: flex-start;
+        
         }
         .container {
             background-color: #fff;
@@ -31,9 +46,9 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 600px;
+            margin-top: 20px;
             display: flex;
             flex-direction: column;
-            margin: 20px;
         }
         .form-container {
             flex: 1;
@@ -55,6 +70,9 @@
             border-radius: 4px;
             direction: rtl;
         }
+        .hidden {
+            display: none;
+        }
         .product {
             display: flex;
             align-items: center;
@@ -66,7 +84,6 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            direction: rtl
         }
         .product input[type="number"] {
             width: 60px;
@@ -81,7 +98,13 @@
             font-size: 1.5em;
             font-weight: bold;
         }
-        #preTaxPrice, #totalPriceWithTax {
+        #preTaxPrice {
+            margin-top: 15px;
+            font-size: 1em;
+            font-weight: normal;
+            direction: rtl;
+        }
+        #totalPriceWithTax {
             margin-top: 15px;
             font-size: 1em;
             font-weight: normal;
@@ -127,7 +150,7 @@
         #pharmacyImage {
             display: none;
             height: 100%;
-            width: auto;
+            width:auto;
             border-radius: 8px;
         }
         @media (max-width: 600px) {
@@ -156,21 +179,22 @@
         }
     </style>
 </head>
-<body class="align-center">
+<body>
 
 <div class="container">
     <div class="form-container">
         <h1>הזמנה</h1>
-        <form style="direction: rtl" id="orderForm">
+
+        <form id="orderForm">
             <label style="direction: rtl">שם המזמין:
-                <input style="direction: rtl" type="text" id="customerName" required>
+                <input type="text" id="customerName" required>
             </label>
-            <label style="direction: rtl">בית מרקחת:
-                <select id="placeType" required onchange="updateForm()">
-                    <option value="" disabled selected>-- בחר/י --</option>
-                    <option value="pharmacy">בית מרקחת</option>
-                    <option value="future_pharmacy">בית מרקחת - רוקחים עתיד</option>
-                    <option value="shrem_pharmacy">בית מרקחת - שרמ</option>
+            <label  style="direction: rtl"> בית מרקחת:
+                <select style="direction: rtl" id="placeType" required onchange="updateForm()">
+                    <option style="text-align: center;" value="" disabled selected>-- בחר/י --</option>
+                    <option  style="text-align: center;" value="pharmacy">בית מרקחת</option>
+                    <option  style="text-align: center;" value="future_pharmacy">בית מרקחת - רוקחים עתיד</option>
+                    <option  style="text-align: center;" value="shrem_pharmacy">בית מרקחת - שרמ</option>
                 </select>
             </label>
             <label style="direction: rtl" id="placeNameLabel">שם בית המרקחת:
@@ -180,24 +204,27 @@
                 <input type="tel" id="phoneNumber" required>
             </label>
 
-            <h2>רשימת מוצרים</h2>
-            <div id="productList"></div>
+            <h2 >רשימת מוצרים</h2>
+            <div  id="productList">
+                <!-- מוצרים יתווספו כאן דינאמית -->
+            </div>
 
             <div id="totalPriceContainer">
-                <div style=" text-align: center;" id="totalPriceLabel">סה"כ לתשלום:</div>
-                <div id="preTaxPrice">סה"כ לתשלום ללא מע"מ: 0 ש"ח</div>
-                <div id="totalPriceWithTax">סה"כ לתשלום כולל מע"מ: 0 ש"ח</div>
+                <div style=" text-align: center;" id="totalPriceLabel">:סה"כ לתשלום</div>
+                <div style="direction: rtl;" id="preTaxPrice">סה"כ לתשלום ללא מע"מ: 0 ש"ח</div><div> </div>
+                <div></div>
+                <div style="direction: rtl;" id="totalPriceWithTax">סה"כ לתשלום כולל מע"מ: 0 ש"ח</div>
             </div>
-            <div id="creditCardCheckbox">
-                <label for="creditCard">
+            <div style="direction: rtl;" id="creditCardCheckbox">
+                <label style="font-weight: bold;" for="creditCard">
                     <input type="checkbox" id="creditCard" required>מאשר תשלום בכרטיס אשראי
                 </label>
             </div>
 
-            <button class="align-center" type="submit">שלח הזמנה</button>
+            <button type="submit">שלח הזמנה</button>
         </form>
     </div>
-    <div class="image-container hide">
+    <div class="image-container">
         <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
     </div>
 </div>
@@ -248,34 +275,36 @@
     };
 
     function updateForm() {
-        const placeType = document.getElementById('placeType').value;
-        const productListDiv = document.getElementById('productList');
-        productListDiv.innerHTML = '';
+    const placeType = document.getElementById('placeType').value;
+    const productListDiv = document.getElementById('productList');
+    productListDiv.innerHTML = '';
 
-        if (placeType) {
-            const products = productList[placeType];
-            products.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.className = 'product';
-                productDiv.innerHTML = `
-                    <input type="number" id="${product.id}" min="0" value="0" oninput="calculateTotal()">
-                    <label for="${product.id}">${product.name}</label>
-                `;
-                productListDiv.appendChild(productDiv);
-            });
-            document.body.classList.add('align-right');
-            document.body.classList.remove('align-center');
-            document.querySelector('.image-container').classList.add('show');
-            document.querySelector('.image-container').classList.remove('hide');
-        } else {
-            document.body.classList.add('align-center');
-            document.body.classList.remove('align-right');
-            document.querySelector('.image-container').classList.add('hide');
-            document.querySelector('.image-container').classList.remove('show');
-        }
-        
-        updateImage();
+    if (placeType) {
+        const products = productList[placeType];
+        products.forEach(product => {
+            const productDiv = document.createElement('div');
+            productDiv.className = 'product';
+            productDiv.innerHTML = `
+                <input type="number" id="${product.id}" min="0" value="0" oninput="calculateTotal()">
+                <label for="${product.id}">${product.name}</label>
+            `;
+            productListDiv.appendChild(productDiv);
+        });
+        document.body.classList.add('align-right');
+        document.body.classList.remove('align-center');
+        document.querySelector('.image-container').classList.add('show');
+        document.querySelector('.image-container').classList.remove('hide');
+    } else {
+        document.body.classList.add('align-center');
+        document.body.classList.remove('align-right');
+        document.querySelector('.image-container').classList.add('hide');
+        document.querySelector('.image-container').classList.remove('show');
     }
+    
+        
+
+        updateImage();
+}
 
     function calculateTotal() {
         let total = 0;
@@ -301,11 +330,11 @@
         const pharmacyImage = document.getElementById('pharmacyImage');
         const placeType = document.getElementById('placeType').value;
         if (placeType === 'pharmacy') {
-            pharmacyImage.src = בתי מרקחת.jpeg
+            pharmacyImage.src = 'file:///C:/Users/orent/Downloads/%D7%A2%D7%99%D7%A6%D7%95%D7%91%20%D7%9C%D7%9C%D7%90%20%D7%A9%D7%9D.svg'; // החלף לכתובת התמונה האמיתית
         } else if (placeType === 'future_pharmacy') {
-            pharmacyImage.src = 'https://github.com/BMT-mabar/OrderSheet1/blob/66f02677fa7c8fa0e73daa631872d68445f0281f/%D7%A8%D7%95%D7%A7%D7%97%D7%99%D7%9D%20%D7%A2%D7%AA%D7%99%D7%93.jpeg';
+            pharmacyImage.src = 'file:///C:/Users/orent/Downloads/%D7%98%D7%95%D7%A4%D7%A1%20%D7%94%D7%96%D7%9E%D7%A0%D7%94%20%D7%A8%D7%95%D7%A7%D7%97%D7%99%D7%9D%20%D7%A2%D7%AA%D7%99%D7%93%20.pdf/2.svg'; // החלף לכתובת התמונה האמיתית
         } else if (placeType === 'shrem_pharmacy') {
-            pharmacyImage.src = בתי מרקחת.jpeg
+            pharmacyImage.src = 'file:///C:/Users/orent/Downloads/%D7%A2%D7%99%D7%A6%D7%95%D7%91%20%D7%9C%D7%9C%D7%90%20%D7%A9%D7%9D.svg'; // החלף לכתובת התמונה האמיתית
         }
         pharmacyImage.style.display = placeType ? 'block' : 'none';
     }
@@ -337,7 +366,15 @@
 
         window.location.href = `mailto:info@bmtdx.com?subject=הזמנה חדשה&body=${encodeURIComponent(orderDetails)}`;
     });
+      
 </script>
 
 </body>
+<body class="align-center">
+    <!-- Your HTML content -->
+    <div class="image-container hide">
+        <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
+    </div>
+
 </html>
+
