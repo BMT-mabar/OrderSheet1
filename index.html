@@ -16,29 +16,6 @@
             min-height: 100vh;
             transition: all 0.3s ease;
         }
-        body.align-right {
-            justify-content: flex-end;
-            align-items: flex-start;
-        }
-
-        body.align-center {
-            justify-content: center;
-            align-items: center;
-        }
-
-        .image-container.show {
-            display: flex;
-        }
-
-        .image-container.hide {
-            display: none;
-        }
-
-        body.align-top {
-            justify-content: right;
-            align-items: flex-start;
-        
-        }
         .container {
             background-color: #fff;
             padding: 20px;
@@ -49,6 +26,7 @@
             margin-top: 20px;
             display: flex;
             flex-direction: column;
+            transition: margin-left 0.3s ease;
         }
         .form-container {
             flex: 1;
@@ -153,38 +131,53 @@
             width:auto;
             border-radius: 8px;
         }
-       @media (max-width: 600px) {
+        /* סגנונות למחשב */
+        @media (min-width: 601px) {
+            body.align-left .container {
+                margin-left: 20px; /* להזיז טיפה שמאלה במחשב */
+            }
+            .image-container {
+                display: none; /* התמונה תוצג רק לאחר בחירת בית מרקחת */
+                width: 50%;
+            }
+            .container.align-left .image-container {
+                display: flex;
+                justify-content: left; /* התמונה בצד שמאל במחשב */
+            }
+        }
+        @media (max-width: 600px) {
             .container {
-                flex-direction: column; 
-                padding: 10px; 
+                flex-direction: column; /* מסדר את התוכן בצורה עמודית */
+                padding: 10px; /* מקטין את הריפוד */
                 
             }
             h1, h2 {
-                font-size: 1.5em; 
+                font-size: 1.5em; /* מקטין את גודל הכותרות */
             }
             label {
-                margin: 10px 0 5px; 
+                margin: 10px 0 5px; /* מקטין את המרווח בין התוויות */
             }
             input[type="text"], input[type="tel"], input[type="number"], select {
-                padding: 6px; 
+                padding: 6px; /* מקטין את הריפוד של השדות */
             }
             .product label {
-                font-size: 0.9em; 
+                font-size: 0.9em; /* מקטין את גודל הפונטים של התוויות */
             }
             .product input[type="number"] {
-                width: 50px; 
+                width: 50px; /* מקטין את רוחב השדות של הכמות */
             }
             button {
-                font-size: 0.9em;
+                font-size: 0.9em; /* מקטין את גודל הפונטים של הכפתור */
             }
             .image-container {
-                height: 350px; 
-            
+                height: 350px; /* שינוי גובה התמונה */
+                
             }
             .container.margin-top-320 {
                 margin-top: 320px;
-            } 
-       }
+                
+            }
+        }
     </style>
 </head>
 <body>
@@ -197,12 +190,12 @@
             <label style="direction: rtl">שם המזמין:
                 <input type="text" id="customerName" required>
             </label>
-            <label  style="direction: rtl"> בית מרקחת:
+            <label style="direction: rtl">בית מרקחת:
                 <select style="direction: rtl" id="placeType" required onchange="updateForm()">
                     <option style="text-align: center;" value="" disabled selected>-- בחר/י --</option>
-                    <option  style="text-align: center;" value="pharmacy">בית מרקחת</option>
-                    <option  style="text-align: center;" value="future_pharmacy">בית מרקחת - רוקחים עתיד</option>
-                    <option  style="text-align: center;" value="shrem_pharmacy">בית מרקחת - שרמ</option>
+                    <option style="text-align: center;" value="pharmacy">בית מרקחת</option>
+                    <option style="text-align: center;" value="future_pharmacy">בית מרקחת - רוקחים עתיד</option>
+                    <option style="text-align: center;" value="shrem_pharmacy">בית מרקחת - שרמ</option>
                 </select>
             </label>
             <label style="direction: rtl" id="placeNameLabel">שם בית המרקחת:
@@ -212,15 +205,14 @@
                 <input type="tel" id="phoneNumber" required>
             </label>
 
-            <h2 >רשימת מוצרים</h2>
-            <div  id="productList">
+            <h2>רשימת מוצרים</h2>
+            <div id="productList">
                 <!-- מוצרים יתווספו כאן דינאמית -->
             </div>
 
             <div id="totalPriceContainer">
-                <div style=" text-align: center;" id="totalPriceLabel">:סה"כ לתשלום</div>
-                <div style="direction: rtl;" id="preTaxPrice">סה"כ לתשלום ללא מע"מ: 0 ש"ח</div><div> </div>
-                <div></div>
+                <div style="text-align: center;" id="totalPriceLabel">סה"כ לתשלום:</div>
+                <div style="direction: rtl;" id="preTaxPrice">סה"כ לתשלום ללא מע"מ: 0 ש"ח</div>
                 <div style="direction: rtl;" id="totalPriceWithTax">סה"כ לתשלום כולל מע"מ: 0 ש"ח</div>
             </div>
             <div style="direction: rtl;" id="creditCardCheckbox">
@@ -232,11 +224,28 @@
             <button type="submit">שלח הזמנה</button>
         </form>
     </div>
-    <div class="image-container">
+    <div class="image-container hide">
         <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
     </div>
 </div>
 
+<script>
+    document.getElementById('placeType').addEventListener('change', function() {
+        const imageContainer = document.querySelector('.image-container');
+        const formContainer = document.querySelector('.container');
+        
+        if (window.innerWidth >= 601) {
+            imageContainer.style.display = 'flex'; // הצגת התמונה
+            formContainer.style.marginLeft = '700px'; // הזזה קלה שמאלה במחשב
+            
+        }else if (window.innerWidth <= 600) { // אם הרוחב של המסך קטן מ-600px
+                formContainer.classList.add('margin-top-320'); // הוספת מחלקה שמוסיפה margin-top
+                imageContainer.style.display = 'flex';  // הצגת התמונה במובייל
+                document.querySelector('body').classList.add('align-center'); // מרכז התמונה במובייל
+        }
+        
+    });
+</script>
 <script style="direction: rtl ;">
     const productList = {
         pharmacy: [
@@ -281,10 +290,13 @@
             {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', price: 21.00},
         ]
     };
+    
 
     function updateForm() {
     const placeType = document.getElementById('placeType').value;
     const productListDiv = document.getElementById('productList');
+    const placeNameLabel = document.getElementById('placeNameLabel');
+    const pharmacyImage = document.getElementById('pharmacyImage');
     productListDiv.innerHTML = '';
 
     if (placeType) {
@@ -338,11 +350,11 @@
         const pharmacyImage = document.getElementById('pharmacyImage');
         const placeType = document.getElementById('placeType').value;
         if (placeType === 'pharmacy') {
-            pharmacyImage.src = 'בתי מרקחת.jpeg';
+            pharmacyImage.src = 'https://bmt-mabar.github.io/OrderSheet1/%D7%91%D7%AA%D7%99%20%D7%9E%D7%A8%D7%A7%D7%97%D7%AA.jpeg'; // החלף לכתובת התמונה האמיתית
         } else if (placeType === 'future_pharmacy') {
-            pharmacyImage.src = 'טופס הזמנה רוקחים עתיד .pdf.png'; 
+            pharmacyImage.src = 'https://bmt-mabar.github.io/OrderSheet1/%D7%98%D7%95%D7%A4%D7%A1%20%D7%94%D7%96%D7%9E%D7%A0%D7%94%20%D7%A8%D7%95%D7%A7%D7%97%D7%99%D7%9D%20%D7%A2%D7%AA%D7%99%D7%93%20.pdf.png'; // החלף לכתובת התמונה האמיתית
         } else if (placeType === 'shrem_pharmacy') {
-            pharmacyImage.src = 'בתי מרקחת.jpeg'; 
+            pharmacyImage.src = 'https://bmt-mabar.github.io/OrderSheet1/%D7%91%D7%AA%D7%99%20%D7%9E%D7%A8%D7%A7%D7%97%D7%AA.jpeg'; // החלף לכתובת התמונה האמיתית
         }
         pharmacyImage.style.display = placeType ? 'block' : 'none';
     }
