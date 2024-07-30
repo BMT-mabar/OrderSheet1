@@ -155,31 +155,30 @@
         }
        @media (max-width: 600px) {
             .container {
-                flex-direction: column; /* מסדר את התוכן בצורה עמודית */
-                padding: 10px; /* מקטין את הריפוד */
-                margin-top: 0px; /* מוסיף מרווח מעלית */
+                flex-direction: column; 
+                padding: 10px; 
+                margin-top: 0px;
             }
             h1, h2 {
-                font-size: 1.5em; /* מקטין את גודל הכותרות */
+                font-size: 1.5em; 
             }
             label {
-                margin: 10px 0 5px; /* מקטין את המרווח בין התוויות */
+                margin: 10px 0 5px; 
             }
             input[type="text"], input[type="tel"], input[type="number"], select {
-                padding: 6px; /* מקטין את הריפוד של השדות */
+                padding: 6px; 
             }
             .product label {
-                font-size: 0.9em; /* מקטין את גודל הפונטים של התוויות */
+                font-size: 0.9em; 
             }
             .product input[type="number"] {
-                width: 50px; /* מקטין את רוחב השדות של הכמות */
+                width: 50px; 
             }
             button {
-                font-size: 0.9em; /* מקטין את גודל הפונטים של הכפתור */
+                font-size: 0.9em;
             }
             .image-container {
-                height: 350px; /* שינוי גובה התמונה */
-                
+                height: 350px; 
             }
         }
     </style>
@@ -335,11 +334,11 @@
         const pharmacyImage = document.getElementById('pharmacyImage');
         const placeType = document.getElementById('placeType').value;
         if (placeType === 'pharmacy') {
-            pharmacyImage.src = 'בתי מרקחת.jpeg'; // החלף לכתובת התמונה האמיתית
+            pharmacyImage.src = 'בתי מרקחת.jpeg';
         } else if (placeType === 'future_pharmacy') {
-            pharmacyImage.src = 'טופס הזמנה רוקחים עתיד .pdf.png'; // החלף לכתובת התמונה האמיתית
+            pharmacyImage.src = 'טופס הזמנה רוקחים עתיד .pdf.png'; 
         } else if (placeType === 'shrem_pharmacy') {
-            pharmacyImage.src = 'בתי מרקחת.jpeg'; // החלף לכתובת התמונה האמיתית
+            pharmacyImage.src = 'בתי מרקחת.jpeg'; 
         }
         pharmacyImage.style.display = placeType ? 'block' : 'none';
     }
