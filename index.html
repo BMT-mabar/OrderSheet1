@@ -134,43 +134,43 @@
         /* סגנונות למחשב */
         @media (min-width: 601px) {
             body.align-left .container {
-                margin-left: 20px; /* להזיז טיפה שמאלה במחשב */
+                margin-left: 20px; 
             }
             .image-container {
-                display: none; /* התמונה תוצג רק לאחר בחירת בית מרקחת */
+                display: none; 
                 width: 50%;
             }
             .container.align-left .image-container {
                 display: flex;
-                justify-content: left; /* התמונה בצד שמאל במחשב */
+                justify-content: left; 
             }
         }
         @media (max-width: 600px) {
             .container {
-                flex-direction: column; /* מסדר את התוכן בצורה עמודית */
-                padding: 10px; /* מקטין את הריפוד */
+                flex-direction: column; 
+                padding: 10px; 
                 
             }
             h1, h2 {
-                font-size: 1.5em; /* מקטין את גודל הכותרות */
+                font-size: 1.5em; 
             }
             label {
-                margin: 10px 0 5px; /* מקטין את המרווח בין התוויות */
+                margin: 10px 0 5px; 
             }
             input[type="text"], input[type="tel"], input[type="number"], select {
-                padding: 6px; /* מקטין את הריפוד של השדות */
+                padding: 6px; 
             }
             .product label {
-                font-size: 0.9em; /* מקטין את גודל הפונטים של התוויות */
+                font-size: 0.9em; 
             }
             .product input[type="number"] {
-                width: 50px; /* מקטין את רוחב השדות של הכמות */
+                width: 50px;
             }
             button {
-                font-size: 0.9em; /* מקטין את גודל הפונטים של הכפתור */
+                font-size: 0.9em; 
             }
             .image-container {
-                height: 350px; /* שינוי גובה התמונה */
+                height: 350px; 
                 
             }
             .container.margin-top-320 {
@@ -235,13 +235,13 @@
         const formContainer = document.querySelector('.container');
         
         if (window.innerWidth >= 601) {
-            imageContainer.style.display = 'flex'; // הצגת התמונה
-            formContainer.style.marginLeft = '700px'; // הזזה קלה שמאלה במחשב
+            imageContainer.style.display = 'flex'; 
+            formContainer.style.marginLeft = '700px';
             
-        }else if (window.innerWidth <= 600) { // אם הרוחב של המסך קטן מ-600px
-                formContainer.classList.add('margin-top-320'); // הוספת מחלקה שמוסיפה margin-top
-                imageContainer.style.display = 'flex';  // הצגת התמונה במובייל
-                document.querySelector('body').classList.add('align-center'); // מרכז התמונה במובייל
+        }else if (window.innerWidth <= 600) { 
+                formContainer.classList.add('margin-top-320'); 
+                imageContainer.style.display = 'flex';
+                document.querySelector('body').classList.add('align-center'); 
         }
         
     });
@@ -350,11 +350,11 @@
         const pharmacyImage = document.getElementById('pharmacyImage');
         const placeType = document.getElementById('placeType').value;
         if (placeType === 'pharmacy') {
-            pharmacyImage.src = 'https://bmt-mabar.github.io/OrderSheet1/%D7%91%D7%AA%D7%99%20%D7%9E%D7%A8%D7%A7%D7%97%D7%AA.jpeg'; // החלף לכתובת התמונה האמיתית
+            pharmacyImage.src = 'https://bmt-mabar.github.io/OrderSheet1/%D7%91%D7%AA%D7%99%20%D7%9E%D7%A8%D7%A7%D7%97%D7%AA.jpeg'; 
         } else if (placeType === 'future_pharmacy') {
-            pharmacyImage.src = 'https://bmt-mabar.github.io/OrderSheet1/%D7%98%D7%95%D7%A4%D7%A1%20%D7%94%D7%96%D7%9E%D7%A0%D7%94%20%D7%A8%D7%95%D7%A7%D7%97%D7%99%D7%9D%20%D7%A2%D7%AA%D7%99%D7%93%20.pdf.png'; // החלף לכתובת התמונה האמיתית
+            pharmacyImage.src = 'https://bmt-mabar.github.io/OrderSheet1/%D7%98%D7%95%D7%A4%D7%A1%20%D7%94%D7%96%D7%9E%D7%A0%D7%94%20%D7%A8%D7%95%D7%A7%D7%97%D7%99%D7%9D%20%D7%A2%D7%AA%D7%99%D7%93%20.pdf.png'; 
         } else if (placeType === 'shrem_pharmacy') {
-            pharmacyImage.src = 'https://bmt-mabar.github.io/OrderSheet1/%D7%91%D7%AA%D7%99%20%D7%9E%D7%A8%D7%A7%D7%97%D7%AA.jpeg'; // החלף לכתובת התמונה האמיתית
+            pharmacyImage.src = 'https://bmt-mabar.github.io/OrderSheet1/%D7%91%D7%AA%D7%99%20%D7%9E%D7%A8%D7%A7%D7%97%D7%AA.jpeg'; 
         }
         pharmacyImage.style.display = placeType ? 'block' : 'none';
     }
