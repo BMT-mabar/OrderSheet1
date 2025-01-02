@@ -251,7 +251,7 @@
         pharmacy: [
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24},
             {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90},
-            {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+            {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
             {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט' , price: 19.90},
             {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20},
             {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50},
@@ -268,7 +268,7 @@
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24},
             {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
             {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90},
-            {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+            {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
             {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90},
             {id: 'quantity4', name: 'בדיקת הריון 1 - רוקחים עתיד', price: 2.90},
             {id: 'quantity5', name: 'בדיקת הריון 2 - רוקחים עתיד', price: 5.20},
@@ -283,7 +283,7 @@
         shrem_pharmacy: [
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24},
             {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90},
-            {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+            {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
             {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט' , price: 19.90},
             {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20},
             {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50},
@@ -357,11 +357,11 @@
         const pharmacyImage = document.getElementById('pharmacyImage');
         const placeType = document.getElementById('placeType').value;
         if (placeType === 'pharmacy') {
-            pharmacyImage.src = 'דצמבר בתי מרקחת פרטיים.png'; 
+            pharmacyImage.src = 'טופס הזמנה 01-25 פרטיים.png'; 
         } else if (placeType === 'future_pharmacy') {
             pharmacyImage.src = 'רוקחים עתיד דצמבר.png'; 
         } else if (placeType === 'shrem_pharmacy') {
-            pharmacyImage.src = 'דצמבר בתי מרקחת פרטיים.png'; 
+            pharmacyImage.src = 'טופס הזמנה 01-25 פרטיים.png'; 
         }
         pharmacyImage.style.display = placeType ? 'block' : 'none';
     }
