@@ -265,7 +265,7 @@
             {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
         ],
         future_pharmacy: [
-            {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24,  bulkPrice: 20, bulkThreshold:1},
+            {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 20, bulkThreshold:1},
             {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
             {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkThreshold:50, bonusQuantity: 5},
             {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
@@ -275,8 +275,8 @@
             {id: 'quantity6', name: '"בדיקת הריון "בשעה טובה', price: 18.90},
             {id: 'quantity7', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
             {id: 'quantity8', name: 'בדיקת ביוץ 7 באריזה', price: 21.00},
-            {id: 'quantity9', name: 'בדיקה לדלקת בשתן', price: 13.90, },
-            {id: 'quantity11', name: 'בדיקת קנדידה וגינאלית', price: 17.20,},
+            {id: 'quantity9', name: 'בדיקה לדלקת בשתן', price: 13.90},
+            {id: 'quantity11', name: 'בדיקת קנדידה וגינאלית', price: 17.20},
             {id: 'quantity12', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
             {id: 'quantity13', name: 'בדיקת סמים 8 פרמטרים', price: 33.90}
         ],
@@ -334,33 +334,30 @@
 }
 
     function calculateTotal() {
-    let total = 0;
-    const placeType = document.getElementById('placeType').value;
-    let totalProducts = 0;
+        let total = 0;
+        const placeType = document.getElementById('placeType').value;
+        if (placeType) {
+            const products = productList[placeType];
+            products.forEach(product => {
+                const quantityInput = document.getElementById(product.id);
+                if (quantityInput.value > 0) {
+                    const quantity = parseInt(quantityInput.value);
+                    let finalQuantity = quantity;
+                    if (product.bonusThreshold && quantity >= product.bonusThreshold) {
+                        finalQuantity += product.bonusQuantity;
+                    const price = product.bulkThreshold && quantity >= product.bulkThreshold ? product.bulkPrice : product.price;
+                    totalProducts += finalQuantity;
+                    total += price * quantity;
+                    
+                    
 
-    if (placeType) {
-        const products = productList[placeType];
-        products.forEach(product => {
-            const quantityInput = document.getElementById(product.id);
-            if (quantityInput.value > 0) {
-                const quantity = parseInt(quantityInput.value);
-
-                // בדיקה אם יש תוספת בונוס
-                let finalQuantity = quantity;
-                if (product.bonusThreshold && quantity >= product.bonusThreshold) {
-                    finalQuantity += product.bonusQuantity; // הוספת הבונוס
                 }
-
-                totalProducts += finalQuantity; // חישוב הכמות הכוללת
-                total += product.price * quantity; // חישוב המחיר הכולל
-            }
-        });
-    }
-
-    const preTaxTotal = total;
-    const taxTotal = preTaxTotal * 1.18;
-    document.getElementById('preTaxPrice').innerText = `סה"כ ללא מע"מ: ${preTaxTotal.toFixed(2)} ש"ח`;
-    document.getElementById('totalPriceWithTax').innerText = `סה"כ כולל מע"מ: ${taxTotal.toFixed(2)} ש"ח`;
+            });
+        }
+        const preTaxTotal = total;
+        const taxTotal = preTaxTotal * 1.18;
+        document.getElementById('preTaxPrice').innerText = `סה"כ ללא מע"מ: ${preTaxTotal.toFixed(2)} ש"ח`;
+        document.getElementById('totalPriceWithTax').innerText = `סה"כ כולל מע"מ: ${taxTotal.toFixed(2)} ש"ח`;
     }
 
     function updateImage() {
@@ -369,7 +366,7 @@
         if (placeType === 'pharmacy') {
             pharmacyImage.src = 'טופס הזמנה 01-25 פרטיים.png'; 
         } else if (placeType === 'future_pharmacy') {
-            pharmacyImage.src = 'טופס הזמנה 02-25  רוקחים עתיד.png'; 
+            pharmacyImage.src = 'טופס הזמנה 01-25 רוקחים עתיד.png'; 
         } else if (placeType === 'shrem_pharmacy') {
             pharmacyImage.src = 'טופס הזמנה 01-25 פרטיים.png'; 
         }
@@ -392,6 +389,7 @@
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
                     const price = product.bulkThreshold && quantity >= product.bulkThreshold ? product.bulkPrice : product.price;
+                    const price = product.bulkThreshold && quantity >= product.bulkThreshold ? product.bonusQuantity : product.price;
                     orderDetails += `${quantityInput.nextElementSibling.innerText.trim()} - כמות: ${quantity}, מחיר ליחידה: ${price.toFixed(2)} ש"ח\n`;
                 }
             });
@@ -413,4 +411,4 @@
         <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
     </div>
 
-</html>
+</html> 
