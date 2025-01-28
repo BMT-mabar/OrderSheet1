@@ -265,9 +265,9 @@
             {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
         ],
         future_pharmacy: [
-            {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24},
+            {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 20},
             {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
-            {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90},
+            {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkThreshold:50, bonusQuantity: 5},
             {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
             {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90},
             {id: 'quantity4', name: 'בדיקת הריון 1 - רוקחים עתיד', price: 2.90},
@@ -334,23 +334,33 @@
 }
 
     function calculateTotal() {
-        let total = 0;
-        const placeType = document.getElementById('placeType').value;
-        if (placeType) {
-            const products = productList[placeType];
-            products.forEach(product => {
-                const quantityInput = document.getElementById(product.id);
-                if (quantityInput.value > 0) {
-                    const quantity = parseInt(quantityInput.value);
-                    const price = product.bulkThreshold && quantity >= product.bulkThreshold ? product.bulkPrice : product.price;
-                    total += price * quantity;
+    let total = 0;
+    const placeType = document.getElementById('placeType').value;
+    let totalProducts = 0;
+
+    if (placeType) {
+        const products = productList[placeType];
+        products.forEach(product => {
+            const quantityInput = document.getElementById(product.id);
+            if (quantityInput.value > 0) {
+                const quantity = parseInt(quantityInput.value);
+
+                // בדיקה אם יש תוספת בונוס
+                let finalQuantity = quantity;
+                if (product.bonusThreshold && quantity >= product.bonusThreshold) {
+                    finalQuantity += product.bonusQuantity; // הוספת הבונוס
                 }
-            });
-        }
-        const preTaxTotal = total;
-        const taxTotal = preTaxTotal * 1.17;
-        document.getElementById('preTaxPrice').innerText = `סה"כ ללא מע"מ: ${preTaxTotal.toFixed(2)} ש"ח`;
-        document.getElementById('totalPriceWithTax').innerText = `סה"כ כולל מע"מ: ${taxTotal.toFixed(2)} ש"ח`;
+
+                totalProducts += finalQuantity; // חישוב הכמות הכוללת
+                total += product.price * quantity; // חישוב המחיר הכולל
+            }
+        });
+    }
+
+    const preTaxTotal = total;
+    const taxTotal = preTaxTotal * 1.18;
+    document.getElementById('preTaxPrice').innerText = `סה"כ ללא מע"מ: ${preTaxTotal.toFixed(2)} ש"ח`;
+    document.getElementById('totalPriceWithTax').innerText = `סה"כ כולל מע"מ: ${taxTotal.toFixed(2)} ש"ח`;
     }
 
     function updateImage() {
