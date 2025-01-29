@@ -265,7 +265,6 @@
             
         ],
         future_pharmacy: [
-            // השארנו רק מוצר אחד עם בונוסThreshold 50, bonusQuantity 5
             {
               id: 'quantity1',
               name: 'פורמט עט - NO STEP בדיקות דלקת גרון',
@@ -399,17 +398,19 @@
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
 
-                    // בדיקת בונוס
+                    // חישוב הבונוס לפני השימוש בו
                     let bonusCount = 0;
                     if (product.bonusQuantity && product.bulkThreshold && quantity >= product.bulkThreshold) {  
+                        bonusCount = product.bonusQuantity;
                     }
+
                     productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n`;
-                    // כותבים את שם המוצר וכמות
                     
                     // אם bonusCount>0 נציג:
-                    if bonusCount >= product.bilkThreshold and product.bonusQuantity > 0    {
+                    if (bonusCount > 0 && quantity >= product.bulkThreshold) {
+                        productSummary += `   בונוס למוצר זה: ${bonusCount}\r\n`;
                     }
-                    productSummary += `   בונוס למוצר זה: ${bonusCount}\r\n`;
+
                     productSummary += `\r\n`; // רווח בין מוצרים
                 }
             });
