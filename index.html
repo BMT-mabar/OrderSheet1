@@ -208,7 +208,7 @@
             </div>
 
             <div id="totalPriceContainer">
-                <div style="text-align: center;" id="totalPriceLabel">סה"כ לתשלום:</div>
+                <div style="text-align: center;" id="totalPriceLabel">:סה"כ לתשלום</div>
                 <div style="direction: rtl;" id="preTaxPrice">סה"כ לתשלום ללא מע"מ: 0 ש"ח</div>
                 <div style="direction: rtl;" id="totalPriceWithTax">סה"כ לתשלום כולל מע"מ: 0 ש"ח</div>
             </div>
@@ -296,7 +296,7 @@
             {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
             {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
             {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', price: 21.00},
-            {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90}
+            {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
             
         ]
     };
@@ -349,10 +349,19 @@
                         finalQuantity += product.bonusQuantity;
                     }
 
+                    // ★★★ כאן מוסיפים לוגיקה להנחה (bulkPrice) ★★★
+                    // אם יש bulkPrice, bulkThreshold, וכמות (או finalQuantity?) עוברת את הסף, נשתמש ב-bulkPrice
+                    // אחרת, נשתמש במחיר הרגיל (price).
+                    let actualPrice;
+                    if (product.bulkPrice !== undefined && product.bulkThreshold && quantity >= product.bulkThreshold) {
+                        actualPrice = product.bulkPrice;
+                    } else {
+                        actualPrice = product.price;
+                    }
+
                     totalProducts += finalQuantity;
-                    // לא מחקנו את עניין price/bulkPrice, רק צמצמתי לבדיקה מינימלית:
-                    const price = product.price;
-                    total += price * quantity;              
+                    // במקום total += price * quantity;
+                    total += actualPrice * quantity;
                 }
             });
         }
@@ -391,19 +400,19 @@
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
 
-                    // חישוב הבונוס לפני השימוש בו
+                    // חישוב הבונוס
                     let bonusCount = 0;
                     if (product.bonusQuantity && product.bulkThreshold && quantity >= product.bulkThreshold) {  
                         bonusCount = product.bonusQuantity;
                     }
 
+                    // מוסיפים את שם המוצר ושורת כמות
                     productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n`;
                     
-                    // אם bonusCount>0 נציג:
+                    // אם יש בונוס, מציגים
                     if (bonusCount > 0 && quantity >= product.bulkThreshold) {
                         productSummary += `   בונוס למוצר זה: ${bonusCount}\r\n`;
                     }
-
                     productSummary += `\r\n`; // רווח בין מוצרים
                 }
             });
