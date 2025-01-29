@@ -244,6 +244,7 @@
         }
     });
 </script>
+
 <script style="direction: rtl ;">
     const productList = {
         pharmacy: [
@@ -265,7 +266,13 @@
         future_pharmacy: [
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 20, bulkThreshold:1},
             {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
-            {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkThreshold:50, bonusQuantity: 5},
+            {
+              id: 'quantity1',
+              name: 'פורמט עט - NO STEP בדיקות דלקת גרון',
+              price: 19.90,
+              bulkThreshold: 50,
+              bonusQuantity: 5
+            },
             {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
             {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90},
             {id: 'quantity4', name: 'בדיקת הריון 1 - רוקחים עתיד', price: 2.90},
@@ -295,7 +302,23 @@
             {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
         ]
     };
-    
+
+    /* פונקציה חדשה לטיפול בהצגת כמות ובונוס באופן מרוכז */
+    function getBonusText(product, quantity) {
+        let finalQuantity = quantity;
+        let text = "";
+        if (product.bonusThreshold && quantity >= product.bonusThreshold) {
+            finalQuantity += product.bonusQuantity;
+        }
+        const bonusCount = finalQuantity - quantity;
+        
+        //"\r\n" לדפדפני מייל
+        text += `   כמות הזמנה: ${quantity}\r\n`;
+        if (bonusCount > 0) {
+            text += `   כמות בונוס: ${bonusCount}\r\n`;
+        }
+        return text;
+    }
 
     function updateForm() {
         const placeType = document.getElementById('placeType').value;
@@ -325,13 +348,12 @@
             document.querySelector('.image-container').classList.add('hide');
             document.querySelector('.image-container').classList.remove('show');
         }
-        
         updateImage();
     }
 
     function calculateTotal() {
         let total = 0;
-        let totalProducts = 0; // מוגדר למעקב כמות
+        let totalProducts = 0;
         const placeType = document.getElementById('placeType').value;
         if (placeType) {
             const products = productList[placeType];
@@ -343,14 +365,12 @@
                     if (product.bonusThreshold && quantity >= product.bonusThreshold) {
                         finalQuantity += product.bonusQuantity;
                     }
-
-                    // אם אין bulkPrice מוגדר - נשתמש ב־price הרגיל
                     const realBulkPrice = (product.bulkPrice !== undefined) ? product.bulkPrice : product.price;
                     const price = (product.bulkThreshold && quantity >= product.bulkThreshold) 
                                   ? realBulkPrice : product.price;
 
                     totalProducts += finalQuantity;
-                    total += price * quantity;              
+                    total += price * quantity;
                 }
             });
         }
@@ -376,13 +396,11 @@
     document.getElementById('orderForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // פרטי מזמין
         const customerName = document.getElementById('customerName').value;
         const placeType = document.getElementById('placeType').value;
         const placeName = document.getElementById('placeName').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
 
-        // שרשור קצר לכל המוצרים (רק למי שקנה)
         let productSummary = "";
         if (placeType) {
             const products = productList[placeType];
@@ -390,29 +408,33 @@
                 const quantityInput = document.getElementById(product.id);
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
+                    
+                    // *** כאן במקום הלוגיקה הישנה, נקרא לפונקציה החדשה ***
+                    productSummary += `- ${product.name}\r\n`;
+                    productSummary += getBonusText(product, quantity); 
+                    productSummary += `\r\n`;
+                    
+                    /* שמרנו את השורות הישנות בהערות, לא מחקנו:
+                    
                     let finalQuantity = quantity;
-
                     if (product.bonusThreshold && quantity >= product.bonusThreshold) {
                         finalQuantity += product.bonusQuantity;
                     }
-                    // הפרש הבונוס
                     const bonusCount = finalQuantity - quantity;
-
-                    // מוסיפים שורות עם "\r\n" כדי שהמייל יציג היטב
                     productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n`;
                     if (bonusCount > 0) {
                         productSummary += `   כמות בונוס: ${bonusCount}\r\n`;
                     }
-                    productSummary += `\r\n`; // רווח בין מוצרים
+                    productSummary += `\r\n`;
+                    
+                    */
                 }
             });
         }
 
-        // ניקח את הטקסט של מחיר
-        const preTaxPriceText = document.getElementById('preTaxPrice').innerText; 
-        const totalPriceWithTaxText = document.getElementById('totalPriceWithTax').innerText; 
+        const preTaxPriceText = document.getElementById('preTaxPrice').innerText;
+        const totalPriceWithTaxText = document.getElementById('totalPriceWithTax').innerText;
 
-        // בניית תוכן ההודעה
         let shortOrderDetails = 
 `פרטי המזמין:
 ----------------
@@ -431,7 +453,6 @@ ${preTaxPriceText}
 ${totalPriceWithTaxText}
 `;
 
-        // שולחים דרך mailto
         window.location.href = `mailto:info@bmtdx.com?subject=הזמנה חדשה&body=${encodeURIComponent(shortOrderDetails)}`;
     });
       
