@@ -384,9 +384,8 @@
         const placeName = document.getElementById('placeName').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
 
-        // עדיין נשמור productSummary ו productBonus, כדי לא "למחוק" שורות
+        // פירוט המוצרים להזמנה
         let productSummary = "";
-        let productBonus = "";
 
         if (placeType) {
             const products = productList[placeType];
@@ -394,29 +393,26 @@
                 const quantityInput = document.getElementById(product.id);
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
+                    // נגדיר כמות סופית
                     let finalQuantity = quantity;
 
+                    // אם עברנו סף, מוסיפים בונוס
                     if (product.bonusThreshold && quantity >= product.bonusThreshold) {
                         finalQuantity += product.bonusQuantity;
                     }
 
-                    // נחשב את הבונוס בפועל
+                    // מחשבים כמה בונוס בפועל
                     const bonusCount = finalQuantity - quantity;
 
-                    // תמיד נציג שורה למוצר ו"כמות הזמנה"
+                    // מוסיפים את שורת המוצר
                     productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n`;
-
-                    // אם bonusCount > 0, מציגים מיד מתחת
+                    
+                    // אם bonusCount > 0, נדפיס "בונוס למוצר זה: X"
                     if (bonusCount > 0) {
-                        productSummary += `   כמות בונוס: ${bonusCount}\r\n`;
+                        productSummary += `   בונוס למוצר זה: ${bonusCount}\r\n`;
                     }
-                    productSummary += `\r\n`;
 
-                    /* - השורות הישנות שלך בהערות, לא נמחקו -
-                       if (bonusCount > 0) {
-                           productBonus += `- ${product.name}\r\n   כמות בונוס: ${bonusCount}\r\n\r\n`;
-                       }
-                    */
+                    productSummary += `\r\n`; // רווח בין מוצרים
                 }
             });
         }
@@ -442,19 +438,20 @@ ${preTaxPriceText}
 ${totalPriceWithTaxText}
 `;
 
-        // לא "מחקנו" את productBonus - רק לא משתמשים בו כרגע.
-        // יכולת להכניס אותו בהמשך, אם תרצי הצגה נפרדת של בונוסים.
-
         window.location.href = `mailto:info@bmtdx.com?subject=הזמנה חדשה&body=${encodeURIComponent(shortOrderDetails)}`;
     });
       
 </script>
 
 </body>
+
+<!-- לא מחקנו את ה־<body> הנוסף אלא רק השארנו בהערה כדי למנוע כפל תגיות -->
+<!-- 
 <body class="align-center">
-    <!-- Your HTML content -->
     <div class="image-container hide">
         <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
     </div>
+</body>
+-->
 
 </html>
