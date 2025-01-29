@@ -238,11 +238,12 @@
             imageContainer.style.display = 'flex'; 
             formContainer.style.marginLeft = '700px';
             
-        } else if (window.innerWidth <= 600) { 
+        }else if (window.innerWidth <= 600) { 
                 formContainer.classList.add('margin-top-320'); 
                 imageContainer.style.display = 'flex';
                 document.querySelector('body').classList.add('align-center'); 
         }
+        
     });
 </script>
 <script style="direction: rtl ;">
@@ -299,38 +300,35 @@
     
 
     function updateForm() {
-    const placeType = document.getElementById('placeType').value;
-    const productListDiv = document.getElementById('productList');
-    const placeNameLabel = document.getElementById('placeNameLabel');
-    const pharmacyImage = document.getElementById('pharmacyImage');
-    productListDiv.innerHTML = '';
+        const placeType = document.getElementById('placeType').value;
+        const productListDiv = document.getElementById('productList');
+        const placeNameLabel = document.getElementById('placeNameLabel');
+        const pharmacyImage = document.getElementById('pharmacyImage');
+        productListDiv.innerHTML = '';
 
-    if (placeType) {
-        const products = productList[placeType];
-        products.forEach(product => {
-            const productDiv = document.createElement('div');
-            productDiv.className = 'product';
-            productDiv.innerHTML = `
-                <input type="number" id="${product.id}" min="0" value="0" oninput="calculateTotal()">
-                <label for="${product.id}">${product.name}</label>
-            `;
-            productListDiv.appendChild(productDiv);
-        });
-        document.body.classList.add('align-right');
-        document.body.classList.remove('align-center');
-        document.querySelector('.image-container').classList.add('show');
-        document.querySelector('.image-container').classList.remove('hide');
-    } else {
-        document.body.classList.add('align-center');
-        document.body.classList.remove('align-right');
-        document.querySelector('.image-container').classList.add('hide');
-        document.querySelector('.image-container').classList.remove('show');
-    }
-    
-        
-
+        if (placeType) {
+            const products = productList[placeType];
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.innerHTML = `
+                    <input type="number" id="${product.id}" min="0" value="0" oninput="calculateTotal()">
+                    <label for="${product.id}">${product.name}</label>
+                `;
+                productListDiv.appendChild(productDiv);
+            });
+            document.body.classList.add('align-right');
+            document.body.classList.remove('align-center');
+            document.querySelector('.image-container').classList.add('show');
+            document.querySelector('.image-container').classList.remove('hide');
+        } else {
+            document.body.classList.add('align-center');
+            document.body.classList.remove('align-right');
+            document.querySelector('.image-container').classList.add('hide');
+            document.querySelector('.image-container').classList.remove('show');
+        }
         updateImage();
-}
+    }
 
     function calculateTotal() {
         let total = 0;
@@ -345,8 +343,7 @@
                     let finalQuantity = quantity;
                     if (product.bonusThreshold && quantity >= product.bonusThreshold) {
                         finalQuantity += product.bonusQuantity;
-                    } // ← סוגר שהפריד את הקוד
-
+                    }
                     // נוודא שאם אין bulkPrice מוגדר - נשתמש ב־price הרגיל
                     const realBulkPrice = (product.bulkPrice !== undefined) ? product.bulkPrice : product.price;
                     const price = (product.bulkThreshold && quantity >= product.bulkThreshold) 
@@ -379,30 +376,60 @@
     document.getElementById('orderForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
+        // ראשית, לוקחים את פרטי המזמין
         const customerName = document.getElementById('customerName').value;
         const placeType = document.getElementById('placeType').value;
         const placeName = document.getElementById('placeName').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
-        let orderDetails = `שם המזמין: ${customerName}\nסוג המקום: ${placeType}\nשם המקום: ${placeName}\nמספר פלאפון: ${phoneNumber}\n\nמוצרים:\n`;
 
+        // ניצור שרשור קצר של כל המוצרים (רק עם כמות > 0)
+        let productSummary = "";
         if (placeType) {
             const products = productList[placeType];
             products.forEach(product => {
                 const quantityInput = document.getElementById(product.id);
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
-                    const price = product.bulkThreshold && quantity >= product.bulkThreshold ? product.bulkPrice : product.price;
-                    // const price = product.bulkThreshold && quantity >= product.bulkThreshold ? product.bonusQuantity : product.price;
-                    orderDetails += `${quantityInput.nextElementSibling.innerText.trim()} - כמות: ${quantity}, מחיר ליחידה: ${price.toFixed(2)} ש"ח\n`;
+                    let finalQuantity = quantity;
+                    if (product.bonusThreshold && quantity >= product.bonusThreshold) {
+                        finalQuantity += product.bonusQuantity;
+                    }
+                    // אם נוסף בונוס, נוסיף טקסט מתאים
+                    if (finalQuantity > quantity) {
+                        productSummary += `- ${product.name} | כמות: ${finalQuantity} (כולל בונוס)\n`;
+                    } else {
+                        productSummary += `- ${product.name} | כמות: ${quantity}\n`;
+                    }
                 }
             });
         }
 
-        const preTaxPrice = document.getElementById('preTaxPrice').innerText;
-        const totalPriceWithTax = document.getElementById('totalPriceWithTax').innerText;
-        orderDetails += `\n${preTaxPrice}\n${totalPriceWithTax}`;
+        // ניקח את הטקסט של הסה"כ ישירות מהאלמנטים
+        const preTaxPriceText = document.getElementById('preTaxPrice').innerText; 
+        const totalPriceWithTaxText = document.getElementById('totalPriceWithTax').innerText; 
 
-        window.location.href = `mailto:info@bmtdx.com?subject=הזמנה חדשה&body=${encodeURIComponent(orderDetails)}`;
+        // נבנה את גופן ההודעה הקצרה למייל
+        let shortOrderDetails = 
+`פרטי המזמין:
+----------------
+שם המזמין: ${customerName}
+סוג המקום: ${placeType}
+שם המקום: ${placeName}
+מספר פלאפון: ${phoneNumber}
+
+מוצרים בהזמנה:
+----------------
+${productSummary}
+
+סיכום:
+----------------
+${preTaxPriceText}
+${totalPriceWithTaxText}
+`;
+
+        // *** כדי לקצר עוד, אפשר למחוק שורות/כותרות שלא נחוצות ***
+        // החלפה בשורת ה־mailto
+        window.location.href = `mailto:info@bmtdx.com?subject=הזמנה חדשה&body=${encodeURIComponent(shortOrderDetails)}`;
     });
       
 </script>
