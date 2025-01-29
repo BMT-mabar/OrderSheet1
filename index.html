@@ -407,7 +407,7 @@
                     productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n\r\n`;
 
                     // אם נוסף בונוס, נוסיף זאת למשתנה productBonus
-                    const bonusCount = finalQuantity - quantity;
+                    const bonusCount = bonusQuantity ;
                     if (bonusCount > 0) {
                         productBonus += `- ${product.name}\r\n   כמות בונוס: ${bonusCount}\r\n\r\n`;
                     }
@@ -416,7 +416,7 @@
                     -- השורות המקוריות שהיו (לא מחקנו, רק הערנו) --
                     productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n`;
                     if (bonusCount > 0) {
-                       productSummary += `   כמות בונוס: ${bonusCount}\r\n`;
+                       productSummary += ` ${product.name}\r\n  כמות בונוס: ${bonusCount}\r\n`;
                     }
                     productSummary += `\r\n`;
                     */
@@ -440,7 +440,7 @@
 ----------------
 ${productSummary}
 
-בונוסים (אם קיימים):
+בונוסים:
 ----------------
 ${productBonus}
 
