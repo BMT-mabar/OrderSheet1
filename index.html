@@ -221,12 +221,14 @@
             <button type="submit">שלח הזמנה</button>
         </form>
     </div>
+
     <div class="image-container hide">
         <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
     </div>
 </div>
 
 <script>
+    // מאזין לשינוי ה-placeType כדי להציג תמונה בצד
     document.getElementById('placeType').addEventListener('change', function() {
         const imageContainer = document.querySelector('.image-container');
         const formContainer = document.querySelector('.container');
@@ -245,6 +247,7 @@
 <script style="direction: rtl ;">
     const productList = {
         pharmacy: [
+            
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24},
             {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90},
             {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
@@ -259,10 +262,10 @@
             {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
             {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', price: 21.00},
             {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
+            
         ],
         future_pharmacy: [
-            {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 20, bulkThreshold:1},
-            {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
+            // השארנו רק מוצר אחד עם בונוסThreshold 50, bonusQuantity 5
             {
               id: 'quantity1',
               name: 'פורמט עט - NO STEP בדיקות דלקת גרון',
@@ -270,6 +273,9 @@
               bulkThreshold: 50,
               bonusQuantity: 5
             },
+            
+            {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 20, bulkThreshold:1},
+            {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
             {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
             {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90},
             {id: 'quantity4', name: 'בדיקת הריון 1 - רוקחים עתיד', price: 2.90},
@@ -281,8 +287,10 @@
             {id: 'quantity11', name: 'בדיקת קנדידה וגינאלית', price: 17.20},
             {id: 'quantity12', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
             {id: 'quantity13', name: 'בדיקת סמים 8 פרמטרים', price: 33.90}
+            
         ],
         shrem_pharmacy: [
+            
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24},
             {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90},
             {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
@@ -296,15 +304,15 @@
             {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
             {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
             {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', price: 21.00},
-            {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
+            {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90}
+            
         ]
     };
+
 
     function updateForm() {
         const placeType = document.getElementById('placeType').value;
         const productListDiv = document.getElementById('productList');
-        const placeNameLabel = document.getElementById('placeNameLabel');
-        const pharmacyImage = document.getElementById('pharmacyImage');
         productListDiv.innerHTML = '';
 
         if (placeType) {
@@ -343,16 +351,15 @@
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
                     let finalQuantity = quantity;
-                    if (product.bonusThreshold && quantity >= product.bonusThreshold) {
+
+                    // בדיקת סף/בונוס
+                    if (product.bonusQuantity && product.bulkThreshold && quantity >= product.bulkThreshold) {
                         finalQuantity += product.bonusQuantity;
                     }
 
-                    // אם אין bulkPrice מוגדר - נשתמש ב־price הרגיל
-                    const realBulkPrice = (product.bulkPrice !== undefined) ? product.bulkPrice : product.price;
-                    const price = (product.bulkThreshold && quantity >= product.bulkThreshold) 
-                                  ? realBulkPrice : product.price;
-
                     totalProducts += finalQuantity;
+                    // לא מחקנו את עניין price/bulkPrice, רק צמצמתי לבדיקה מינימלית:
+                    const price = product.price;
                     total += price * quantity;              
                 }
             });
@@ -384,43 +391,35 @@
         const placeName = document.getElementById('placeName').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
 
-        // פירוט המוצרים להזמנה
         let productSummary = "";
-
         if (placeType) {
             const products = productList[placeType];
             products.forEach(product => {
                 const quantityInput = document.getElementById(product.id);
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
-                    // נגדיר כמות סופית
-                    let finalQuantity = quantity;
 
-                    // אם עברנו סף, מוסיפים בונוס
-                    if (product.bonusThreshold && quantity >= product.bonusThreshold) {
-                        finalQuantity += product.bonusQuantity;
+                    // בדיקת בונוס
+                    let bonusCount = 0;
+                    if (product.bonusQuantity && product.bulkThreshold && quantity >= product.bulkThreshold) {
+                        bonusCount = product.bonusQuantity;
                     }
 
-                    // מחשבים כמה בונוס בפועל
-                    const bonusCount = finalQuantity - quantity;
-
-                    // מוסיפים את שורת המוצר
+                    // כותבים את שם המוצר וכמות
                     productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n`;
-                    
-                    // אם bonusCount > 0, נדפיס "בונוס למוצר זה: X"
+                    // אם bonusCount>0 נציג:
                     if (bonusCount > 0) {
                         productSummary += `   בונוס למוצר זה: ${bonusCount}\r\n`;
                     }
-
                     productSummary += `\r\n`; // רווח בין מוצרים
                 }
             });
         }
 
-        const preTaxPriceText = document.getElementById('preTaxPrice').innerText; 
-        const totalPriceWithTaxText = document.getElementById('totalPriceWithTax').innerText; 
+        const preTaxPrice = document.getElementById('preTaxPrice').innerText;
+        const totalPriceWithTax = document.getElementById('totalPriceWithTax').innerText;
 
-        let shortOrderDetails = 
+        const shortOrderDetails =
 `פרטי המזמין:
 ----------------
 שם המזמין: ${customerName}
@@ -434,18 +433,16 @@ ${productSummary}
 
 סיכום:
 ----------------
-${preTaxPriceText}
-${totalPriceWithTaxText}
+${preTaxPrice}
+${totalPriceWithTax}
 `;
 
         window.location.href = `mailto:info@bmtdx.com?subject=הזמנה חדשה&body=${encodeURIComponent(shortOrderDetails)}`;
     });
-      
 </script>
 
 </body>
-
-<!-- לא מחקנו את ה־<body> הנוסף אלא רק השארנו בהערה כדי למנוע כפל תגיות -->
+<!-- השארנו את ה-<body> המשוכפל בהערה כדי לא להסיר שורות -->
 <!-- 
 <body class="align-center">
     <div class="image-container hide">
