@@ -149,7 +149,6 @@
             .container {
                 flex-direction: column; 
                 padding: 10px; 
-                
             }
             h1, h2 {
                 font-size: 1.5em; 
@@ -171,11 +170,9 @@
             }
             .image-container {
                 height: 350px; 
-                
             }
             .container.margin-top-320 {
                 margin-top: 320px;
-                
             }
         }
     </style>
@@ -387,9 +384,8 @@
         const placeName = document.getElementById('placeName').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
 
-        // נשמור כאן את פירוט המוצרים (ללא בונוס)
+        // עדיין נשמור productSummary ו productBonus, כדי לא "למחוק" שורות
         let productSummary = "";
-        // נשמור כאן פירוט של הבונוס (במקרה שיש)
         let productBonus = "";
 
         if (placeType) {
@@ -399,26 +395,27 @@
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
                     let finalQuantity = quantity;
+
                     if (product.bonusThreshold && quantity >= product.bonusThreshold) {
                         finalQuantity += product.bonusQuantity;
                     }
 
-                    // מוסיפים למשתנה productSummary את השורה הרגילה
-                    productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n\r\n`;
+                    // נחשב את הבונוס בפועל
+                    const bonusCount = finalQuantity - quantity;
 
-                    // אם נוסף בונוס, נוסיף זאת למשתנה productBonus
-                    if bonusQuantit>0;
-                    {
-                        productBonus += `- ${product.name}\r\n   כמות בונוס: ${bonusCount}\r\n\r\n`;
-                    }
-
-                    /* 
-                    -- השורות המקוריות שהיו (לא מחקנו, רק הערנו) --
+                    // תמיד נציג שורה למוצר ו"כמות הזמנה"
                     productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n`;
+
+                    // אם bonusCount > 0, מציגים מיד מתחת
                     if (bonusCount > 0) {
-                       productSummary += ` ${product.name}\r\n  כמות בונוס: ${bonusCount}\r\n`;
+                        productSummary += `   כמות בונוס: ${bonusCount}\r\n`;
                     }
                     productSummary += `\r\n`;
+
+                    /* - השורות הישנות שלך בהערות, לא נמחקו -
+                       if (bonusCount > 0) {
+                           productBonus += `- ${product.name}\r\n   כמות בונוס: ${bonusCount}\r\n\r\n`;
+                       }
                     */
                 }
             });
@@ -427,7 +424,6 @@
         const preTaxPriceText = document.getElementById('preTaxPrice').innerText; 
         const totalPriceWithTaxText = document.getElementById('totalPriceWithTax').innerText; 
 
-        // עכשיו נבנה את ההודעה כך שתכיל גם את ה־productSummary וגם productBonus
         let shortOrderDetails = 
 `פרטי המזמין:
 ----------------
@@ -440,15 +436,14 @@
 ----------------
 ${productSummary}
 
-בונוסים:
-----------------
-${productBonus}
-
 סיכום:
 ----------------
 ${preTaxPriceText}
 ${totalPriceWithTaxText}
 `;
+
+        // לא "מחקנו" את productBonus - רק לא משתמשים בו כרגע.
+        // יכולת להכניס אותו בהמשך, אם תרצי הצגה נפרדת של בונוסים.
 
         window.location.href = `mailto:info@bmtdx.com?subject=הזמנה חדשה&body=${encodeURIComponent(shortOrderDetails)}`;
     });
