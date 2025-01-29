@@ -303,23 +303,6 @@
         ]
     };
 
-    /* פונקציה חדשה לטיפול בהצגת כמות ובונוס באופן מרוכז */
-    function getBonusText(product, quantity) {
-        let finalQuantity = quantity;
-        let text = "";
-        if (product.bonusThreshold && quantity >= product.bonusThreshold) {
-            finalQuantity += product.bonusQuantity;
-        }
-        const bonusCount = finalQuantity - quantity;
-        
-        //"\r\n" לדפדפני מייל
-        text += `   כמות הזמנה: ${quantity}\r\n`;
-        if (bonusCount > 0) {
-            text += `   כמות בונוס: ${bonusCount}\r\n`;
-        }
-        return text;
-    }
-
     function updateForm() {
         const placeType = document.getElementById('placeType').value;
         const productListDiv = document.getElementById('productList');
@@ -348,12 +331,13 @@
             document.querySelector('.image-container').classList.add('hide');
             document.querySelector('.image-container').classList.remove('show');
         }
+        
         updateImage();
     }
 
     function calculateTotal() {
         let total = 0;
-        let totalProducts = 0;
+        let totalProducts = 0; // מוגדר למעקב כמות
         const placeType = document.getElementById('placeType').value;
         if (placeType) {
             const products = productList[placeType];
@@ -365,12 +349,14 @@
                     if (product.bonusThreshold && quantity >= product.bonusThreshold) {
                         finalQuantity += product.bonusQuantity;
                     }
+
+                    // אם אין bulkPrice מוגדר - נשתמש ב־price הרגיל
                     const realBulkPrice = (product.bulkPrice !== undefined) ? product.bulkPrice : product.price;
                     const price = (product.bulkThreshold && quantity >= product.bulkThreshold) 
                                   ? realBulkPrice : product.price;
 
                     totalProducts += finalQuantity;
-                    total += price * quantity;
+                    total += price * quantity;              
                 }
             });
         }
@@ -401,40 +387,47 @@
         const placeName = document.getElementById('placeName').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
 
+        // נשמור כאן את פירוט המוצרים (ללא בונוס)
         let productSummary = "";
+        // נשמור כאן פירוט של הבונוס (במקרה שיש)
+        let productBonus = "";
+
         if (placeType) {
             const products = productList[placeType];
             products.forEach(product => {
                 const quantityInput = document.getElementById(product.id);
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
-                    
-                    // *** כאן במקום הלוגיקה הישנה, נקרא לפונקציה החדשה ***
-                    productSummary += `- ${product.name}\r\n`;
-                    productSummary += getBonusText(product, quantity); 
-                    productSummary += `\r\n`;
-                    
-                    /* שמרנו את השורות הישנות בהערות, לא מחקנו:
-                    
                     let finalQuantity = quantity;
                     if (product.bonusThreshold && quantity >= product.bonusThreshold) {
                         finalQuantity += product.bonusQuantity;
                     }
+
+                    // מוסיפים למשתנה productSummary את השורה הרגילה
+                    productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n\r\n`;
+
+                    // אם נוסף בונוס, נוסיף זאת למשתנה productBonus
                     const bonusCount = finalQuantity - quantity;
+                    if (bonusCount > 0) {
+                        productBonus += `- ${product.name}\r\n   כמות בונוס: ${bonusCount}\r\n\r\n`;
+                    }
+
+                    /* 
+                    -- השורות המקוריות שהיו (לא מחקנו, רק הערנו) --
                     productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n`;
                     if (bonusCount > 0) {
-                        productSummary += `   כמות בונוס: ${bonusCount}\r\n`;
+                       productSummary += `   כמות בונוס: ${bonusCount}\r\n`;
                     }
                     productSummary += `\r\n`;
-                    
                     */
                 }
             });
         }
 
-        const preTaxPriceText = document.getElementById('preTaxPrice').innerText;
-        const totalPriceWithTaxText = document.getElementById('totalPriceWithTax').innerText;
+        const preTaxPriceText = document.getElementById('preTaxPrice').innerText; 
+        const totalPriceWithTaxText = document.getElementById('totalPriceWithTax').innerText; 
 
+        // עכשיו נבנה את ההודעה כך שתכיל גם את ה־productSummary וגם productBonus
         let shortOrderDetails = 
 `פרטי המזמין:
 ----------------
@@ -446,6 +439,10 @@
 מוצרים בהזמנה:
 ----------------
 ${productSummary}
+
+בונוסים (אם קיימים):
+----------------
+${productBonus}
 
 סיכום:
 ----------------
