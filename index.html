@@ -237,14 +237,14 @@
         if (window.innerWidth >= 601) {
             imageContainer.style.display = 'flex'; 
             formContainer.style.marginLeft = '700px';
+            
         } else if (window.innerWidth <= 600) { 
-            formContainer.classList.add('margin-top-320'); 
-            imageContainer.style.display = 'flex';
-            document.querySelector('body').classList.add('align-center'); 
+                formContainer.classList.add('margin-top-320'); 
+                imageContainer.style.display = 'flex';
+                document.querySelector('body').classList.add('align-center'); 
         }
     });
 </script>
-
 <script style="direction: rtl ;">
     const productList = {
         pharmacy: [
@@ -299,39 +299,42 @@
     
 
     function updateForm() {
-        const placeType = document.getElementById('placeType').value;
-        const productListDiv = document.getElementById('productList');
-        const placeNameLabel = document.getElementById('placeNameLabel');
-        const pharmacyImage = document.getElementById('pharmacyImage');
-        productListDiv.innerHTML = '';
+    const placeType = document.getElementById('placeType').value;
+    const productListDiv = document.getElementById('productList');
+    const placeNameLabel = document.getElementById('placeNameLabel');
+    const pharmacyImage = document.getElementById('pharmacyImage');
+    productListDiv.innerHTML = '';
 
-        if (placeType) {
-            const products = productList[placeType];
-            products.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.className = 'product';
-                productDiv.innerHTML = `
-                    <input type="number" id="${product.id}" min="0" value="0" oninput="calculateTotal()">
-                    <label for="${product.id}">${product.name}</label>
-                `;
-                productListDiv.appendChild(productDiv);
-            });
-            document.body.classList.add('align-right');
-            document.body.classList.remove('align-center');
-            document.querySelector('.image-container').classList.add('show');
-            document.querySelector('.image-container').classList.remove('hide');
-        } else {
-            document.body.classList.add('align-center');
-            document.body.classList.remove('align-right');
-            document.querySelector('.image-container').classList.add('hide');
-            document.querySelector('.image-container').classList.remove('show');
-        }
-        updateImage();
+    if (placeType) {
+        const products = productList[placeType];
+        products.forEach(product => {
+            const productDiv = document.createElement('div');
+            productDiv.className = 'product';
+            productDiv.innerHTML = `
+                <input type="number" id="${product.id}" min="0" value="0" oninput="calculateTotal()">
+                <label for="${product.id}">${product.name}</label>
+            `;
+            productListDiv.appendChild(productDiv);
+        });
+        document.body.classList.add('align-right');
+        document.body.classList.remove('align-center');
+        document.querySelector('.image-container').classList.add('show');
+        document.querySelector('.image-container').classList.remove('hide');
+    } else {
+        document.body.classList.add('align-center');
+        document.body.classList.remove('align-right');
+        document.querySelector('.image-container').classList.add('hide');
+        document.querySelector('.image-container').classList.remove('show');
     }
+    
+        
+
+        updateImage();
+}
 
     function calculateTotal() {
         let total = 0;
-        let totalProducts = 0;  // הוספנו הגדרה למשתנה זה
+        let totalProducts = 0; // מוגדר למעקב כמות
         const placeType = document.getElementById('placeType').value;
         if (placeType) {
             const products = productList[placeType];
@@ -342,12 +345,15 @@
                     let finalQuantity = quantity;
                     if (product.bonusThreshold && quantity >= product.bonusThreshold) {
                         finalQuantity += product.bonusQuantity;
-                        // -- כאן נוסף סוגר חסר --
-                    } // ← סגירת ה־if שהייתה חסרה
+                    } // ← סוגר שהפריד את הקוד
 
-                    const price = product.bulkThreshold && quantity >= product.bulkThreshold ? product.bulkPrice : product.price;
+                    // נוודא שאם אין bulkPrice מוגדר - נשתמש ב־price הרגיל
+                    const realBulkPrice = (product.bulkPrice !== undefined) ? product.bulkPrice : product.price;
+                    const price = (product.bulkThreshold && quantity >= product.bulkThreshold) 
+                                  ? realBulkPrice : product.price;
+
                     totalProducts += finalQuantity;
-                    total += price * quantity;
+                    total += price * quantity;              
                 }
             });
         }
@@ -385,10 +391,8 @@
                 const quantityInput = document.getElementById(product.id);
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
-                    // שמרנו את שתי השורות אבל ביטלנו את השנייה כדי למנוע דריסה של price
                     const price = product.bulkThreshold && quantity >= product.bulkThreshold ? product.bulkPrice : product.price;
                     // const price = product.bulkThreshold && quantity >= product.bulkThreshold ? product.bonusQuantity : product.price;
-                    
                     orderDetails += `${quantityInput.nextElementSibling.innerText.trim()} - כמות: ${quantity}, מחיר ליחידה: ${price.toFixed(2)} ש"ח\n`;
                 }
             });
@@ -404,14 +408,10 @@
 </script>
 
 </body>
-
-<!-- שמרנו על תגית <body class="align-center"> שהופיעה שוב למטה, אך עטפנו בהערה כדי למנוע שגיאת HTML כפולה -->
-<!-- 
 <body class="align-center">
+    <!-- Your HTML content -->
     <div class="image-container hide">
         <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
     </div>
-</body>
--->
 
 </html>
