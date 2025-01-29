@@ -237,13 +237,11 @@
         if (window.innerWidth >= 601) {
             imageContainer.style.display = 'flex'; 
             formContainer.style.marginLeft = '700px';
-            
         } else if (window.innerWidth <= 600) { 
             formContainer.classList.add('margin-top-320'); 
             imageContainer.style.display = 'flex';
             document.querySelector('body').classList.add('align-center'); 
         }
-        
     });
 </script>
 <script style="direction: rtl ;">
@@ -327,6 +325,7 @@
             document.querySelector('.image-container').classList.add('hide');
             document.querySelector('.image-container').classList.remove('show');
         }
+        
         updateImage();
     }
 
@@ -344,7 +343,8 @@
                     if (product.bonusThreshold && quantity >= product.bonusThreshold) {
                         finalQuantity += product.bonusQuantity;
                     }
-                    // נוודא שאם אין bulkPrice מוגדר - נשתמש ב־price הרגיל
+
+                    // אם אין bulkPrice מוגדר - נשתמש ב־price הרגיל
                     const realBulkPrice = (product.bulkPrice !== undefined) ? product.bulkPrice : product.price;
                     const price = (product.bulkThreshold && quantity >= product.bulkThreshold) 
                                   ? realBulkPrice : product.price;
@@ -376,13 +376,13 @@
     document.getElementById('orderForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // ראשית, לוקחים את פרטי המזמין
+        // פרטי מזמין
         const customerName = document.getElementById('customerName').value;
         const placeType = document.getElementById('placeType').value;
         const placeName = document.getElementById('placeName').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
 
-        // שרשור קצר לכל המוצרים (רק למי שקנה באמת)
+        // שרשור קצר לכל המוצרים (רק למי שקנה)
         let productSummary = "";
         if (placeType) {
             const products = productList[placeType];
@@ -395,26 +395,24 @@
                     if (product.bonusThreshold && quantity >= product.bonusThreshold) {
                         finalQuantity += product.bonusQuantity;
                     }
-                    
-                    // נוסיף תחילה שם וכמות שהוזמנה
-                    productSummary += `- ${product.name}\n   כמות הזמנה: ${quantity}\n`;
-                    
-                    // אם נוסף בונוס, נרשום אותו בשורה נפרדת
-                    const bonusAdded = finalQuantity - quantity; 
-                    if (bonusAdded > 0) {
-                        productSummary += `   כמות בונוס: ${bonusAdded}\n`;
+                    // הפרש הבונוס
+                    const bonusCount = finalQuantity - quantity;
+
+                    // מוסיפים שורות עם "\r\n" כדי שהמייל יציג היטב
+                    productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n`;
+                    if (bonusCount > 0) {
+                        productSummary += `   כמות בונוס: ${bonusCount}\r\n`;
                     }
-                    
-                    productSummary += "\n"; // רווח בין מוצרים
+                    productSummary += `\r\n`; // רווח בין מוצרים
                 }
             });
         }
 
-        // ניקח את הטקסט של מחיר סופי (ללא מע"מ וכולל מע"מ) ישירות מהדף
+        // ניקח את הטקסט של מחיר
         const preTaxPriceText = document.getElementById('preTaxPrice').innerText; 
         const totalPriceWithTaxText = document.getElementById('totalPriceWithTax').innerText; 
 
-        // נבנה את תוכן ההודעה
+        // בניית תוכן ההודעה
         let shortOrderDetails = 
 `פרטי המזמין:
 ----------------
@@ -433,7 +431,7 @@ ${preTaxPriceText}
 ${totalPriceWithTaxText}
 `;
 
-        // ונשלח למייל
+        // שולחים דרך mailto
         window.location.href = `mailto:info@bmtdx.com?subject=הזמנה חדשה&body=${encodeURIComponent(shortOrderDetails)}`;
     });
       
