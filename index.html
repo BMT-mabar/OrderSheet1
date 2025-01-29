@@ -238,10 +238,10 @@
             imageContainer.style.display = 'flex'; 
             formContainer.style.marginLeft = '700px';
             
-        }else if (window.innerWidth <= 600) { 
-                formContainer.classList.add('margin-top-320'); 
-                imageContainer.style.display = 'flex';
-                document.querySelector('body').classList.add('align-center'); 
+        } else if (window.innerWidth <= 600) { 
+            formContainer.classList.add('margin-top-320'); 
+            imageContainer.style.display = 'flex';
+            document.querySelector('body').classList.add('align-center'); 
         }
         
     });
@@ -382,7 +382,7 @@
         const placeName = document.getElementById('placeName').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
 
-        // ניצור שרשור קצר של כל המוצרים (רק עם כמות > 0)
+        // שרשור קצר לכל המוצרים (רק למי שקנה באמת)
         let productSummary = "";
         if (placeType) {
             const products = productList[placeType];
@@ -391,24 +391,30 @@
                 if (quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
                     let finalQuantity = quantity;
+
                     if (product.bonusThreshold && quantity >= product.bonusThreshold) {
                         finalQuantity += product.bonusQuantity;
                     }
-                    // אם נוסף בונוס, נוסיף טקסט מתאים
-                    if (finalQuantity > quantity) {
-                        productSummary += `- ${product.name} | כמות: ${finalQuantity} (כולל בונוס)\n`;
-                    } else {
-                        productSummary += `- ${product.name} | כמות: ${quantity}\n`;
+                    
+                    // נוסיף תחילה שם וכמות שהוזמנה
+                    productSummary += `- ${product.name}\n   כמות הזמנה: ${quantity}\n`;
+                    
+                    // אם נוסף בונוס, נרשום אותו בשורה נפרדת
+                    const bonusAdded = finalQuantity - quantity; 
+                    if (bonusAdded > 0) {
+                        productSummary += `   כמות בונוס: ${bonusAdded}\n`;
                     }
+                    
+                    productSummary += "\n"; // רווח בין מוצרים
                 }
             });
         }
 
-        // ניקח את הטקסט של הסה"כ ישירות מהאלמנטים
+        // ניקח את הטקסט של מחיר סופי (ללא מע"מ וכולל מע"מ) ישירות מהדף
         const preTaxPriceText = document.getElementById('preTaxPrice').innerText; 
         const totalPriceWithTaxText = document.getElementById('totalPriceWithTax').innerText; 
 
-        // נבנה את גופן ההודעה הקצרה למייל
+        // נבנה את תוכן ההודעה
         let shortOrderDetails = 
 `פרטי המזמין:
 ----------------
@@ -427,8 +433,7 @@ ${preTaxPriceText}
 ${totalPriceWithTaxText}
 `;
 
-        // *** כדי לקצר עוד, אפשר למחוק שורות/כותרות שלא נחוצות ***
-        // החלפה בשורת ה־mailto
+        // ונשלח למייל
         window.location.href = `mailto:info@bmtdx.com?subject=הזמנה חדשה&body=${encodeURIComponent(shortOrderDetails)}`;
     });
       
