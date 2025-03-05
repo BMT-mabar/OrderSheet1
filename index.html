@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html lang="he">
 <head>
   <meta charset="UTF-8" />
@@ -10,7 +11,7 @@
   <script>
     (function() {
       // הכניסי כאן את ה-Public Key שלך מ-EmailJS
-      emailjs.init("YOUR_PUBLIC_KEY");
+      emailjs.init("96gsI3kIpoTMDmG46");
     })();
   </script>
 
@@ -272,24 +273,128 @@ function updateImage(placeType) {
   pharmacyImage.style.display = placeType ? "block" : "none";
 }
 
-// רשימת המוצרים לדוגמה
-const productListData = {
-  pharmacy: [
-    {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24},
-    {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
-    {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90},
-    // ... הוסיפי כאן עוד מוצרים
-  ],
-  future_pharmacy: [
-    // ... מוצרים לרוקחים עתיד
-  ],
-  shrem_pharmacy: [
-    // ... מוצרים לשרמ
-  ]
+        // אובייקט עם רשימת מוצרים
+        const productList = {
+            pharmacy: [
+                {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+                {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+                {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+                {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+                {id: "quantity4", name: "בדיקת הריון 1", price: 5.20},
+                {id: "quantity5", name: "בדיקת הריון 2", price: 6.50},
+                {id: "quantity13", name: ""בדיקת הריון "בשעה טובה", price: 18.90},
+                {id: "quantity6", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity7", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity8", name: "בדיקת סמים 8 פרמטרים", price: 33.90},
+                {id: "quantity9", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+                {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+                {id: "quantity11", name: "בדיקת ביוץ - 7 באריזה", price: 21.00},
+                {id: "quantity12", name: ""בדיקת ביוץ "בשעה טובה", price: 29.90}
+            ],
+            future_pharmacy: [
+                {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+                {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+                {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+                {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+                {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+                {id: "quantity4", name: "בדיקת הריון 1 - רוקחים עתיד", price: 2.90},
+                {id: "quantity5", name: "בדיקת הריון 2 - רוקחים עתיד", price: 5.20},
+                {id: "quantity6", name: ""בדיקת הריון "בשעה טובה", price: 18.90},
+                {id: "quantity7", name: ""בדיקת ביוץ "בשעה טובה", price: 29.90},
+                {id: "quantity8", name: "בדיקת ביוץ 7 באריזה", price: 21.00},
+                {id: "quantity9", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity11", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity12", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+                {id: "quantity13", name: "בדיקת סמים 8 פרמטרים", price: 33.90}
+            ],
+            shrem_pharmacy: [
+                {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+                {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+                {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+                {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+                {id: "quantity4", name: "בדיקת הריון 1", price: 5.20},
+                {id: "quantity5", name: "בדיקת הריון 2", price: 6.50},
+                {id: "quantity13", name: ""בדיקת הריון "בשעה טובה", price: 18.90},
+                {id: "quantity6", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity7", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity8", name: "בדיקת סמים 8 פרמטרים", price: 33.90},
+                {id: "quantity9", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+                {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+                {id: "quantity11", name: "בדיקת ביוץ - 7 באריזה", price: 21.00},
+                {id: "quantity12", name: ""בדיקת ביוץ "בשעה טובה", price: 29.90}
+            ]
+        };
+// פונקציה שמעדכנת את התמונה לפי הבחירה
+function updateImage(placeType) {
+    const pharmacyImage = document.getElementById("pharmacyImage");
+    if (placeType === "pharmacy") {
+        pharmacyImage.src = "טופס הזמנה מרץ פרטיים.jpg";
+    } else if (placeType === "future_pharmacy") {
+        pharmacyImage.src = "טופס הזמנה 03-25  רוקחים עתיד.png";
+    } else if (placeType === "shrem_pharmacy") {
+        pharmacyImage.src = "טופס הזמנה מרץ פרטיים.jpg";
+    }
+    pharmacyImage.style.display = placeType ? "block" : "none";
+}
+
+        // מכניס מוצרים למסך לאחר בחירת בית מרקחת
+        function updateForm() {
+            const placeType = document.getElementById("placeType").value;
+            const productListDiv = document.getElementById("productList");
+            productListDiv.innerHTML = "";
+// אובייקט עם רשימת מוצרים
+const productList = {
+    pharmacy: [
+        {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+        {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+        {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+        {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+        {id: "quantity4", name: "בדיקת הריון 1", price: 5.20},
+        {id: "quantity5", name: "בדיקת הריון 2", price: 6.50},
+        {id: "quantity13", name: "\"בדיקת הריון \"בשעה טובה", price: 18.90},
+        {id: "quantity6", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity7", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity8", name: "בדיקת סמים 8 פרמטרים", price: 33.90},
+        {id: "quantity9", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+        {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+        {id: "quantity11", name: "בדיקת ביוץ - 7 באריזה", price: 21.00},
+        {id: "quantity12", name: "\"בדיקת ביוץ \"בשעה טובה", price: 29.90}
+    ],
+    future_pharmacy: [
+        {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+        {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+        {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+        {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+        {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+        {id: "quantity4", name: "בדיקת הריון 1 - רוקחים עתיד", price: 2.90},
+        {id: "quantity5", name: "בדיקת הריון 2 - רוקחים עתיד", price: 5.20},
+        {id: "quantity6", name: "\"בדיקת הריון \"בשעה טובה", price: 18.90},
+        {id: "quantity7", name: "\"בדיקת ביוץ \"בשעה טובה", price: 29.90},
+        {id: "quantity8", name: "בדיקת ביוץ 7 באריזה", price: 21.00},
+        {id: "quantity9", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity11", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity12", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+        {id: "quantity13", name: "בדיקת סמים 8 פרמטרים", price: 33.90}
+    ],
+    shrem_pharmacy: [
+        {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+        {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+        {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+        {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+        {id: "quantity4", name: "בדיקת הריון 1", price: 5.20},
+        {id: "quantity5", name: "בדיקת הריון 2", price: 6.50},
+        {id: "quantity13", name: "\"בדיקת הריון \"בשעה טובה", price: 18.90},
+        {id: "quantity6", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity7", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity8", name: "בדיקת סמים 8 פרמטרים", price: 33.90},
+        {id: "quantity9", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+        {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+        {id: "quantity11", name: "בדיקת ביוץ - 7 באריזה", price: 21.00},
+        {id: "quantity12", name: "\"בדיקת ביוץ \"בשעה טובה", price: 29.90}
+    ]
 };
 
-// מציגים את המוצרים (שם מימין, כמות משמאל: כפתור מינוס -/תיבה/כפתור פלוס +)
-function updateForm(placeType) {
+            function updateForm(placeType) {
   const productListDiv = document.getElementById("productList");
   productListDiv.innerHTML = "";
 
@@ -354,9 +459,9 @@ function calculateTotal() {
   const taxTotal = preTaxTotal * 1.18;
 
   document.getElementById("preTaxPrice").innerText = 
-    `סה\"כ לתשלום ללא מע\"מ: ${formatNumber(preTaxTotal)} ש\"ח`;
+    `סה"כ לתשלום ללא מע"מ: ${formatNumber(preTaxTotal)} ש"ח`;
   document.getElementById("totalPriceWithTax").innerText =
-    `סה\"כ לתשלום כולל מע\"מ: ${formatNumber(taxTotal)} ש\"ח`;
+    `סה"כ לתשלום כולל מע"מ: ${formatNumber(taxTotal)} ש"ח`;
 }
 
 // שליחת הטופס ל-EmailJS
