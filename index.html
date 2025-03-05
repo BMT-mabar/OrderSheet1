@@ -401,17 +401,13 @@
                     const quantity = parseInt(quantityInput.value);
 
                     // חישוב הבונוס
-                    let bonusCount = 0;
-                    if (product.bonusQuantity && product.bulkThreshold && quantity >= product.bulkThreshold) {  
-                        bonusCount = product.bonusQuantity;
+                    
                     }
 
                     // מוסיפים את שם המוצר ושורת כמות
                     productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n`;
                     
                     // אם יש בונוס, מציגים
-                    if (bonusCount > 0 && quantity >= product.bulkThreshold) {
-                        productSummary += `   בונוס למוצר זה: ${bonusCount}\r\n`;
                     }
                     productSummary += `\r\n`; // רווח בין מוצרים
                 }
