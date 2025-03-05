@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הזמנה</title>
+    <title>הזמנה מלאה עם EmailJS</title>
+
+    <!-- טעינת ספריית EmailJS -->
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        (function() {
+            // הכנס/י כאן את ה-Public Key שלך מ-EmailJS
+            emailjs.init("96gsI3kIpoTMDmG46");
+        })();
+    </script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -244,10 +254,10 @@
     });
 </script>
 
-<script style="direction: rtl ;">
+<script style="direction: rtl;">
+    // אובייקט המכיל את רשימת המוצרים לפי סוג בית מרקחת
     const productList = {
         pharmacy: [
-            
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 20, bulkThreshold:1},
             {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
             {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
@@ -261,8 +271,7 @@
             {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
             {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
             {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', price: 21.00},
-            {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
-            
+            {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90}
         ],
         future_pharmacy: [
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 20, bulkThreshold:1},
@@ -279,10 +288,8 @@
             {id: 'quantity11', name: 'בדיקת קנדידה וגינאלית', price: 17.20, bulkPrice: 10, bulkThreshold:1},
             {id: 'quantity12', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
             {id: 'quantity13', name: 'בדיקת סמים 8 פרמטרים', price: 33.90}
-            
         ],
         shrem_pharmacy: [
-            
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 20, bulkThreshold:1},
             {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
             {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
@@ -296,11 +303,9 @@
             {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
             {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
             {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', price: 21.00},
-            {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
-            
+            {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90}
         ]
     };
-
 
     function updateForm() {
         const placeType = document.getElementById('placeType').value;
@@ -334,7 +339,7 @@
 
     function calculateTotal() {
         let total = 0;
-        let totalProducts = 0; // מוגדר למעקב כמות
+        let totalProducts = 0; // מוגדר למעקב כמות כוללת
         const placeType = document.getElementById('placeType').value;
         if (placeType) {
             const products = productList[placeType];
@@ -349,9 +354,7 @@
                         finalQuantity += product.bonusQuantity;
                     }
 
-                    // ★★★ כאן מוסיפים לוגיקה להנחה (bulkPrice) ★★★
-                    // אם יש bulkPrice, bulkThreshold, וכמות (או finalQuantity?) עוברת את הסף, נשתמש ב-bulkPrice
-                    // אחרת, נשתמש במחיר הרגיל (price).
+                    // הנחה (bulkPrice)
                     let actualPrice;
                     if (product.bulkPrice !== undefined && product.bulkThreshold && quantity >= product.bulkThreshold) {
                         actualPrice = product.bulkPrice;
@@ -360,7 +363,6 @@
                     }
 
                     totalProducts += finalQuantity;
-                    // במקום total += price * quantity;
                     total += actualPrice * quantity;
                 }
             });
@@ -375,15 +377,16 @@
         const pharmacyImage = document.getElementById('pharmacyImage');
         const placeType = document.getElementById('placeType').value;
         if (placeType === 'pharmacy') {
-            pharmacyImage.src = 'טופס הזמנה מרץ פרטיים.jpg'; 
+            pharmacyImage.src = 'טופס הזמנה מרץ פרטיים.jpg';
         } else if (placeType === 'future_pharmacy') {
-            pharmacyImage.src = 'טופס הזמנה 03-25  רוקחים עתיד.png'; 
+            pharmacyImage.src = 'טופס הזמנה 03-25  רוקחים עתיד.png';
         } else if (placeType === 'shrem_pharmacy') {
-            pharmacyImage.src = 'טופס הזמנה מרץ פרטיים.jpg'; 
+            pharmacyImage.src = 'טופס הזמנה מרץ פרטיים.jpg';
         }
         pharmacyImage.style.display = placeType ? 'block' : 'none';
     }
 
+    // טיפול בשליחת הטופס
     document.getElementById('orderForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -397,18 +400,21 @@
             const products = productList[placeType];
             products.forEach(product => {
                 const quantityInput = document.getElementById(product.id);
-                if (quantityInput.value > 0) {
+                if (quantityInput && parseInt(quantityInput.value) > 0) {
                     const quantity = parseInt(quantityInput.value);
 
-                    // חישוב הבונוס
-                    
+                    // בדיקת בונוס
+                    let bonusCount = 0;
+                    if (product.bonusQuantity && product.bulkThreshold && quantity >= product.bulkThreshold) {
+                        bonusCount = product.bonusQuantity;
                     }
 
-                    // מוסיפים את שם המוצר ושורת כמות
                     productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n`;
-                    
-                    // אם יש בונוס, מציגים
+                    // אם יש בונוס, נוסיף מידע על כך
+                    if (bonusCount > 0) {
+                        productSummary += `   בונוס למוצר זה: ${bonusCount}\r\n`;
                     }
+
                     productSummary += `\r\n`; // רווח בין מוצרים
                 }
             });
@@ -417,37 +423,31 @@
         const preTaxPrice = document.getElementById('preTaxPrice').innerText;
         const totalPriceWithTax = document.getElementById('totalPriceWithTax').innerText;
 
-        const shortOrderDetails =
-`פרטי המזמין:
-----------------
-שם המזמין: ${customerName}
-סוג המקום: ${placeType}
-שם המקום: ${placeName}
-מספר פלאפון: ${phoneNumber}
+        // נבנה סיכום הזמנה למייל
+        const shortOrderDetails = `פרטי המזמין:\r\n----------------\r\nשם המזמין: ${customerName}\r\nסוג המקום: ${placeType}\r\nשם המקום: ${placeName}\r\nמספר פלאפון: ${phoneNumber}\r\n\r\nמוצרים בהזמנה:\r\n----------------\r\n${productSummary}\r\n\r\nסיכום:\r\n----------------\r\n${preTaxPrice}\r\n${totalPriceWithTax}\r\n`;
 
-מוצרים בהזמנה:
-----------------
-${productSummary}
+        // שולחים באמצעות EmailJS
+        // הכניסו כאן את Service ID ו-Template ID שקיבלתם מ-EmailJS
+        const serviceID = 'service_ja10oz8';
+        const templateID = 'template_cbiw9df';
 
+        const templateParams = {
+            // השם של השדות כאן צריך להתאים למה שמוגדר בתבנית ב-EmailJS
+            customer_name: customerName,
+            place_type: placeType,
+            place_name: placeName,
+            phone_number: phoneNumber,
+            shortOrderDetails: shortOrderDetails
+        };
 
-סיכום:
-----------------
-${preTaxPrice}
-${totalPriceWithTax}
-`;
-
-        window.location.href = `mailto:info@bmtdx.com?subject=הזמנה חדשה&body=${encodeURIComponent(shortOrderDetails)}`;
+        emailjs.send(serviceID, templateID, templateParams)
+            .then(function(response) {
+                alert('ההזמנה נשלחה בהצלחה!');
+            }, function(error) {
+                alert('שגיאה בשליחת ההזמנה: ' + JSON.stringify(error));
+            });
     });
 </script>
 
 </body>
-<!-- השארנו את ה-<body> המשוכפל בהערה כדי לא להסיר שורות -->
-<!-- 
-<body class="align-center">
-    <div class="image-container hide">
-        <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
-    </div>
-</body>
--->
-
 </html>
