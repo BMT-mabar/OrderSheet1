@@ -2,14 +2,15 @@
 <html lang="he">
 <head>
     <meta charset="UTF-8">
+    <!-- הגדרת Viewport רספונסיבית; ניתן להתאים/להסיר לפי הצורך -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>הזמנה מלאה עם EmailJS</title>
     
-    <!-- טעינת גרסת ה-SDK העדכנית מ-JSDelivr -->
+    <!-- טעינת ה-SDK של EmailJS מ-JSDelivr -->
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
         (function() {
-            // החליפי כאן ב-Public Key שלך מ-EmailJS
+            // החליפו כאן ל-Public Key שלכם מתוך EmailJS
             emailjs.init("96gsI3kIpoTMDmG46");
         })();
     </script>
@@ -50,13 +51,13 @@
             margin: 15px 0 5px;
             color: #333;
         }
-        input[type="text"], input[type="tel"], input[type="number"], select {
+        input[type="text"], input[type="tel"], input[type="email"], input[type="number"], select {
             width: 100%;
             padding: 8px;
             margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            direction: rtl;
+            direction: rtl; /* כתיבה מימין לשמאל */
         }
         .hidden {
             display: none;
@@ -86,13 +87,7 @@
             font-size: 1.5em;
             font-weight: bold;
         }
-        #preTaxPrice {
-            margin-top: 15px;
-            font-size: 1em;
-            font-weight: normal;
-            direction: rtl;
-        }
-        #totalPriceWithTax {
+        #preTaxPrice, #totalPriceWithTax {
             margin-top: 15px;
             font-size: 1em;
             font-weight: normal;
@@ -141,20 +136,7 @@
             width: auto;
             border-radius: 8px;
         }
-        /* סגנונות למחשב */
-        @media (min-width: 601px) {
-            body.align-left .container {
-                margin-left: 20px;
-            }
-            .image-container {
-                display: none;
-                width: 50%;
-            }
-            .container.align-left .image-container {
-                display: flex;
-                justify-content: left;
-            }
-        }
+        /* התאמות למסכים קטנים יותר */
         @media (max-width: 600px) {
             .container {
                 flex-direction: column;
@@ -166,7 +148,7 @@
             label {
                 margin: 10px 0 5px;
             }
-            input[type="text"], input[type="tel"], input[type="number"], select {
+            input[type="text"], input[type="tel"], input[type="email"], input[type="number"], select {
                 padding: 6px;
             }
             .product label {
@@ -194,9 +176,17 @@
         <h1>הזמנה</h1>
 
         <form id="orderForm">
+            <!-- שם המזמין -->
             <label style="direction: rtl">שם המזמין:
                 <input type="text" id="customerName" required>
             </label>
+
+            <!-- כתובת האימייל של המזמין (כדי שתוכלו לראות ממי הגיע, או לכתוב ב-replyTo) -->
+            <label style="direction: rtl">אימייל של המזמין:
+                <input type="email" id="customerEmail" required>
+            </label>
+
+            <!-- סוג המקום (בית מרקחת רלוונטי) -->
             <label style="direction: rtl">בית מרקחת:
                 <select style="direction: rtl" id="placeType" required onchange="updateForm()">
                     <option style="text-align: center;" value="" disabled selected>-- בחר/י --</option>
@@ -205,26 +195,32 @@
                     <option style="text-align: center;" value="shrem_pharmacy">בית מרקחת - שרמ</option>
                 </select>
             </label>
+
+            <!-- שם המקום (שם בית המרקחת) -->
             <label style="direction: rtl" id="placeNameLabel">שם בית המרקחת:
                 <input type="text" id="placeName" required>
             </label>
+
+            <!-- טלפון המזמין -->
             <label style="direction: rtl">מספר פלאפון של המזמין:
                 <input type="tel" id="phoneNumber" required>
             </label>
 
             <h2>רשימת מוצרים</h2>
             <div id="productList">
-                <!-- מוצרים יתווספו כאן דינאמית -->
+                <!-- מוצרים יתווספו כאן דינאמית לפי הבחירת PlaceType -->
             </div>
 
             <div id="totalPriceContainer">
-                <div style="text-align: center;" id="totalPriceLabel">:סה"כ לתשלום</div>
+                <div style="text-align: center;" id="totalPriceLabel">סה"כ לתשלום</div>
                 <div style="direction: rtl;" id="preTaxPrice">סה"כ לתשלום ללא מע"מ: 0 ש"ח</div>
                 <div style="direction: rtl;" id="totalPriceWithTax">סה"כ לתשלום כולל מע"מ: 0 ש"ח</div>
             </div>
+
+            <!-- אישור תשלום באשראי (לא חובה, ניתן להסיר אם לא רלוונטי) -->
             <div style="direction: rtl;" id="creditCardCheckbox">
                 <label style="font-weight: bold;" for="creditCard">
-                    <input type="checkbox" id="creditCard" required>מאשר תשלום בכרטיס אשראי
+                    <input type="checkbox" id="creditCard" required>מאשר/ת תשלום בכרטיס אשראי
                 </label>
             </div>
 
@@ -232,13 +228,17 @@
         </form>
     </div>
 
+    <!-- מיכל לתמונה מוצגת (אופציונלי) -->
     <div class="image-container hide">
         <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
     </div>
 </div>
 
 <script>
-    // פונקציה לעיצוב מספרים (עם פסיק לאלפים ושתי ספרות אחרי הנקודה)
+    // 1. אתחול ערכי "קבועים" — אנא החליפו למייל שלכם בארגון:
+    const businessEmail = "YOUR_FIXED_BUSINESS_EMAIL@domain.com";
+
+    // 2. פונקציה לעיצוב מספרים (הפרדת אלפים ושתי ספרות עשרוניות).
     function formatNumber(num) {
       return num.toLocaleString('en-US', {
         minimumFractionDigits: 2,
@@ -246,30 +246,13 @@
       });
     }
 
-    // מאזין לשינוי ה-placeType כדי להציג תמונה בצד
-    document.getElementById('placeType').addEventListener('change', function() {
-        const imageContainer = document.querySelector('.image-container');
-        const formContainer = document.querySelector('.container');
-        
-        if (window.innerWidth >= 601) {
-            imageContainer.style.display = 'flex';
-            formContainer.style.marginLeft = '700px';
-        } else {
-            formContainer.classList.add('margin-top-320');
-            imageContainer.style.display = 'flex';
-            document.querySelector('body').classList.add('align-center');
-        }
-    });
-</script>
-
-<script style="direction: rtl;">
-    // אובייקט המכיל את רשימת המוצרים לפי סוג בית מרקחת
-    const productList = {
+    // 3. נתוני המוצרים לפי סוג בית המרקחת
+    const productListData = {
         pharmacy: [
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 20, bulkThreshold:1},
             {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
             {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
-            {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט' , price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+            {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
             {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20},
             {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50},
             {id: 'quantity13', name: '"בדיקת הריון "בשעה טובה', price: 18.90},
@@ -301,7 +284,7 @@
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 20, bulkThreshold:1},
             {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
             {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
-            {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט' , price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+            {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
             {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20},
             {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50},
             {id: 'quantity13', name: '"בדיקת הריון "בשעה טובה', price: 18.90},
@@ -315,14 +298,14 @@
         ]
     };
 
-    // פונקציה להצגת המוצרים ברשימה
+    // 4. פונקציה שמעדכנת את רשימת המוצרים בהתאם לבחירת המשתמש
     function updateForm() {
         const placeType = document.getElementById('placeType').value;
         const productListDiv = document.getElementById('productList');
         productListDiv.innerHTML = '';
 
         if (placeType) {
-            const products = productList[placeType];
+            const products = productListData[placeType];
             products.forEach(product => {
                 const productDiv = document.createElement('div');
                 productDiv.className = 'product';
@@ -332,46 +315,31 @@
                 `;
                 productListDiv.appendChild(productDiv);
             });
-            document.body.classList.add('align-right');
-            document.body.classList.remove('align-center');
-            document.querySelector('.image-container').classList.add('show');
-            document.querySelector('.image-container').classList.remove('hide');
         } else {
-            document.body.classList.add('align-center');
-            document.body.classList.remove('align-right');
-            document.querySelector('.image-container').classList.add('hide');
-            document.querySelector('.image-container').classList.remove('show');
+            productListDiv.innerHTML = '';
         }
         
         updateImage();
     }
 
-    // פונקציה שמעדכנת את הסכום בעת שינוי כמות המוצרים
+    // 5. פונקציה לחישוב סכום ההזמנה בכל שינוי כמות
     function calculateTotal() {
         let total = 0;
         const placeType = document.getElementById('placeType').value;
 
         if (placeType) {
-            const products = productList[placeType];
+            const products = productListData[placeType];
             products.forEach(product => {
                 const quantityInput = document.getElementById(product.id);
-                if (quantityInput.value > 0) {
+                if (quantityInput && quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
-                    let finalQuantity = quantity;
 
-                    // בדיקת סף/בונוס
-                    if (product.bonusQuantity && product.bulkThreshold && quantity >= product.bulkThreshold) {
-                        finalQuantity += product.bonusQuantity;
-                    }
-
-                    // הנחה (bulkPrice) אם רלוונטי
-                    let actualPrice;
+                    // בדיקת הנחה (bulkPrice) או בונוס
+                    let actualPrice = product.price;
                     if (product.bulkPrice !== undefined && product.bulkThreshold && quantity >= product.bulkThreshold) {
                         actualPrice = product.bulkPrice;
-                    } else {
-                        actualPrice = product.price;
                     }
-
+                    // מכפיל הכמות במחיר
                     total += actualPrice * quantity;
                 }
             });
@@ -379,15 +347,11 @@
         const preTaxTotal = total;
         const taxTotal = preTaxTotal * 1.18;
 
-        // עיצוב המספרים עם פסיק לאלפים ושתי ספרות
-        const formattedPreTax = formatNumber(preTaxTotal);
-        const formattedTax = formatNumber(taxTotal);
-
-        document.getElementById('preTaxPrice').innerText = `סה"כ לתשלום ללא מע"מ: ${formattedPreTax} ש"ח`;
-        document.getElementById('totalPriceWithTax').innerText = `סה"כ לתשלום כולל מע"מ: ${formattedTax} ש"ח`;
+        document.getElementById('preTaxPrice').innerText = `סה"כ לתשלום ללא מע"מ: ${formatNumber(preTaxTotal)} ש"ח`;
+        document.getElementById('totalPriceWithTax').innerText = `סה"כ לתשלום כולל מע"מ: ${formatNumber(taxTotal)} ש"ח`;
     }
 
-    // פונקציה שמעדכנת את התמונה לפי סוג המקום
+    // 6. פונקציה שמחליפה את התמונה בצד (אם רוצים להציג תמונה שונה לכל סוג מקום)
     function updateImage() {
         const pharmacyImage = document.getElementById('pharmacyImage');
         const placeType = document.getElementById('placeType').value;
@@ -401,62 +365,70 @@
         pharmacyImage.style.display = placeType ? 'block' : 'none';
     }
 
-    // טיפול בשליחת הטופס דרך EmailJS
+    // 7. שליחת הטופס דרך EmailJS
     document.getElementById('orderForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
+        // שליפת ערכי טופס
         const customerName = document.getElementById('customerName').value;
+        const customerEmail = document.getElementById('customerEmail').value;
         const placeType = document.getElementById('placeType').value;
         const placeName = document.getElementById('placeName').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
 
+        // פירוט מוצרים
         let productSummary = '';
         if (placeType) {
-            const products = productList[placeType];
+            const products = productListData[placeType];
             products.forEach(product => {
                 const quantityInput = document.getElementById(product.id);
                 if (quantityInput && parseInt(quantityInput.value) > 0) {
                     const quantity = parseInt(quantityInput.value);
 
-                    // בדיקת בונוס
-                    let bonusCount = 0;
-                    if (product.bonusQuantity && product.bulkThreshold && quantity >= product.bulkThreshold) {
-                        bonusCount = product.bonusQuantity;
-                    }
-
-                    // קביעת המחיר בפועל
+                    // בדיקת מחיר בפועל (עם הנחת Bulk, אם קיימת)
                     let actualPrice = product.price;
-                    if (product.bulkPrice !== undefined && product.bulkThreshold && quantity >= product.bulkThreshold) {
+                    if (product.bulkPrice && product.bulkThreshold && quantity >= product.bulkThreshold) {
                         actualPrice = product.bulkPrice;
                     }
-
-                    // מחיר כולל למוצר הזה
                     const lineTotal = actualPrice * quantity;
 
-                    // בניית הטקסט למוצר
-                    productSummary += `- ${product.name}\r\n   כמות הזמנה: ${quantity}\r\n   מחיר ליחידה: ${formatNumber(actualPrice)} ש\"ח\r\n   סה\"כ למוצר זה: ${formatNumber(lineTotal)} ש\"ח\r\n`;
-
-                    if (bonusCount > 0) {
-                        productSummary += `   בונוס למוצר זה: ${bonusCount}\r\n`;
-                    }
-                    productSummary += `\r\n`; // רווח בין מוצרים
+                    productSummary += `- ${product.name}\r\n   כמות: ${quantity}\r\n   מחיר ליחידה: ${formatNumber(actualPrice)} ש"ח\r\n   סה"כ: ${formatNumber(lineTotal)} ש"ח\r\n\r\n`;
                 }
             });
         }
 
+        // סכומים
         const preTaxPrice = document.getElementById('preTaxPrice').innerText;
         const totalPriceWithTax = document.getElementById('totalPriceWithTax').innerText;
 
-        // סיכום להזמנה
+        // בניית טקסט כללי לשליחה
         const shortOrderDetails = 
-`פרטי המזמין:\r\n----------------\r\nשם המזמין: ${customerName}\r\nסוג המקום: ${placeType}\r\nשם המקום: ${placeName}\r\nמספר פלאפון: ${phoneNumber}\r\n\r\nמוצרים בהזמנה:\r\n----------------\r\n${productSummary}\r\n\r\nסיכום:\r\n----------------\r\n${preTaxPrice}\r\n${totalPriceWithTax}\r\n`;
+`פרטי המזמין:
+----------------
+שם המזמין: ${customerName}
+אימייל המזמין: ${customerEmail}
+מספר פלאפון: ${phoneNumber}
+סוג המקום: ${placeType}
+שם המקום: ${placeName}
 
-        // הכנסי כאן את ה-Service ID וה-Template ID שלך מ-EmailJS
+מוצרים בהזמנה:
+----------------
+${productSummary}
+
+סיכום:
+----------------
+${preTaxPrice}
+${totalPriceWithTax}
+`;
+
+        // הכנסו כאן את ה-Service ID וה-Template ID שלכם מ-EmailJS
         const serviceID = 'service_ja10oz8';
         const templateID = 'template_cbiw9df';
 
-        // זהו האובייקט שמכיל את הפרטים שיופיעו במייל (ע"פ המשתנים בתבנית EmailJS)
+        // בהנחה שבתבנית EmailJS שלכם יש שדות מתאימים: to_email, from_email, subject וכו'.
         const templateParams = {
+            to_email: businessEmail,       // המייל העסקי הקבוע שלכם - לשם תגיע ההזמנה
+            from_email: customerEmail,     // כך תראו ממי הגיע המייל (ניתן להשתמש כ-replyTo)
             customer_name: customerName,
             place_type: placeType,
             place_name: placeName,
