@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="he">
+<html dir="rtl" lang="he">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
         (function() {
-            // הכנס כאן את ה־Public Key שלך מ־EmailJS
+            // כאן יש למקם את ה-Public Key שלך מ-EmailJS
             emailjs.init("96gsI3kIpoTMDmG46");
         })();
     </script>
@@ -59,16 +59,13 @@
             border-radius: 4px;
             display: block;
             text-align: center;
-            direction: rtl;
             box-sizing: border-box;
         }
 
-        /* הסתרה כללית (בשימוש בהחלפת תוכן) */
         .hidden {
             display: none;
         }
 
-        /* מוצר בודד */
         .product {
             display: flex;
             align-items: center;
@@ -106,7 +103,6 @@
             margin-top: 15px;
             font-size: 1em;
             font-weight: normal;
-            direction: rtl;
             text-align: center;
         }
 
@@ -114,7 +110,6 @@
             margin-top: 15px;
             font-size: 1em;
             font-weight: normal;
-            direction: rtl;
             text-align: center;
         }
 
@@ -149,7 +144,6 @@
             margin-left: 10px;
         }
 
-        /* קונטיינר לתמונה - תופיע רק בגדלים רלוונטיים */
         .image-container {
             width: auto;
             height: 100vh;
@@ -157,7 +151,7 @@
             position: fixed;
             left: 5px;
             top: 0;
-            display: none; /* ברירת מחדל מוסתר */
+            display: none; /* מוסתר ברירת מחדל, רק במחשב נראה */
             align-items: center;
             justify-content: left;
         }
@@ -221,7 +215,7 @@
             }
 
             .image-container {
-                display: none; /* תמונה מוסתרת בפלאפון לחלוטין */
+                display: none; /* הוסתר לגמרי בפלאפון */
             }
         }
     </style>
@@ -253,7 +247,7 @@
 
             <h2>רשימת מוצרים</h2>
             <div id="productList">
-                <!-- המוצרים יתווספו כאן דינאמית -->
+                <!-- מוצרים יתווספו כאן דינאמית -->
             </div>
 
             <div id="totalPriceContainer">
@@ -296,14 +290,14 @@
             {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90, bulkPrice: 17.90, bulkThreshold: 1},
             {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20},
             {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50},
-            {id: 'quantity13', name: '"בדיקת הריון" בשעה טובה', price: 18.90},
+            {id: 'quantity13', name: '\"בדיקת הריון\" בשעה טובה', price: 18.90},
             {id: 'quantity6', name: 'בדיקה לדלקת בשתן', price: 13.90, bulkPrice: 10, bulkThreshold: 1},
             {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית', price: 17.20, bulkPrice: 10, bulkThreshold: 1},
             {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים', price: 33.90},
             {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
             {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
             {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', price: 21.00},
-            {id: 'quantity12', name: '"בדיקת ביוץ" בשעה טובה', price: 29.90}
+            {id: 'quantity12', name: '\"בדיקת ביוץ\" בשעה טובה', price: 29.90}
         ],
         future_pharmacy: [
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 20, bulkThreshold: 1},
@@ -313,8 +307,8 @@
             {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90, bulkPrice: 17.90, bulkThreshold: 1},
             {id: 'quantity4', name: 'בדיקת הריון 1 - רוקחים עתיד', price: 2.90},
             {id: 'quantity5', name: 'בדיקת הריון 2 - רוקחים עתיד', price: 5.20},
-            {id: 'quantity6', name: '"בדיקת הריון" בשעה טובה', price: 18.90},
-            {id: 'quantity7', name: '"בדיקת ביוץ" בשעה טובה', price: 29.90},
+            {id: 'quantity6', name: '\"בדיקת הריון\" בשעה טובה', price: 18.90},
+            {id: 'quantity7', name: '\"בדיקת ביוץ\" בשעה טובה', price: 29.90},
             {id: 'quantity8', name: 'בדיקת ביוץ 7 באריזה', price: 21.00},
             {id: 'quantity9', name: 'בדיקה לדלקת בשתן', price: 13.90, bulkPrice: 10, bulkThreshold: 1},
             {id: 'quantity11', name: 'בדיקת קנדידה וגינאלית', price: 17.20, bulkPrice: 10, bulkThreshold: 1},
@@ -328,14 +322,14 @@
             {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90, bulkPrice: 17.90, bulkThreshold: 1},
             {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20},
             {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50},
-            {id: 'quantity13', name: '"בדיקת הריון" בשעה טובה', price: 18.90},
+            {id: 'quantity13', name: '\"בדיקת הריון\" בשעה טובה', price: 18.90},
             {id: 'quantity6', name: 'בדיקה לדלקת בשתן', price: 13.90, bulkPrice: 10, bulkThreshold: 1},
             {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית', price: 17.20, bulkPrice: 10, bulkThreshold: 1},
             {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים', price: 33.90},
             {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
             {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
             {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', price: 21.00},
-            {id: 'quantity12', name: '"בדיקת ביוץ" בשעה טובה', price: 29.90}
+            {id: 'quantity12', name: '\"בדיקת ביוץ\" בשעה טובה', price: 29.90}
         ]
     };
 
@@ -351,7 +345,6 @@
                 const productDiv = document.createElement('div');
                 productDiv.className = 'product';
 
-                // כאן מתקנים את השימוש ב־innerHTML כך שיכלול Template Literal תקין
                 productDiv.innerHTML = `
                     <input 
                         type="number" 
@@ -372,11 +365,10 @@
         calculateTotal();
     }
 
-    // מאזין לשינוי ה־select שמפעיל את התצוגה של התמונה (בגדלים מעל 600px)
+    // מאזין לשינוי ה־select שמפעיל את התצוגה של התמונה (רק על מסכים מעל 600 פיקסלים)
     const placeTypeSelect = document.getElementById('placeType');
     placeTypeSelect.addEventListener('change', function() {
         const imageContainer = document.querySelector('.image-container');
-        // מוצג רק אם רוחב המסך מעל 600 פיקסלים
         if (window.innerWidth >= 601) {
             imageContainer.style.display = 'flex';
         }
@@ -396,13 +388,14 @@
 
                     // בדיקת הנחה (bulkPrice)
                     let actualPrice = product.price;
-                    if (product.bulkPrice !== undefined &&
+                    if (
+                        product.bulkPrice !== undefined &&
                         product.bulkThreshold &&
-                        quantity >= product.bulkThreshold) {
+                        quantity >= product.bulkThreshold
+                    ) {
                         actualPrice = product.bulkPrice;
                     }
 
-                    // חיבור לסך הכל
                     total += actualPrice * quantity;
                 }
             });
@@ -420,7 +413,7 @@
         document.getElementById('totalPriceWithTax').innerText = `סה"כ לתשלום כולל מע"מ: ${formattedTax} ש"ח`;
     }
 
-    // פונקציה שמעדכנת את התמונה בהתאם לסוג בית המרקחת
+    // פונקציה לעדכון התמונה בצד
     function updateImage() {
         const pharmacyImage = document.getElementById('pharmacyImage');
         const placeType = document.getElementById('placeType').value;
@@ -434,11 +427,10 @@
         } else {
             pharmacyImage.src = '';
         }
-        // נציג רק אם אכן הוגדר source
         pharmacyImage.style.display = placeType ? 'block' : 'none';
     }
 
-    // שליחת הטופס ב־EmailJS
+    // שליחת הטופס דרך EmailJS
     document.getElementById('orderForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -472,11 +464,11 @@
             });
         }
 
-        // שולפים סכום לפני מע"מ ואחרי מע"מ מה־innerText
+        // לוקחים את סכום הביניים + סכום עם מע"מ
         const preTaxPrice = document.getElementById('preTaxPrice').innerText;
         const totalPriceWithTax = document.getElementById('totalPriceWithTax').innerText;
 
-        // פרטי ההזמנה הסופיים
+        // הרכבה של פרטי ההזמנה
         const shortOrderDetails = `
 פרטי המזמין:
 ----------------
@@ -495,11 +487,11 @@ ${preTaxPrice}
 ${totalPriceWithTax}
 `;
 
-        // הכנס/י כאן את ה־Service ID וה־Template ID שלך מ־EmailJS
+        // הכנס/י כאן את ה-Service ID וה-Template ID שלך מ-EmailJS
         const serviceID = 'service_ja10oz8';
         const templateID = 'template_cbiw9df';
 
-        // הכנת האובייקט שישלח ל־EmailJS
+        // הכנת האובייקט שנשלח ל-EmailJS
         const templateParams = {
             customer_name: customerName,
             place_type: placeType,
