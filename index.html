@@ -2,7 +2,7 @@
 <html lang="he">
 <head>
     <meta charset="UTF-8">
-    <!-- הגדרת Viewport רספונסיבית; ניתן להתאים/להסיר לפי הצורך -->
+    <!-- הגדרת Viewport רספונסיבית -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>הזמנה מלאה עם EmailJS</title>
     
@@ -39,12 +39,16 @@
             flex-direction: column;
             transition: margin-left 0.3s ease;
         }
+        /* מחלקה חדשה להסטה ימינה כשנבחר בית מרקחת */
+        .container.show-image {
+            margin-left: 220px;
+        }
         .form-container {
             flex: 1;
         }
         h1, h2 {
             color: #333;
-            text-align: center;
+            text-align: center; /* כותרות באמצע */
         }
         label {
             display: block;
@@ -129,6 +133,11 @@
             display: flex;
             align-items: center;
             justify-content: left;
+            transition: all 0.3s ease;
+        }
+        /* בתחילה מוסתרת, עד שבוחרים בית מרקחת */
+        .hide {
+            display: none;
         }
         #pharmacyImage {
             display: none;
@@ -141,6 +150,10 @@
             .container {
                 flex-direction: column;
                 padding: 10px;
+                margin-left: 0 !important; /* כדי לאפשר למובייל להישאר במרכז */
+            }
+            .container.show-image {
+                margin-left: 0; /* לא להסיט במובייל, שיישאר נוח לשימוש */
             }
             h1, h2 {
                 font-size: 1.5em;
@@ -163,9 +176,6 @@
             .image-container {
                 height: 350px;
             }
-            .container.margin-top-320 {
-                margin-top: 320px;
-            }
         }
     </style>
 </head>
@@ -181,12 +191,12 @@
                 <input type="text" id="customerName" required>
             </label>
 
-            <!-- כתובת האימייל של המזמין (כדי שתוכלו לראות ממי הגיע, או לכתוב ב-replyTo) -->
+            <!-- כתובת האימייל של המזמין -->
             <label style="direction: rtl">אימייל של המזמין:
                 <input type="email" id="customerEmail" required>
             </label>
 
-            <!-- סוג המקום (בית מרקחת רלוונטי) -->
+            <!-- סוג המקום (בית מרקחת) -->
             <label style="direction: rtl">בית מרקחת:
                 <select style="direction: rtl" id="placeType" required onchange="updateForm()">
                     <option style="text-align: center;" value="" disabled selected>-- בחר/י --</option>
@@ -196,7 +206,7 @@
                 </select>
             </label>
 
-            <!-- שם המקום (שם בית המרקחת) -->
+            <!-- שם בית המרקחת -->
             <label style="direction: rtl" id="placeNameLabel">שם בית המרקחת:
                 <input type="text" id="placeName" required>
             </label>
@@ -208,7 +218,7 @@
 
             <h2>רשימת מוצרים</h2>
             <div id="productList">
-                <!-- מוצרים יתווספו כאן דינאמית לפי הבחירת PlaceType -->
+                <!-- מוצרים יתווספו כאן דינאמית -->
             </div>
 
             <div id="totalPriceContainer">
@@ -217,7 +227,7 @@
                 <div style="direction: rtl;" id="totalPriceWithTax">סה"כ לתשלום כולל מע"מ: 0 ש"ח</div>
             </div>
 
-            <!-- אישור תשלום באשראי (לא חובה, ניתן להסיר אם לא רלוונטי) -->
+            <!-- אישור תשלום באשראי -->
             <div style="direction: rtl;" id="creditCardCheckbox">
                 <label style="font-weight: bold;" for="creditCard">
                     <input type="checkbox" id="creditCard" required>מאשר/ת תשלום בכרטיס אשראי
@@ -228,17 +238,17 @@
         </form>
     </div>
 
-    <!-- מיכל לתמונה מוצגת (אופציונלי) -->
+    <!-- מיכל לתמונה מוצגת -->
     <div class="image-container hide">
         <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
     </div>
 </div>
 
 <script>
-    // 1. אתחול ערכי "קבועים" — אנא החליפו למייל שלכם בארגון:
+    // 1. ערך מייל עסקי קבוע (לדוגמה)
     const businessEmail = "YOUR_FIXED_BUSINESS_EMAIL@domain.com";
 
-    // 2. פונקציה לעיצוב מספרים (הפרדת אלפים ושתי ספרות עשרוניות).
+    // 2. פונקציה לעיצוב מספרים
     function formatNumber(num) {
       return num.toLocaleString('en-US', {
         minimumFractionDigits: 2,
@@ -246,7 +256,7 @@
       });
     }
 
-    // 3. נתוני המוצרים לפי סוג בית המרקחת
+    // 3. נתוני מוצרים לפי סוג בית המרקחת
     const productListData = {
         pharmacy: [
             {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 20, bulkThreshold:1},
@@ -298,13 +308,20 @@
         ]
     };
 
-    // 4. פונקציה שמעדכנת את רשימת המוצרים בהתאם לבחירת המשתמש
+    // 4. עדכון רשימת המוצרים בהתאם לבחירת המשתמש + הצגת תמונה והסטת הדף
     function updateForm() {
         const placeType = document.getElementById('placeType').value;
         const productListDiv = document.getElementById('productList');
         productListDiv.innerHTML = '';
 
+        // הצגת / הסתרת התמונה והסטת הקונטיינר רק אם נבחר סוג
+        const imageContainer = document.querySelector('.image-container');
+        const mainContainer = document.querySelector('.container');
+
         if (placeType) {
+            imageContainer.classList.remove('hide');
+            mainContainer.classList.add('show-image');
+
             const products = productListData[placeType];
             products.forEach(product => {
                 const productDiv = document.createElement('div');
@@ -316,13 +333,14 @@
                 productListDiv.appendChild(productDiv);
             });
         } else {
-            productListDiv.innerHTML = '';
+            imageContainer.classList.add('hide');
+            mainContainer.classList.remove('show-image');
         }
         
         updateImage();
     }
 
-    // 5. פונקציה לחישוב סכום ההזמנה בכל שינוי כמות
+    // 5. חישוב סכום ההזמנה בכל שינוי כמות
     function calculateTotal() {
         let total = 0;
         const placeType = document.getElementById('placeType').value;
@@ -334,12 +352,10 @@
                 if (quantityInput && quantityInput.value > 0) {
                     const quantity = parseInt(quantityInput.value);
 
-                    // בדיקת הנחה (bulkPrice) או בונוס
                     let actualPrice = product.price;
                     if (product.bulkPrice !== undefined && product.bulkThreshold && quantity >= product.bulkThreshold) {
                         actualPrice = product.bulkPrice;
                     }
-                    // מכפיל הכמות במחיר
                     total += actualPrice * quantity;
                 }
             });
@@ -351,7 +367,7 @@
         document.getElementById('totalPriceWithTax').innerText = `סה"כ לתשלום כולל מע"מ: ${formatNumber(taxTotal)} ש"ח`;
     }
 
-    // 6. פונקציה שמחליפה את התמונה בצד (אם רוצים להציג תמונה שונה לכל סוג מקום)
+    // 6. עדכון תמונת צד בהתאם לבחירה
     function updateImage() {
         const pharmacyImage = document.getElementById('pharmacyImage');
         const placeType = document.getElementById('placeType').value;
@@ -369,14 +385,12 @@
     document.getElementById('orderForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // שליפת ערכי טופס
         const customerName = document.getElementById('customerName').value;
         const customerEmail = document.getElementById('customerEmail').value;
         const placeType = document.getElementById('placeType').value;
         const placeName = document.getElementById('placeName').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
 
-        // פירוט מוצרים
         let productSummary = '';
         if (placeType) {
             const products = productListData[placeType];
@@ -385,7 +399,6 @@
                 if (quantityInput && parseInt(quantityInput.value) > 0) {
                     const quantity = parseInt(quantityInput.value);
 
-                    // בדיקת מחיר בפועל (עם הנחת Bulk, אם קיימת)
                     let actualPrice = product.price;
                     if (product.bulkPrice && product.bulkThreshold && quantity >= product.bulkThreshold) {
                         actualPrice = product.bulkPrice;
@@ -397,11 +410,9 @@
             });
         }
 
-        // סכומים
         const preTaxPrice = document.getElementById('preTaxPrice').innerText;
         const totalPriceWithTax = document.getElementById('totalPriceWithTax').innerText;
 
-        // בניית טקסט כללי לשליחה
         const shortOrderDetails = 
 `פרטי המזמין:
 ----------------
@@ -421,14 +432,13 @@ ${preTaxPrice}
 ${totalPriceWithTax}
 `;
 
-        // הכנסו כאן את ה-Service ID וה-Template ID שלכם מ-EmailJS
+        // Service ID ו-Template ID שלכם מ-EmailJS
         const serviceID = 'service_ja10oz8';
         const templateID = 'template_cbiw9df';
 
-        // בהנחה שבתבנית EmailJS שלכם יש שדות מתאימים: to_email, from_email, subject וכו'.
         const templateParams = {
-            to_email: businessEmail,       // המייל העסקי הקבוע שלכם - לשם תגיע ההזמנה
-            from_email: customerEmail,     // כך תראו ממי הגיע המייל (ניתן להשתמש כ-replyTo)
+            to_email: businessEmail,
+            from_email: customerEmail,
             customer_name: customerName,
             place_type: placeType,
             place_name: placeName,
