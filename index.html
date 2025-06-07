@@ -97,22 +97,14 @@
             color: #7dd3fc; /* Sky-300 */
             text-decoration: underline;
         }
+        
+        /* This class is no longer needed with the fix, but kept for reference if needed elsewhere */
+        .logo-placeholder-inline {}
 
-        .logo-placeholder-inline {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: #075985; /* Sky-800 */
-            line-height: 1;
-            text-align: center;
-            color: #e0f2fe; /* Sky-100 */
-            font-size: 0.9rem;
-            font-weight: 500;
-            border-radius: 0.375rem;
-        }
         .product-image-stylish {
             border-radius: 1rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            max-width: 300px; /* Reduced max-width */
+            max-width: 420px; /* Increased width */
         }
         
         @media print {
@@ -133,8 +125,12 @@
         <!-- Hero Section -->
         <section class="brand-bg-hero text-white rounded-b-3xl -mx-4 px-4">
             <header class="py-6 px-4 flex justify-between items-center">
-                 <div class="logo-placeholder-inline"></div>
+                 <!-- 
+                    --- איך להוסיף את הלוגו שלך ---
+                    הקוד מוכן להצגת הלוגו שלך. פשוט ודא ששם הקובץ "unnamed.png" תואם לשם קובץ הלוגו שלך, ושהוא נמצא באותה תיקייה כמו קובץ ה-HTML הזה.
+                 -->
                  <img src="unnamed.png" alt="BMT Diagnostics Logo" style="max-height: 40px;">
+                 
                  <div class="text-sm font-semibold text-sky-200">Revolutionizing Point-of-Care Diagnostics</div>
             </header>
             <div class="text-center py-12 px-4 md:py-16">
@@ -146,14 +142,17 @@
         </section>
 
         <!-- Product Image Section -->
-        <section class="mt-[-6rem] mb-12 flex justify-center z-10 relative">
+        <section class="mt-[-4rem] mb-16 flex justify-center z-10 relative">
+            <!-- 
+                --- איך להוסיף את תמונת המוצר שלך ---
+                 הקוד מוכן להצגת תמונת המוצר. ודא ששם הקובץ "image.png" תואם לשם קובץ התמונה שלך, ושהוא נמצא באותה תיקייה.
+            -->
             <img src="image.png" alt="Lab-On-Time Device" class="product-image-stylish">
-            <div class="product-image-stylish mx-auto h-64 bg-gray-200 flex items-center justify-center text-gray-500"></div>
         </section>
 
 
         <!-- Main Content -->
-        <main class="pt-8 px-4">
+        <main class="pt-0 px-4">
             <!-- Stats Section -->
             <section class="mb-16">
                 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -193,6 +192,13 @@
             </section>
 
             <!-- Key Features Section -->
+             <!--
+                --- איך לעדכן את האייקונים ---
+                אתה יכול להחליף את האימוג'י (למשל [⚡]) בתוך תגית ה-<div> באחד משני האופנים:
+                1. אימוג'י אחר: פשוט הדבק אימוג'י חדש במקום הקיים.
+                2. תמונה: מחק את האימוג'י והכנס תגית <img> במקומו, לדוגמה:
+                   <img src="your-icon-name.png" class="w-8 h-8 mx-auto">
+            -->
             <section class="mb-16 text-center">
                 <h2 class="section-title">Why Lab-On-Time™ is the Right Choice</h2>
                 <p class="section-subtitle">A combination of patented technology and physician-driven design.</p>
