@@ -1,459 +1,247 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <!-- הגדרת Viewport רספונסיבית -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הזמנה מלאה עם EmailJS</title>
-    
-    <!-- טעינת ה-SDK של EmailJS מ-JSDelivr -->
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-    <script>
-        (function() {
-            // החליפו כאן ל-Public Key שלכם מתוך EmailJS
-            emailjs.init("96gsI3kIpoTMDmG46");
-        })();
-    </script>
-
+    <title>BMT Diagnostics - One Pager (Professional Version)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            color: #374151; /* Gray-700 */
+            background-color: #f9fafb; /* Gray-50 */
         }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
+        /* Lighter, "medical" blue color scheme */
+        .brand-blue { color: #0ea5e9; } /* Sky-500 */
+        .brand-blue-dark { color: #0369a1; } /* Sky-700 */
+        .brand-bg-hero { background-color: #0c4a6e; } /* Sky-900 - A rich, professional medical blue */
+        .brand-bg-light-blue { background-color: #f0f9ff; } /* Sky-50 */
+        .brand-border-blue { border-color: #bae6fd; } /* Sky-200 */
+
+        .section-title {
+            font-size: 2.25rem; /* 36px */
+            font-weight: 700;
+            color: #1F2937; /* Gray-800 */
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem; /* 18px */
+            color: #4B5563; /* Gray-600 */
             max-width: 600px;
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            transition: margin-left 0.3s ease;
+            margin: 0.75rem auto 0 auto;
         }
-        /* מחלקה חדשה להסטה ימינה כשנבחר בית מרקחת */
-        .container.show-image {
-            margin-left: 220px;
+
+        .content-card {
+            background-color: white;
+            border-radius: 0.75rem; /* 12px */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
         }
-        .form-container {
-            flex: 1;
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb; /* Gray-200 */
         }
-        h1, h2 {
-            color: #333;
-            text-align: center; /* כותרות באמצע */
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0ea5e9; /* Sky-500 */
         }
-        label {
-            display: block;
-            margin: 15px 0 5px;
-            color: #333;
+        .stat-card .label {
+            color: #6B7280; /* Gray-500 */
+            font-size: 0.875rem;
         }
-        input[type="text"], input[type="tel"], input[type="email"], input[type="number"], select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            direction: rtl; /* כתיבה מימין לשמאל */
+        
+        .feature-card {
+            background: #F9FAFB; /* Gray-50 */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid #F3F4F6; /* Gray-100 */
         }
-        .hidden {
-            display: none;
-        }
-        .product {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            justify-content: space-between;
-        }
-        .product label {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-        }
-        .product input[type="number"] {
+        .feature-card .icon-wrapper {
             width: 60px;
-        }
-        #totalPriceContainer {
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 1px solid #ccc;
-        }
-        #totalPriceLabel {
-            margin-bottom: 10px;
-            font-size: 1.5em;
+            height: 60px;
+            margin: 0 auto 1rem auto;
+            border-radius: 50%;
+            background-color: #e0f2fe; /* Sky-100 */
+            color: #0ea5e9; /* Sky-500 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
             font-weight: bold;
         }
-        #preTaxPrice, #totalPriceWithTax {
-            margin-top: 15px;
-            font-size: 1em;
-            font-weight: normal;
-            direction: rtl;
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1F2937; /* Gray-800 */
+            margin-bottom: 0.5rem;
         }
-        button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1em;
-            margin-right: 10px;
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
+
+        .footer-stylish {
+            background-color: #111827; /* Gray-900 */
+            color: #9CA3AF; /* Gray-400 */
+            text-align: center;
+            padding: 3rem 1.5rem;
+            margin-top: 3rem;
         }
-        button:hover {
-            background-color: #0056b3;
+        .footer-stylish a {
+            color: #7dd3fc; /* Sky-300 */
+            text-decoration: underline;
         }
-        #creditCardCheckbox {
-            margin-top: 22px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            font-size: 1.05em;
+
+        .logo-placeholder-inline {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #075985; /* Sky-800 */
+            line-height: 1;
+            text-align: center;
+            color: #e0f2fe; /* Sky-100 */
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
         }
-        #creditCardCheckbox input {
-            margin-left: 10px;
+        .product-image-stylish {
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 300px; /* Reduced max-width */
         }
-        .image-container {
-            width: auto;
-            height: 100vh;
-            overflow: hidden;
-            position: fixed;
-            left: 5px;
-            top: 0;
-            display: flex;
-            align-items: center;
-            justify-content: left;
-            transition: all 0.3s ease;
+        
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 9pt; background-color: white !important; }
+            .no-print { display: none; }
+            .container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; box-shadow: none; }
+            img { max-width: 100% !important; }
+            .content-card, .stat-card { box-shadow: none !important; border: 1px solid #e5e7eb; }
+            .brand-bg-hero { background-color: #0c4a6e !important; }
+            .footer-stylish { background-color: #111827 !important; color: #9CA3AF !important; }
         }
-        /* בתחילה מוסתרת, עד שבוחרים בית מרקחת */
-        .hide {
-            display: none;
-        }
-        #pharmacyImage {
-            display: none;
-            height: 100%;
-            width: auto;
-            border-radius: 8px;
-        }
-        /* התאמות למסכים קטנים יותר */
-        @media (max-width: 600px) {
-            .container {
-                flex-direction: column;
-                padding: 10px;
-                margin-left: 0 !important; /* כדי לאפשר למובייל להישאר במרכז */
-            }
-            .container.show-image {
-                margin-left: 0; /* לא להסיט במובייל, שיישאר נוח לשימוש */
-            }
-            h1, h2 {
-                font-size: 1.5em;
-            }
-            label {
-                margin: 10px 0 5px;
-            }
-            input[type="text"], input[type="tel"], input[type="email"], input[type="number"], select {
-                padding: 6px;
-            }
-            .product label {
-                font-size: 0.9em;
-            }
-            .product input[type="number"] {
-                width: 50px;
-            }
-            button {
-                font-size: 0.9em;
-            }
-            .image-container {
-                height: 350px;
-            }
-        }
+
     </style>
 </head>
 <body>
+    <div class="container mx-auto max-w-5xl">
 
-<div class="container">
-    <div class="form-container">
-        <h1>הזמנה</h1>
-
-        <form id="orderForm">
-            <!-- שם המזמין -->
-            <label style="text-align: center;">שם המזמין:
-                <input type="text" id="customerName" required>
-            </label>
-
-            <!-- כתובת האימייל של המזמין -->
-            <label style="text-align: center;">אימייל של המזמין:
-                <input type="email" id="customerEmail" required>
-            </label>
-
-            <!-- סוג המקום (בית מרקחת) -->
-            <label style="text-align: center;">בית מרקחת:
-                <select style="direction: rtl" id="placeType" required onchange="updateForm()">
-                    <option style="text-align: center;" value="" disabled selected>-- בחר/י --</option>
-                    <option style="text-align: center;" value="pharmacy">בית מרקחת</option>
-                    <option style="text-align: center;" value="future_pharmacy">בית מרקחת - רוקחים עתיד</option>
-                    <option style="text-align: center;" value="shrem_pharmacy">בית מרקחת - שרמ</option>
-                </select>
-            </label>
-
-            <!-- שם בית המרקחת -->
-            <label style="text-align: center;'" id="placeNameLabel">שם בית המרקחת:
-                <input type="text" id="placeName" required>
-            </label>
-
-            <!-- טלפון המזמין -->
-            <label style="text-align: center;">מספר פלאפון של המזמין:
-                <input type="tel" id="phoneNumber" required>
-            </label>
-
-            <h2>רשימת מוצרים</h2>
-            <div id="productList">
-                <!-- מוצרים יתווספו כאן דינאמית -->
+        <!-- Hero Section -->
+        <section class="brand-bg-hero text-white rounded-b-3xl -mx-4 px-4">
+            <header class="py-6 px-4 flex justify-between items-center">
+                 <div class="logo-placeholder-inline">[BMT Logo]</div>
+                 <div class="text-sm font-semibold text-sky-200">Revolutionizing Point-of-Care Diagnostics</div>
+            </header>
+            <div class="text-center py-12 px-4 md:py-16">
+                <h1 class="section-title text-white">The Future of Diagnostics is Here.</h1>
+                <p class="section-subtitle text-sky-200 mt-4">
+                    Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
+                </p>
             </div>
+        </section>
 
-            <div id="totalPriceContainer">
-                <div style="text-align: center;" id="totalPriceLabel">סה"כ לתשלום</div>
-                <div style="direction: rtl;" id="preTaxPrice">סה"כ לתשלום ללא מע"מ: 0 ש"ח</div>
-                <div style="direction: rtl;" id="totalPriceWithTax">סה"כ לתשלום כולל מע"מ: 0 ש"ח</div>
-            </div>
+        <!-- Product Image Section -->
+        <section class="mt-[-6rem] mb-12 flex justify-center z-10 relative">
+            <!-- <img src="image.png" alt="Lab-On-Time Device" class="product-image-stylish"> -->
+            <div class="product-image-stylish mx-auto h-64 bg-gray-200 flex items-center justify-center text-gray-500">[Product Image]</div>
+        </section>
 
-            <!-- אישור תשלום באשראי -->
-            <div style="direction: rtl;" id="creditCardCheckbox">
-                <label style="font-weight: bold;" for="creditCard">
-                    <input type="checkbox" id="creditCard" required>מאשר/ת תשלום בכרטיס אשראי
-                </label>
-            </div>
 
-            <button type="submit">שלח הזמנה</button>
-        </form>
+        <!-- Main Content -->
+        <main class="pt-8 px-4">
+            <!-- Stats Section -->
+            <section class="mb-16">
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="stat-card">
+                        <div class="value">1-Step</div>
+                        <div class="label">Operation</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">~5 Min</div>
+                        <div class="label">Time to Result</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">95.1%</div>
+                        <div class="label">Sensitivity (Strep A)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">97.8%</div>
+                        <div class="label">Specificity (Strep A)</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Problem & Solution Section -->
+            <section id="solution" class="mb-16">
+                 <div class="content-card">
+                    <div class="grid md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h2 class="text-3xl font-bold brand-blue-dark mb-4">The Challenge: Delays in Diagnostics</h2>
+                            <p class="text-gray-600 leading-relaxed">Traditional diagnostic methods are often slow and lab-dependent, creating bottlenecks that delay crucial treatment. This inefficiency strains healthcare resources and can compromise patient care. BMT Diagnostics closes this gap by bringing instant, reliable testing directly to the point-of-care.</p>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl font-bold brand-blue-dark mb-4">The Solution: Lab-On-Time™</h2>
+                             <p class="text-gray-600 leading-relaxed">Our patented platform is a game-changing technology designed for maximum ease-of-use. It’s the answer to the need for faster, more accessible diagnostics. <br><strong class="brand-blue">No-Step. No Confusion. Just Results.</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Features Section -->
+            <section class="mb-16 text-center">
+                <h2 class="section-title">Why Lab-On-Time™ is the Right Choice</h2>
+                <p class="section-subtitle">A combination of patented technology and physician-driven design.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+                    <div class="feature-card">
+                        <div class="icon-wrapper">[⚡]</div>
+                        <h3>Rapid & Efficient</h3>
+                        <p class="text-gray-500 text-sm">Get actionable results during a single patient visit.</p>
+                    </div>
+                     <div class="feature-card">
+                        <div class="icon-wrapper">[🎯]</div>
+                        <h3>Highly Accurate</h3>
+                        <p class="text-gray-500 text-sm">Closed-system design minimizes user error and ensures reliability.</p>
+                    </div>
+                     <div class="feature-card">
+                        <div class="icon-wrapper">[👍]</div>
+                        <h3>Exceptionally Simple</h3>
+                        <p class="text-gray-500 text-sm">Intuitive one-step operation requires minimal training.</p>
+                    </div>
+                     <div class="feature-card">
+                        <div class="icon-wrapper">[♻️]</div>
+                        <h3>Eco-Conscious</h3>
+                        <p class="text-gray-500 text-sm">Reduces plastic and liquid waste compared to other rapid tests.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Company & Offerings Section -->
+            <section id="partner" class="content-card text-center brand-bg-light-blue brand-border-blue border">
+                <h2 class="section-title">Join Us in the Diagnostics Revolution</h2>
+                <p class="section-subtitle">Since 2008, BMT Diagnostics (ISO 13483:2016 certified) has been a leader in the RDT field with global patents and a diverse product line.</p>
+                <div class="mt-6">
+                    <h3 class="font-semibold text-lg text-gray-800 mb-2">Core Offerings (CE Approved)</h3>
+                    <p class="text-gray-600">Strep A (also TGA) • Influenza A+B • COVID-19 Antigen • RSV • Combo Panels</p>
+                </div>
+                <div class="mt-8">
+                    <h3 class="font-semibold text-lg text-gray-800 mb-4">We Are Seeking Partners</h3>
+                    <p class="text-gray-600 max-w-2xl mx-auto">We are actively seeking global strategic partners, distributors, and OEM collaborators to expand the reach of our innovative technology.</p>
+                </div>
+            </section>
+
+        </main>
+
+        <footer id="contact" class="footer-stylish">
+            <h2 class="text-2xl font-bold text-white mb-4">Contact Information</h2>
+            <p class="mb-4">
+                Phone: +972-4-639116 | Email: <a href="mailto:info@bmtdx.com">info@bmtdx.com</a> | Website: <a href="http://www.bio-marketing-t.com" target="_blank" rel="noopener noreferrer">www.bio-marketing-t.com</a>
+            </p>
+            <p>&copy; 2025 BMT Diagnostics. All rights reserved.</p>
+        </footer>
     </div>
-
-    <!-- מיכל לתמונה מוצגת -->
-    <div class="image-container hide">
-        <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
-    </div>
-</div>
-
-<script>
-    // 1. ערך מייל עסקי קבוע (לדוגמה)
-    const businessEmail = "YOUR_FIXED_BUSINESS_EMAIL@domain.com";
-
-    // 2. פונקציה לעיצוב מספרים
-    function formatNumber(num) {
-      return num.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-    }
-
-    // 3. נתוני מוצרים לפי סוג בית המרקחת
-    const productListData = {
-        pharmacy: [
-            {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 24, bulkThreshold:1},
-            {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
-            {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
-            {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90},
-            {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20},
-            {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50},
-            {id: 'quantity13', name: '"בדיקת הריון "בשעה טובה', price: 18.90},
-            {id: 'quantity6', name: 'בדיקה לדלקת בשתן', price: 13.90},
-            {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית', price: 17.20, bulkPrice: 15.20, bulkThreshold:1},
-            {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים', price: 33.90},
-            {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
-            {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
-            {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', price: 21.00},
-            {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90}
-        ],
-        future_pharmacy: [
-            {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 24, bulkThreshold:1},
-            {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
-            {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
-            {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
-            {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90},
-            {id: 'quantity4', name: 'בדיקת הריון 1 - רוקחים עתיד', price: 2.90},
-            {id: 'quantity5', name: 'בדיקת הריון 2 - רוקחים עתיד', price: 5.20},
-            {id: 'quantity6', name: '"בדיקת הריון "בשעה טובה', price: 18.90},
-            {id: 'quantity7', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
-            {id: 'quantity8', name: 'בדיקת ביוץ 7 באריזה', price: 21.00},
-            {id: 'quantity9', name: 'בדיקה לדלקת בשתן', price: 13.90},
-            {id: 'quantity11', name: 'בדיקת קנדידה וגינאלית', price: 17.20, bulkPrice: 15.20, bulkThreshold:1},
-            {id: 'quantity12', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
-            {id: 'quantity13', name: 'בדיקת סמים 8 פרמטרים', price: 33.90}
-        ],
-        shrem_pharmacy: [
-            {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', price: 24, bulkPrice: 24, bulkThreshold:1},
-            {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
-            {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90},
-            {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90},
-            {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20},
-            {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50},
-            {id: 'quantity13', name: '"בדיקת הריון "בשעה טובה', price: 18.90},
-            {id: 'quantity6', name: 'בדיקה לדלקת בשתן', price: 13.90},
-            {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית', price: 17.20, bulkPrice: 15.20, bulkThreshold:1},
-            {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים', price: 33.90},
-            {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', price: 24.90},
-            {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', price: 30.00},
-            {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', price: 21.00},
-            {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90}
-        ]
-    };
-
-    // 4. עדכון רשימת המוצרים בהתאם לבחירת המשתמש + הצגת תמונה והסטת הדף
-    function updateForm() {
-        const placeType = document.getElementById('placeType').value;
-        const productListDiv = document.getElementById('productList');
-        productListDiv.innerHTML = '';
-
-        // הצגת / הסתרת התמונה והסטת הקונטיינר רק אם נבחר סוג
-        const imageContainer = document.querySelector('.image-container');
-        const mainContainer = document.querySelector('.container');
-
-        if (placeType) {
-            imageContainer.classList.remove('hide');
-            mainContainer.classList.add('show-image');
-
-            const products = productListData[placeType];
-            products.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.className = 'product';
-                productDiv.innerHTML = `
-                    <input type="number" id="${product.id}" min="0" value="0" oninput="calculateTotal()">
-                    <label for="${product.id}">${product.name}</label>
-                `;
-                productListDiv.appendChild(productDiv);
-            });
-        } else {
-            imageContainer.classList.add('hide');
-            mainContainer.classList.remove('show-image');
-        }
-        
-        updateImage();
-    }
-
-    // 5. חישוב סכום ההזמנה בכל שינוי כמות
-    function calculateTotal() {
-        let total = 0;
-        const placeType = document.getElementById('placeType').value;
-
-        if (placeType) {
-            const products = productListData[placeType];
-            products.forEach(product => {
-                const quantityInput = document.getElementById(product.id);
-                if (quantityInput && quantityInput.value > 0) {
-                    const quantity = parseInt(quantityInput.value);
-
-                    let actualPrice = product.price;
-                    if (product.bulkPrice !== undefined && product.bulkThreshold && quantity >= product.bulkThreshold) {
-                        actualPrice = product.bulkPrice;
-                    }
-                    total += actualPrice * quantity;
-                }
-            });
-        }
-        const preTaxTotal = total;
-        const taxTotal = preTaxTotal * 1.18;
-
-        document.getElementById('preTaxPrice').innerText = `סה"כ לתשלום ללא מע"מ: ${formatNumber(preTaxTotal)} ש"ח`;
-        document.getElementById('totalPriceWithTax').innerText = `סה"כ לתשלום כולל מע"מ: ${formatNumber(taxTotal)} ש"ח`;
-    }
-
-    // 6. עדכון תמונת צד בהתאם לבחירה
-    function updateImage() {
-        const pharmacyImage = document.getElementById('pharmacyImage');
-        const placeType = document.getElementById('placeType').value;
-        if (placeType === 'pharmacy') {
-            pharmacyImage.src = 'טופס הזמנה 05-25 פרטיים.png';
-        } else if (placeType === 'future_pharmacy') {
-            pharmacyImage.src = 'טופס הזמנה 05-25  רוקחים עתיד.png';
-        } else if (placeType === 'shrem_pharmacy') {
-            pharmacyImage.src = 'טופס הזמנה 05-25 פרטיים.png';
-        }
-        pharmacyImage.style.display = placeType ? 'block' : 'none';
-    }
-
-    // 7. שליחת הטופס דרך EmailJS
-    document.getElementById('orderForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const customerName = document.getElementById('customerName').value;
-        const customerEmail = document.getElementById('customerEmail').value;
-        const placeType = document.getElementById('placeType').value;
-        const placeName = document.getElementById('placeName').value;
-        const phoneNumber = document.getElementById('phoneNumber').value;
-
-        let productSummary = '';
-        if (placeType) {
-            const products = productListData[placeType];
-            products.forEach(product => {
-                const quantityInput = document.getElementById(product.id);
-                if (quantityInput && parseInt(quantityInput.value) > 0) {
-                    const quantity = parseInt(quantityInput.value);
-
-                    let actualPrice = product.price;
-                    if (product.bulkPrice && product.bulkThreshold && quantity >= product.bulkThreshold) {
-                        actualPrice = product.bulkPrice;
-                    }
-                    const lineTotal = actualPrice * quantity;
-
-                    productSummary += `- ${product.name}\r\n   כמות: ${quantity}\r\n   מחיר ליחידה: ${formatNumber(actualPrice)} ש"ח\r\n   סה"כ: ${formatNumber(lineTotal)} ש"ח\r\n\r\n`;
-                }
-            });
-        }
-
-        const preTaxPrice = document.getElementById('preTaxPrice').innerText;
-        const totalPriceWithTax = document.getElementById('totalPriceWithTax').innerText;
-
-        const shortOrderDetails = 
-`פרטי המזמין:
-----------------
-שם המזמין: ${customerName}
-אימייל המזמין: ${customerEmail}
-מספר פלאפון: ${phoneNumber}
-סוג המקום: ${placeType}
-שם המקום: ${placeName}
-
-מוצרים בהזמנה:
-----------------
-${productSummary}
-
-סיכום:
-----------------
-${preTaxPrice}
-${totalPriceWithTax}
-`;
-
-        // Service ID ו-Template ID שלכם מ-EmailJS
-        const serviceID = 'service_ja10oz8';
-        const templateID = 'template_cbiw9df';
-
-        const templateParams = {
-            to_email: businessEmail,
-            from_email: customerEmail,
-            customer_name: customerName,
-            place_type: placeType,
-            place_name: placeName,
-            phone_number: phoneNumber,
-            shortOrderDetails: shortOrderDetails
-        };
-
-        emailjs.send(serviceID, templateID, templateParams)
-            .then(function(response) {
-                alert('ההזמנה נשלחה בהצלחה!');
-            }, function(error) {
-                alert('שגיאה בשליחת ההזמנה: ' + JSON.stringify(error));
-            });
-    });
-</script>
-
 </body>
 </html>
