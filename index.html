@@ -100,9 +100,9 @@
 
         .product-image-stylish {
             border-radius: 1rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 500px; /* Made image wider */
+            max-width: 500px; 
         }
         
         @media print {
@@ -123,12 +123,10 @@
         <!-- Hero Section -->
         <section class="brand-bg-hero text-white rounded-b-3xl -mx-4 px-4">
             <header class="py-6 px-4 flex justify-between items-center">
-                 <!-- The logo image tag is now the only element for the logo -->
-                 <img src="unnamed.png" alt="BMT Diagnostics Logo" style="max-height: 72px;"> <!-- Logo made much larger -->
-                 
+                 <img src="unnamed.png" alt="BMT Diagnostics Logo" style="max-height: 72px;"> 
                  <div class="text-sm font-semibold text-sky-200">Revolutionizing Point-of-Care Diagnostics</div>
             </header>
-            <div class="text-center pt-8 pb-16 px-4 md:pt-10 md:pb-24"> <!-- Adjusted vertical padding to move text up -->
+            <div class="text-center pt-8 pb-12 px-4"> <!-- Reduced bottom padding -->
                 <h1 class="section-title text-white">The Future of Diagnostics is Here.</h1>
                 <p class="section-subtitle text-sky-200 mt-4">
                     Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
@@ -137,8 +135,7 @@
         </section>
 
         <!-- Product Image Section -->
-        <section class="mt-[-6rem] mb-12 flex justify-center z-10 relative"> <!-- Adjusted top margin to move image down but keep floating effect -->
-            <!-- The product image tag is now the only element here -->
+        <section class="mb-12 pt-12 flex justify-center z-10 relative bg-f9fafb"> <!-- Added top padding to move it down from the blue bg -->
             <img src="image.png" alt="Lab-On-Time Device" class="product-image-stylish">
         </section>
 
