@@ -15,17 +15,7 @@
         /* Lighter, "medical" blue color scheme */
         .brand-blue { color: #0ea5e9; } /* Sky-500 */
         .brand-blue-dark { color: #0369a1; } /* Sky-700 */
-        
-        /* UPDATED: Hero section with background image */
-        .brand-bg-hero { 
-            background-image: url('BMT Lab On Time - Strep A brochure  (1).pdf.jpg');
-            background-size: cover;
-            background-position: center;
-         } 
-        .hero-text-shadow {
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-        }
-
+        .brand-bg-hero { background-color: #0c4a6e; } /* Sky-900 - A rich, professional medical blue */
         .brand-bg-light-blue { background-color: #f0f9ff; } /* Sky-50 */
         .brand-border-blue { border-color: #bae6fd; } /* Sky-200 */
 
@@ -121,7 +111,7 @@
             .container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; box-shadow: none; }
             img { max-width: 100% !important; }
             .content-card, .stat-card { box-shadow: none !important; border: 1px solid #e5e7eb; }
-            .brand-bg-hero { background-image: url('BMT Lab On Time - Strep A brochure  (1).pdf.png') !important; }
+            .brand-bg-hero { background-color: #0c4a6e !important; }
             .footer-stylish { background-color: #111827 !important; color: #9CA3AF !important; }
         }
 
@@ -131,26 +121,33 @@
     <div class="container mx-auto max-w-5xl">
 
         <!-- Hero Section -->
-        <section class="brand-bg-hero text-white rounded-b-3xl -mx-4 px-4 relative">
-            <!-- Overlay for better text readability -->
-            <div class="absolute inset-0 bg-black opacity-30 rounded-b-3xl"></div>
-            
-            <div class="relative z-10">
-                <header class="py-6 px-4 flex justify-between items-start">
-                     <img src="unnamed.png" alt="BMT Diagnostics Logo" style="max-height: 90px;"> 
-                     <div class="text-sm font-semibold text-gray-200 pt-1">Revolutionizing Point-of-Care Diagnostics</div>
-                </header>
-                <div class="text-center pt-6 pb-12 px-4">
-                    <h1 class="section-title text-white hero-text-shadow">The Future of Diagnostics is Here.</h1>
-                    <p class="section-subtitle text-gray-200 mt-4 hero-text-shadow">
-                        Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
-                    </p>
-                </div>
+        <section class="brand-bg-hero text-white rounded-b-3xl -mx-4 px-4">
+            <header class="py-6 px-4 flex justify-between items-center">
+                 <!-- 
+                    --- איך לשנות את גודל הלוגו ---
+                    שיניתי את גודל הלוגו לפי בקשתך. הוא מיושר לשמאל אוטומטית.
+                    כדי לשנות את הגודל שלו, שנה את המספר במאפיין `style` בשורה הבאה.
+                    לדוגמה: `style="max-height: 100px;"` יקטין אותו, `style="max-height: 150px;"` יגדיל אותו.
+                 -->
+                 <img src="unnamed.png" alt="BMT Diagnostics Logo" style="max-height: 120px;"> 
+                 
+                 <div class="text-sm font-semibold text-sky-200">Revolutionizing Point-of-Care Diagnostics</div>
+            </header>
+            <div class="text-center pt-8 pb-12 px-4"> <!-- Reduced top padding to move text up -->
+                <h1 class="section-title text-white">The Future of Diagnostics is Here.</h1>
+                <p class="section-subtitle text-sky-200 mt-4">
+                    Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
+                </p>
             </div>
         </section>
 
         <!-- Product Image Section -->
-        <section class="pt-12 pb-8 flex justify-center">
+        <section class="pt-12 pb-8 flex justify-center"> <!-- Removed negative margin, added padding to place it on white bg -->
+            <!-- 
+                --- איך להוסיף את תמונת המוצר ---
+                התמונה ממוקמת בשורה מתחת להערה זו.
+                כדי להשתמש בתמונה אחרת, החלף את "image.png" בשם הקובץ של התמונה שלך.
+            -->
             <img src="image.png" alt="Lab-On-Time Device" class="product-image-stylish">
         </section>
 
