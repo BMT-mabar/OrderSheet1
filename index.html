@@ -3,245 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMT Diagnostics - One Pager (Professional Version)</title>
+    <title>BMT Diagnostics - One Pager (A4 Professional Design)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* --- איך לשנות את צבעי המותג ---
+            כאן מוגדרים צבעי המותג הראשיים. כדי לשנות, פשוט החלף את קוד הצבע (לדוגמה: #0ea5e9) בצבע הרצוי.
+        */
+        :root {
+            --brand-blue: #0ea5e9; /* Sky-500 */
+            --brand-blue-dark: #0369a1; /* Sky-700 */
+            --text-dark: #1f2937; /* Gray-800 */
+            --text-light: #6b7280; /* Gray-500 */
+            --bg-separator-blue: #f0f9ff; /* Sky-50 - צבע הרקע סביב תמונת המוצר */
+        }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            color: #374151; /* Gray-700 */
-            background-color: #f9fafb; /* Gray-50 */
+            font-family: 'Assistant', sans-serif;
+            color: #374151;
+            background-color: #D1D5DB; /* צבע הרקע מסביב לדף */
         }
-        /* Lighter, "medical" blue color scheme */
-        .brand-blue { color: #0ea5e9; } /* Sky-500 */
-        .brand-blue-dark { color: #0369a1; } /* Sky-700 */
-        .brand-bg-hero { background-color: #0c4a6e; } /* Sky-900 - A rich, professional medical blue */
-        .brand-bg-light-blue { background-color: #f0f9ff; } /* Sky-50 */
-        .brand-border-blue { border-color: #bae6fd; } /* Sky-200 */
-
-        .section-title {
-            font-size: 2.25rem; /* 36px */
-            font-weight: 700;
-            color: #1F2937; /* Gray-800 */
-            line-height: 1.2;
-        }
-
-        .section-subtitle {
-            font-size: 1.125rem; /* 18px */
-            color: #4B5563; /* Gray-600 */
-            max-width: 600px;
-            margin: 0.75rem auto 0 auto;
-        }
-
-        .content-card {
+        
+        .a4-page {
             background-color: white;
-            border-radius: 0.75rem; /* 12px */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            padding: 2rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            border: 1px solid #e5e7eb; /* Gray-200 */
-        }
-        .stat-card .value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #0ea5e9; /* Sky-500 */
-        }
-        .stat-card .label {
-            color: #6B7280; /* Gray-500 */
-            font-size: 0.875rem;
-        }
-        
-        .feature-card {
-            background: #F9FAFB; /* Gray-50 */
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid #F3F4F6; /* Gray-100 */
-        }
-        .feature-card .icon-wrapper {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 1rem auto;
-            border-radius: 50%;
-            background-color: #e0f2fe; /* Sky-100 */
-            color: #0ea5e9; /* Sky-500 */
+            width: 210mm;
+            min-height: 297mm;
+            margin: 2rem auto;
+            box-shadow: 0 0 15px rgba(0,0,0,0.15);
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            font-weight: bold;
-        }
-        .feature-card h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1F2937; /* Gray-800 */
-            margin-bottom: 0.5rem;
+            flex-direction: column;
+            padding: 18mm; /* שוליים לדף A4 */
         }
 
-        .footer-stylish {
-            background-color: #111827; /* Gray-900 */
-            color: #9CA3AF; /* Gray-400 */
-            text-align: center;
-            padding: 3rem 1.5rem;
-            margin-top: 3rem;
-        }
-        .footer-stylish a {
-            color: #7dd3fc; /* Sky-300 */
-            text-decoration: underline;
-        }
-
-        .product-image-stylish {
-            border-radius: 1rem;
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 500px; 
-        }
-        
+        /* הגדרות הדפסה כדי שהקובץ ייראה מושלם ב-PDF */
         @media print {
-            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 9pt; background-color: white !important; }
-            .no-print { display: none; }
-            .container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; box-shadow: none; }
-            img { max-width: 100% !important; }
-            .content-card, .stat-card { box-shadow: none !important; border: 1px solid #e5e7eb; }
-            .brand-bg-hero { background-color: #0c4a6e !important; }
-            .footer-stylish { background-color: #111827 !important; color: #9CA3AF !important; }
+            body {
+                background-color: white !important;
+            }
+            .a4-page {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                box-shadow: none;
+                padding: 10mm 15mm;
+            }
         }
 
+        /* --- הגדרות עיצוב כלליות --- */
+        .header {
+            padding: 1rem 1.5rem;
+            position: relative; /* נדרש עבור שכבת הכיסוי */
+        }
+
+        .hero-title {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .footer {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 1rem;
+            margin-top: auto; /* דוחף את החלק התחתון לתחתית הדף */
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        .footer a {
+            color: var(--brand-blue);
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container mx-auto max-w-5xl">
-
-        <!-- Hero Section -->
-        <section class="brand-bg-hero text-white rounded-b-3xl -mx-4 px-4">
-            <header class="py-6 px-4 flex justify-between items-center">
-                 <!-- 
-                    --- איך לשנות את גודל הלוגו ---
-                    שיניתי את גודל הלוגו לפי בקשתך. הוא מיושר לשמאל אוטומטית.
-                    כדי לשנות את הגודל שלו, שנה את המספר במאפיין `style` בשורה הבאה.
-                    לדוגמה: `style="max-height: 100px;"` יקטין אותו, `style="max-height: 150px;"` יגדיל אותו.
-                 -->
-                 <img src="unnamed.png" alt="BMT Diagnostics Logo" style="max-height: 120px;"> 
-                 
-                 <div class="text-sm font-semibold text-sky-200">Revolutionizing Point-of-Care Diagnostics</div>
-            </header>
-            <div class="text-center pt-8 pb-12 px-4"> <!-- Reduced top padding to move text up -->
-                <h1 class="section-title text-white">The Future of Diagnostics is Here.</h1>
-                <p class="section-subtitle text-sky-200 mt-4">
-                    Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
-                </p>
-            </div>
-        </section>
-
-        <!-- Product Image Section -->
-        <section class="pt-12 pb-8 flex justify-center"> <!-- Removed negative margin, added padding to place it on white bg -->
+    <div class="a4-page">
+        <!-- ====================================================================== -->
+        <!--                              HEADER                                    -->
+        <!-- ====================================================================== -->
+        <header class="header rounded-t-xl -mx-[18mm] -mt-[18mm]">
             <!-- 
-                --- איך להוסיף את תמונת המוצר ---
-                התמונה ממוקמת בשורה מתחת להערה זו.
-                כדי להשתמש בתמונה אחרת, החלף את "image.png" בשם הקובץ של התמונה שלך.
+                --- איך להחליף את תמונת הרקע העליונה ---
+                1. ודא שתמונת הרקע שלך נמצאת באותה תיקייה כמו קובץ ה-HTML הזה.
+                2. בשורה הבאה, החלף את "your-hero-image.jpg" בשם קובץ התמונה שלך.
             -->
-            <img src="image.png" alt="Lab-On-Time Device" class="product-image-stylish">
-        </section>
+            <div style="background-image: url('your-hero-image.jpg'); background-size: cover; background-position: center;" class="absolute inset-0 rounded-t-xl"></div>
+            <div class="absolute inset-0 bg-black opacity-40 rounded-t-xl"></div>
+            
+            <div class="relative z-10">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <!-- 
+                            --- איך להחליף ולשנות את הלוגו ---
+                            1. החלף את "unnamed.png" בשם קובץ הלוגו שלך.
+                            2. כדי לשנות את גודל הלוגו, שנה את המספר ב- `style="height: 70px;"`.
+                               לדוגמה: 60px יקטין אותו, 80px יגדיל אותו.
+                        -->
+                        <img src="unnamed.png" alt="BMT Diagnostics Logo" style="height: 70px;">
+                    </div>
+                    <div class="text-right text-sm font-semibold text-gray-200">
+                        Revolutionizing<br>Point-of-Care Diagnostics
+                    </div>
+                </div>
+                <div class="text-center pt-8 pb-12">
+                    <h1 class="text-4xl font-bold text-white hero-title">The Future of Diagnostics is Here.</h1>
+                    <p class="text-lg text-gray-200 mt-3 max-w-xl mx-auto hero-title">
+                        Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
+                    </p>
+                </div>
+            </div>
+        </header>
+        
+        <!-- ====================================================================== -->
+        <!--                            MAIN CONTENT                                -->
+        <!-- ====================================================================== -->
+        <main class="flex-grow">
+            <!-- Product Image Section -->
+            <section class="mb-8 p-4 rounded-xl" style="background-color: var(--bg-separator-blue);">
+                <!-- 
+                    --- איך להחליף את תמונת המוצר ---
+                    החלף את "image.png" בשם קובץ התמונה שלך.
+                -->
+                <img src="image.png" alt="Lab-On-Time Device" class="w-full h-auto rounded-lg shadow-lg">
+            </section>
 
-
-        <!-- Main Content -->
-        <main class="pt-0 px-4">
             <!-- Stats Section -->
-            <section class="mb-16">
-                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="stat-card">
-                        <div class="value">1-Step</div>
-                        <div class="label">Operation</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="value">~5 Min</div>
-                        <div class="label">Time to Result</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="value">95.1%</div>
-                        <div class="label">Sensitivity (Strep A)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="value">97.8%</div>
-                        <div class="label">Specificity (Strep A)</div>
-                    </div>
+            <section class="grid grid-cols-4 gap-4 text-center mb-8">
+                <div class="bg-gray-100 p-3 rounded-lg">
+                    <p class="text-2xl font-bold" style="color: var(--brand-blue);">1-Step</p>
+                    <p class="text-xs text-gray-600">Operation</p>
+                </div>
+                <div class="bg-gray-100 p-3 rounded-lg">
+                    <p class="text-2xl font-bold" style="color: var(--brand-blue);">~5 Min</p>
+                    <p class="text-xs text-gray-600">Time to Result</p>
+                </div>
+                <div class="bg-gray-100 p-3 rounded-lg">
+                    <p class="text-2xl font-bold" style="color: var(--brand-blue);">95.1%</p>
+                    <p class="text-xs text-gray-600">Sensitivity (Strep A)</p>
+                </div>
+                <div class="bg-gray-100 p-3 rounded-lg">
+                    <p class="text-2xl font-bold" style="color: var(--brand-blue);">97.8%</p>
+                    <p class="text-xs text-gray-600">Specificity (Strep A)</p>
                 </div>
             </section>
 
             <!-- Problem & Solution Section -->
-            <section id="solution" class="mb-16">
-                 <div class="content-card">
-                    <div class="grid md:grid-cols-2 gap-12 items-center">
-                        <div>
-                            <h2 class="text-3xl font-bold brand-blue-dark mb-4">The Challenge: Delays in Diagnostics</h2>
-                            <p class="text-gray-600 leading-relaxed">Traditional diagnostic methods are often slow and lab-dependent, creating bottlenecks that delay crucial treatment. This inefficiency strains healthcare resources and can compromise patient care. BMT Diagnostics closes this gap by bringing instant, reliable testing directly to the point-of-care.</p>
-                        </div>
-                        <div>
-                            <h2 class="text-3xl font-bold brand-blue-dark mb-4">The Solution: Lab-On-Time™</h2>
-                             <p class="text-gray-600 leading-relaxed">Our patented platform is a game-changing technology designed for maximum ease-of-use. It’s the answer to the need for faster, more accessible diagnostics. <br><strong class="brand-blue">No-Step. No Confusion. Just Results.</strong></p>
-                        </div>
-                    </div>
+            <section class="grid grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h2 class="text-xl font-bold mb-2" style="color: var(--brand-blue-dark);">The Challenge: Delays in Diagnostics</h2>
+                    <p class="text-sm leading-relaxed" style="color: var(--text-light);">
+                        Traditional diagnostic methods are often slow and lab-dependent, creating bottlenecks that delay crucial treatment. This inefficiency strains healthcare resources and can compromise patient care. 
+                    </p>
+                </div>
+                 <div>
+                    <h2 class="text-xl font-bold mb-2" style="color: var(--brand-blue-dark);">The Solution: Lab-On-Time™</h2>
+                    <p class="text-sm leading-relaxed" style="color: var(--text-light);">
+                        BMT Diagnostics closes this gap by bringing instant, reliable testing directly to the point-of-care. Our patented platform is designed for maximum ease-of-use.
+                        <br><strong class="font-semibold" style="color: var(--brand-blue);">No-Step. No Confusion. Just Results.</strong>
+                    </p>
                 </div>
             </section>
 
             <!-- Key Features Section -->
-            <section class="mb-16 text-center">
-                <h2 class="section-title">Why Lab-On-Time™ is the Right Choice</h2>
-                <p class="section-subtitle">A combination of patented technology and physician-driven design.</p>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
-                    <div class="feature-card">
-                        <div class="icon-wrapper">[⚡]</div>
-                        <h3>Rapid & Efficient</h3>
-                        <p class="text-gray-500 text-sm">Get actionable results during a single patient visit.</p>
+            <section class="mb-6">
+                 <h2 class="text-xl font-bold text-center mb-4" style="color: var(--brand-blue-dark);">Why Lab-On-Time™ is the Right Choice</h2>
+                 <div class="grid grid-cols-4 gap-6 text-center">
+                    <!-- 
+                        --- איך לשנות את האייקונים ---
+                        כדי להחליף אייקון, החלף את האימוג'י (למשל ⚡) בתמונה קטנה.
+                        לדוגמה: <img src="icon-rapid.png" class="h-8 mx-auto mb-1">
+                    -->
+                    <div>
+                        <p class="text-4xl">⚡</p>
+                        <h3 class="font-semibold text-sm mt-1">Rapid & Efficient</h3>
+                        <p class="text-xs text-gray-500 mt-1">Get actionable results during a single patient visit.</p>
                     </div>
-                     <div class="feature-card">
-                        <div class="icon-wrapper">[🎯]</div>
-                        <h3>Highly Accurate</h3>
-                        <p class="text-gray-500 text-sm">Closed-system design minimizes user error and ensures reliability.</p>
+                    <div>
+                        <p class="text-4xl">🎯</p>
+                        <h3 class="font-semibold text-sm mt-1">Highly Accurate</h3>
+                        <p class="text-xs text-gray-500 mt-1">Closed-system design minimizes user error and ensures reliability..</p>
                     </div>
-                     <div class="feature-card">
-                        <div class="icon-wrapper">[👍]</div>
-                        <h3>Exceptionally Simple</h3>
-                        <p class="text-gray-500 text-sm">Intuitive one-step operation requires minimal training.</p>
+                    <div>
+                        <p class="text-4xl">👍</p>
+                        <h3 class="font-semibold text-sm mt-1">Exceptionally Simple</h3>
+                        <p class="text-xs text-gray-500 mt-1">Intuitive one-step operation requires minimal training.</p>
                     </div>
-                     <div class="feature-card">
-                        <div class="icon-wrapper">[♻️]</div>
-                        <h3>Eco-Conscious</h3>
-                        <p class="text-gray-500 text-sm">Reduces plastic and liquid waste compared to other rapid tests.</p>
+                    <div>
+                        <p class="text-4xl">♻️</p>
+                        <h3 class="font-semibold text-sm mt-1">Eco-Conscious</h3>
+                        <p class="text-xs text-gray-500 mt-1">Reduces plastic and liquid waste compared to other tests.</p>
                     </div>
-                </div>
+                 </div>
             </section>
-            
-            <!-- Company & Offerings Section -->
-            <section id="partner" class="content-card text-center brand-bg-light-blue brand-border-blue border">
-                <h2 class="section-title">Join Us in the Diagnostics Revolution</h2>
-                <p class="section-subtitle">Since 2008, BMT Diagnostics (ISO 13483:2016 certified) has been a leader in the RDT field with global patents and a diverse product line.</p>
-                <div class="mt-6">
-                    <h3 class="font-semibold text-lg text-gray-800 mb-2">Core Offerings (CE Approved)</h3>
-                    <p class="text-gray-600">Strep A (also TGA) • Influenza A+B • COVID-19 Antigen • RSV • Combo Panels</p>
-                </div>
-                <div class="mt-8">
-                    <h3 class="font-semibold text-lg text-gray-800 mb-4">We Are Seeking Partners</h3>
-                    <p class="text-gray-600 max-w-2xl mx-auto">We are actively seeking global strategic partners, distributors, and OEM collaborators to expand the reach of our innovative technology.</p>
-                </div>
-            </section>
-
         </main>
-
-        <footer id="contact" class="footer-stylish">
-            <h2 class="text-2xl font-bold text-white mb-4">Contact Information</h2>
-            <p class="mb-4">
-                Phone: +972-4-639116 | Email: <a href="mailto:info@bmtdx.com">info@bmtdx.com</a> | Website: <a href="http://www.bio-marketing-t.com" target="_blank" rel="noopener noreferrer">www.bio-marketing-t.com</a>
+        
+        <!-- ====================================================================== -->
+        <!--                              FOOTER                                    -->
+        <!-- ====================================================================== -->
+        <footer class="footer">
+             <h3 class="font-bold mb-1" style="color: var(--text-dark);">Join Us in the Diagnostics Revolution</h3>
+             <p class="text-xs mb-2 text-gray-600">
+                We are actively seeking global strategic partners, distributors, and OEM collaborators.
+             </p>
+            <p class="text-xs">
+                <strong>Contact:</strong> Phone: +972-4-639116 | Email: <a href="mailto:info@bmtdx.com">info@bmtdx.com</a> | Website: <a href="http://www.bio-marketing-t.com" target="_blank" rel="noopener noreferrer">www.bio-marketing-t.com</a>
+                <br>
+                &copy; 2025 BMT Diagnostics. All rights reserved.
             </p>
-            <p>&copy; 2025 BMT Diagnostics. All rights reserved.</p>
         </footer>
     </div>
 </body>
