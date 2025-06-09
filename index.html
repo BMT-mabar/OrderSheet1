@@ -7,12 +7,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /*
+        ========================================================================
+        הסבר על הגדרות עיצוב כלליות
+        ========================================================================
+        */
+
         /* --- איך לשנות את צבעי המותג ---
             כאן מוגדרים צבעי המותג הראשיים. כדי לשנות, פשוט החלף את קוד הצבע (לדוגמה: #0ea5e9) בצבע הרצוי.
         */
         :root {
             --brand-blue: #0ea5e9; /* Sky-500 */
             --brand-blue-dark: #0369a1; /* Sky-700 */
+            --brand-bg-hero: #0c4a6e; /* Sky-900 - צבע הרקע של החלק העליון */
             --text-dark: #1f2937; /* Gray-800 */
             --text-light: #6b7280; /* Gray-500 */
             --bg-separator-blue: #f0f9ff; /* Sky-50 - צבע הרקע סביב תמונת המוצר */
@@ -32,7 +39,6 @@
             box-shadow: 0 0 15px rgba(0,0,0,0.15);
             display: flex;
             flex-direction: column;
-            padding: 18mm; /* שוליים לדף A4 */
         }
 
         /* הגדרות הדפסה כדי שהקובץ ייראה מושלם ב-PDF */
@@ -45,14 +51,8 @@
                 height: 100%;
                 margin: 0;
                 box-shadow: none;
-                padding: 10mm 15mm;
+                padding: 10mm;
             }
-        }
-
-        /* --- הגדרות עיצוב כלליות --- */
-        .header {
-            padding: 1rem 1.5rem;
-            position: relative; /* נדרש עבור שכבת הכיסוי */
         }
 
         .hero-title {
@@ -74,37 +74,30 @@
     </style>
 </head>
 <body>
-    <div class="a4-page">
+    <div class="a4-page p-8">
         <!-- ====================================================================== -->
         <!--                              HEADER                                    -->
         <!-- ====================================================================== -->
-        <header class="header rounded-t-xl -mx-[18mm] -mt-[18mm]">
-            <!-- 
-                --- איך להחליף את תמונת הרקע העליונה ---
-                1. ודא שתמונת הרקע שלך נמצאת באותה תיקייה כמו קובץ ה-HTML הזה.
-                2. בשורה הבאה, החלף את "your-hero-image.jpg" בשם קובץ התמונה שלך.
-            -->
-            <div style="background-image: url('your-hero-image.jpg'); background-size: cover; background-position: center;" class="absolute inset-0 rounded-t-xl"></div>
-            <div class="absolute inset-0 bg-black opacity-40 rounded-t-xl"></div>
-            
-            <div class="relative z-10">
+        <header class="text-white rounded-xl -mx-8 -mt-8" style="background-color: var(--brand-bg-hero);">
+             <div class="p-6">
                 <div class="flex justify-between items-center">
                     <div>
                         <!-- 
                             --- איך להחליף ולשנות את הלוגו ---
-                            1. החלף את "unnamed.png" בשם קובץ הלוגו שלך.
-                            2. כדי לשנות את גודל הלוגו, שנה את המספר ב- `style="height: 70px;"`.
+                            1. ודא שקובץ הלוגו שלך (לדוגמה: "bmt_logo.png") נמצא באותה תיקייה כמו קובץ ה-HTML הזה.
+                            2. בשורה הבאה, החלף את "unnamed.png" בשם הקובץ של הלוגו שלך.
+                            3. כדי לשנות את גודל הלוגו, שנה את המספר בתוך `style="height: 70px;"`.
                                לדוגמה: 60px יקטין אותו, 80px יגדיל אותו.
                         -->
                         <img src="unnamed.png" alt="BMT Diagnostics Logo" style="height: 70px;">
                     </div>
-                    <div class="text-right text-sm font-semibold text-gray-200">
+                    <div class="text-right text-sm font-semibold text-sky-200">
                         Revolutionizing<br>Point-of-Care Diagnostics
                     </div>
                 </div>
-                <div class="text-center pt-8 pb-12">
-                    <h1 class="text-4xl font-bold text-white hero-title">The Future of Diagnostics is Here.</h1>
-                    <p class="text-lg text-gray-200 mt-3 max-w-xl mx-auto hero-title">
+                <div class="text-center pt-8 pb-20">
+                    <h1 class="text-4xl font-bold hero-title">The Future of Diagnostics is Here.</h1>
+                    <p class="text-lg mt-3 max-w-xl mx-auto hero-title">
                         Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
                     </p>
                 </div>
@@ -116,12 +109,12 @@
         <!-- ====================================================================== -->
         <main class="flex-grow">
             <!-- Product Image Section -->
-            <section class="mb-8 p-4 rounded-xl" style="background-color: var(--bg-separator-blue);">
+            <section class="mt-[-5rem] mb-8 flex justify-center z-10 relative">
                 <!-- 
                     --- איך להחליף את תמונת המוצר ---
-                    החלף את "image.png" בשם קובץ התמונה שלך.
+                    החלף את "image.png" בשם קובץ התמונה שלך. ודא שהוא באותה תיקייה.
                 -->
-                <img src="image.png" alt="Lab-On-Time Device" class="w-full h-auto rounded-lg shadow-lg">
+                <img src="image.png" alt="Lab-On-Time Device" class="rounded-xl shadow-2xl w-full max-w-lg">
             </section>
 
             <!-- Stats Section -->
