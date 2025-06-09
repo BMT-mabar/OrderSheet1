@@ -64,7 +64,8 @@
             position: relative;
             border-radius: 0.75rem; /* פינות מעוגלות */
             overflow: hidden;
-            height: 250px; 
+            /* !!! שינוי: הגובה הוגדל כדי שהכיתוב ייכנס למסגרת. !!! */
+            height: 280px; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -125,14 +126,14 @@
                     החלף את "your-hero-image.jpg" בשם קובץ התמונה שלך.
                 -->
                 <div style="background-image: url('BMT Lab On Time - Strep A brochure  (1).pdf.png'); background-size: cover; background-position: center;" class="absolute inset-0"></div>
-                <!-- !!! שינוי: שכבת העל שונתה כדי להפוך את התמונה לשקופה יותר. !!! -->
-                <div class="absolute inset-0 bg-black/60"></div>
+                <div class="absolute inset-0 bg-black/40"></div>
                  
                 <div class="absolute top-6 left-6 z-20">
                     <img src="unnamed.png" alt="BMT Diagnostics Logo" style="height: 60px;">
                 </div>
                 
-                <div class="relative z-10 text-white mt-12">
+                <!-- !!! שינוי: הטקסט הוזז כלפי מטה כדי לא להפריע ללוגו. !!! -->
+                <div class="relative z-10 text-white mt-20">
                     <h1 class="text-5xl font-bold hero-title">The Future of Diagnostics is Here.</h1>
                     <p class="text-lg mt-4 max-w-2xl mx-auto hero-title leading-relaxed">
                         Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
@@ -160,7 +161,6 @@
                     </div>
                     <!-- תמונת הפטנט -->
                     <div class="flex-shrink-0">
-                        <!-- ודא ששם הקובץ של תמונת הפטנט נכון -->
                         <img src="טקסט הפסקה שלך.png" alt="Patented Product" class="opacity-75" style="width: 120px;">
                     </div>
                 </div>
@@ -222,7 +222,7 @@
                     <div class="flex flex-col">
                         <svg class="h-10 w-10 mx-auto mb-2 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.623 0-1.631-.465-3.163-1.282-4.471m-2.11-1.138A11.959 11.959 0 0112 3.465c-1.144 0-2.234.226-3.235.632m12.332 3.292a11.962 11.962 0 01-3.235-.632" /></svg>
                         <h3 class="font-bold text-base mt-1">Error-Proof by Design</h3>
-                        <p class="text-sm text-slate-500 mt-1 px-1 flex-grow">The all-in-one system has zero open transfers, ensuring user safety.</p>
+                        <p class="text-sm text-slate-500 mt-1 px-1 flex-grow">The all-in-one system has zero open transfers, ensuring complete safety.</p>
                     </div>
                  </div>
             </section>
