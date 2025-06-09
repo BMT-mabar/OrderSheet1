@@ -35,7 +35,8 @@
             background-color: white;
             width: 210mm;
             min-height: 297mm;
-            margin: 2rem auto;
+            /* !!! שינוי: הוסר המרווח העליון של הדף לחלוטין כדי להעלות את התוכן למעלה !!! */
+            margin: 0 auto; 
             box-shadow: 0 0 15px rgba(0,0,0,0.15);
             display: flex;
             flex-direction: column;
@@ -116,7 +117,7 @@
                     1. ודא שתמונת הרקע שלך נמצאת באותה תיקייה כמו קובץ ה-HTML הזה.
                     2. בשורה הבאה, החלף את "your-hero-image.jpg" בשם קובץ התמונה שלך.
                 -->
-                <div style="background-image: url('your-hero-image.jpg'); background-size: cover; background-position: center;" class="absolute inset-0"></div>
+                <div style="background-image: url('BMT Lab On Time - Strep A brochure  (1).pdf.png'); background-size: cover; background-position: center;" class="absolute inset-0"></div>
                 <div class="absolute inset-0 bg-black opacity-40"></div>
                  
                 <div class="relative z-10 text-white">
@@ -157,7 +158,6 @@
             </section>
 
             <!-- אזור האתגר והפתרון -->
-            <!-- !!! שינוי: נוסף ריפוד שמאלי (pl-6) לפסקאות כדי להזיז אותן ימינה. !!! -->
             <section class="grid grid-cols-2 gap-12 mb-10">
                 <div class="text-center">
                     <h2 class="text-xl font-bold mb-2" style="color: var(--brand-blue-dark);">
