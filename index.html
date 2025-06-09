@@ -61,8 +61,9 @@
             overflow: hidden; /* מבטיח שהתמונה לא תחרוג מהפינות המעוגלות */
             height: 200px; /* גובה התמונה העליונה */
             display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* To push content to top and bottom */
+            align-items: center; /* ממורכז אנכית */
+            justify-content: center; /* ממורכז אופקית */
+            text-align: center;
             padding: 1.5rem;
         }
 
@@ -89,11 +90,11 @@
         <!-- ====================================================================== -->
         <!--                              HEADER                                    -->
         <!-- ====================================================================== -->
-        <header class="flex justify-between items-center mb-4 pb-4 border-b">
+        <header class="flex justify-between items-start mb-4 pb-4 border-b">
             <div>
                 <!-- 
                     --- איך להחליף ולשנות את הלוגו ---
-                    1. החלף את "unnamed.png" בשם קובץ הלוגו שלך.
+                    1. החלף את "unnamed.png" בשם קובץ הלוגו שלך. ודא שהוא באותה תיקייה.
                     2. כדי לשנות את גודל הלוגו, שנה את המספר ב- `style="height: 60px;"`.
                        לדוגמה: 50px יקטין אותו, 70px יגדיל אותו.
                 -->
@@ -118,7 +119,7 @@
                 <div style="background-image: url('your-hero-image.jpg'); background-size: cover; background-position: center;" class="absolute inset-0"></div>
                 <div class="absolute inset-0 bg-black opacity-40"></div>
                 
-                <div class="relative z-10 text-white text-center">
+                <div class="relative z-10 text-white">
                     <h1 class="text-4xl font-bold hero-title">The Future of Diagnostics is Here.</h1>
                     <p class="text-lg mt-3 max-w-xl mx-auto hero-title">
                         Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
