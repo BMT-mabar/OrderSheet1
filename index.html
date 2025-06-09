@@ -19,34 +19,36 @@
         :root {
             --brand-blue: #0ea5e9; /* Sky-500 */
             --brand-blue-dark: #0369a1; /* Sky-700 */
-            --text-dark: #1f2937; /* Gray-800 */
-            --text-light: #6b7280; /* Gray-500 */
-            --bg-separator-blue: #f0f9ff; /* Sky-50 - צבע הרקע סביב תמונת המוצר */
+            --text-dark: #1e293b; /* Slate-800 - גוון כהה ומעודן יותר */
+            --text-light: #475569; /* Slate-600 - גוון אפור קריא יותר */
+            --bg-page: #f8fafc; /* Slate-50 - רקע לבן עם נגיעה של אפור */
+            --bg-outer: #e2e8f0; /* Slate-200 - רקע חיצוני מעט כהה יותר */
         }
 
         body {
-            /* שימוש בפונט Assistant שהינו פונט כללי ונוח לקריאה */
             font-family: 'Assistant', sans-serif;
-            color: #374151;
-            background-color: #D1D5DB; /* צבע הרקע מסביב לדף */
+            color: var(--text-dark);
+            background-color: var(--bg-outer);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
          
         .a4-page {
-            background-color: white;
+            background-color: var(--bg-page);
             width: 210mm;
             min-height: 297mm;
-            /* !!! שינוי: הוסר המרווח העליון של הדף לחלוטין כדי להעלות את התוכן למעלה !!! */
-            margin: 0 auto; 
-            box-shadow: 0 0 15px rgba(0,0,0,0.15);
+            margin: 2rem auto; /* רווח קבוע לצפייה נוחה על המסך */
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); /* הצללה מעודנת יותר */
             display: flex;
             flex-direction: column;
-            padding: 15mm; /* שוליים פנימיים לדף A4 */
+            /* שינוי בריווח הפנימי כדי להפחית שטח מת עליון */
+            padding: 12mm 15mm; 
         }
 
         /* הגדרות הדפסה כדי שהקובץ ייראה מושלם ב-PDF */
         @media print {
             body {
-                background-color: white !important;
+                background-color: #fff !important;
             }
             .a4-page {
                 width: 100%;
@@ -54,28 +56,30 @@
                 margin: 0;
                 box-shadow: none;
                 padding: 10mm;
+                 background-color: #fff;
             }
         }
 
         .hero-section {
             position: relative;
-            border-radius: 1rem; /* פינות מעוגלות */
-            overflow: hidden; /* מבטיח שהתמונה לא תחרוג מהפינות המעוגלות */
-            height: 200px; /* גובה התמונה העליונה */
+            border-radius: 0.75rem; /* פינות מעוגלות */
+            overflow: hidden;
+            height: 190px; /* גובה מעט נמוך יותר */
             display: flex;
-            align-items: center; /* ממורכז אנכית */
-            justify-content: center; /* ממורכז אופקית */
+            align-items: center;
+            justify-content: center;
             text-align: center;
             padding: 1.5rem;
         }
 
         .hero-title {
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            /* הצללה רכה יותר לכותרת */
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
         }
 
         .footer {
-            padding-top: 1rem;
-            margin-top: auto; /* דוחף את החלק התחתון לתחתית הדף */
+            padding-top: 1.5rem;
+            margin-top: auto;
             text-align: center;
             font-size: 0.8rem;
             color: var(--text-light);
@@ -83,25 +87,46 @@
         .footer a {
             color: var(--brand-blue);
             text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer a:hover {
+            color: var(--brand-blue-dark);
+        }
+        
+        /* עיצוב עדין לקו המפריד בפוטר */
+        .footer-separator {
+            border-top: 1px solid #cbd5e1; /* Slate-300 */
+        }
+        
+        /* עיצוב משופר לקופסאות הנתונים */
+        .stat-box {
+            background-color: #fff;
+            border: 1px solid #e2e8f0; /* Slate-200 */
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            transition: all 0.2s ease-in-out;
+        }
+        .stat-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px -2px rgba(0,0,0,0.05);
         }
     </style>
 </head>
-<body class="bg-gray-200">
+<body>
     <div class="a4-page">
         <!-- ====================================================================== -->
         <!--                            כותרת עליונה (Header)                         -->
         <!-- ====================================================================== -->
-        <header class="flex justify-between items-start mb-4 pb-3 border-b">
+        <header class="flex justify-between items-center mb-6 pb-4 border-b border-slate-200">
             <div>
                 <!-- 
                     --- איך להחליף ולשנות את הלוגו ---
                     1. החלף את "unnamed.png" בשם קובץ הלוגו שלך. ודא שהוא באותה תיקייה.
-                    2. כדי לשנות את גודל הלוגו, שנה את המספר ב- `style="height: 60px;"`.
-                       לדוגמה: 50px יקטין אותו, 70px יגדיל אותו.
+                    2. כדי לשנות את גודל הלוגו, שנה את המספר ב- `style="height: 55px;"`.
                 -->
-                <img src="unnamed.png" alt="BMT Diagnostics Logo" style="height: 60px;">
+                <img src="unnamed.png" alt="BMT Diagnostics Logo" style="height: 55px;">
             </div>
-            <div class="text-center text-sm font-semibold" style="color: var(--brand-blue-dark);">
+            <div class="text-right text-sm font-semibold" style="color: var(--brand-blue-dark);">
                 Revolutionizing<br>Point-of-Care Diagnostics
             </div>
         </header>
@@ -111,106 +136,94 @@
         <!-- ====================================================================== -->
         <main class="flex-grow">
             <!-- אזור תמונה ראשית -->
-            <section class="hero-section mb-6">
+            <section class="hero-section mb-8">
                 <!-- 
                     --- איך להחליף את תמונת הרקע העליונה ---
-                    1. ודא שתמונת הרקע שלך נמצאת באותה תיקייה כמו קובץ ה-HTML הזה.
-                    2. בשורה הבאה, החלף את "your-hero-image.jpg" בשם קובץ התמונה שלך.
+                    החלף את "your-hero-image.jpg" בשם קובץ התמונה שלך.
                 -->
                 <div style="background-image: url('BMT Lab On Time - Strep A brochure  (1).pdf.png'); background-size: cover; background-position: center;" class="absolute inset-0"></div>
-                <div class="absolute inset-0 bg-black opacity-40"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-black/20"></div>
                  
                 <div class="relative z-10 text-white">
-                    <h1 class="text-4xl font-bold hero-title">The Future of Diagnostics is Here.</h1>
-                    <p class="text-lg mt-3 max-w-xl mx-auto hero-title">
+                    <h1 class="text-5xl font-bold hero-title">The Future of Diagnostics is Here.</h1>
+                    <p class="text-lg mt-4 max-w-2xl mx-auto hero-title leading-relaxed">
                         Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
                     </p>
                 </div>
             </section>
              
             <!-- אזור תמונת המוצר -->
-            <!-- !!! שינוי: הוסר הרקע התכלת מסביב לתמונה !!! -->
-            <section class="mb-6">
+            <section class="mb-8">
                 <!-- 
                     --- איך להחליף את תמונת המוצר ---
                     החלף את "image.png" בשם קובץ התמונה שלך.
                 -->
-                <img src="image.png" alt="Lab-On-Time Device" class="w-full h-auto max-w-sm mx-auto">
+                <img src="image.png" alt="Lab-On-Time Device" class="w-full h-auto max-w-lg mx-auto">
             </section>
 
             <!-- נתונים מרכזיים -->
-            <section class="grid grid-cols-4 gap-4 text-center mb-8">
-                <div class="bg-gray-100 p-3 rounded-lg">
-                    <p class="text-2xl font-bold" style="color: var(--brand-blue);">1-Step</p>
-                    <p class="text-xs text-gray-600">Operation</p>
+            <section class="grid grid-cols-4 gap-5 text-center mb-10">
+                <div class="stat-box">
+                    <p class="text-3xl font-bold" style="color: var(--brand-blue);">1-Step</p>
+                    <p class="text-xs text-slate-500 tracking-wide uppercase">Operation</p>
                 </div>
-                <div class="bg-gray-100 p-3 rounded-lg">
-                    <p class="text-2xl font-bold" style="color: var(--brand-blue);">~5 Min</p>
-                    <p class="text-xs text-gray-600">Time to Result</p>
+                <div class="stat-box">
+                    <p class="text-3xl font-bold" style="color: var(--brand-blue);">~5 Min</p>
+                    <p class="text-xs text-slate-500 tracking-wide uppercase">Time to Result</p>
                 </div>
-                <div class="bg-gray-100 p-3 rounded-lg">
-                    <p class="text-2xl font-bold" style="color: var(--brand-blue);">95.1%</p>
-                    <p class="text-xs text-gray-600">Sensitivity (Strep A)</p>
+                <div class="stat-box">
+                    <p class="text-3xl font-bold" style="color: var(--brand-blue);">95.1%</p>
+                    <p class="text-xs text-slate-500 tracking-wide uppercase">Sensitivity</p>
                 </div>
-                <div class="bg-gray-100 p-3 rounded-lg">
-                    <p class="text-2xl font-bold" style="color: var(--brand-blue);">97.8%</p>
-                    <p class="text-xs text-gray-600">Specificity (Strep A)</p>
+                <div class="stat-box">
+                    <p class="text-3xl font-bold" style="color: var(--brand-blue);">97.8%</p>
+                    <p class="text-xs text-slate-500 tracking-wide uppercase">Specificity</p>
                 </div>
             </section>
 
             <!-- אזור האתגר והפתרון -->
-            <section class="grid grid-cols-2 gap-12 mb-10">
-                <div class="text-center">
-                    <h2 class="text-xl font-bold mb-2" style="color: var(--brand-blue-dark);">
-                        The Challenge:
-                        <br>
-                        Delays in Diagnostics
-                    </h2>
-                    <p class="text-base leading-relaxed text-left pl-6" style="color: var(--text-light);">
+            <section class="grid grid-cols-2 gap-10 mb-12">
+                <div>
+                    <h2 class="text-2xl font-bold mb-3" style="color: var(--brand-blue-dark);">The Challenge:<br>Delays in Diagnostics</h2>
+                    <p class="text-base leading-relaxed" style="color: var(--text-light);">
                         Traditional diagnostic methods are often slow and lab-dependent, creating bottlenecks that delay crucial treatment. This inefficiency strains healthcare resources and can compromise patient care.
                     </p>
                 </div>
-                 <div class="text-center">
-                    <h2 class="text-xl font-bold mb-2" style="color: var(--brand-blue-dark);">
-                        The Solution:
-                        <br>
-                        Lab-On-Time™
-                    </h2>
-                    <p class="text-base leading-relaxed text-left pl-6" style="color: var(--text-light);">
+                 <div>
+                    <h2 class="text-2xl font-bold mb-3" style="color: var(--brand-blue-dark);">The Solution:<br>Lab-On-Time™</h2>
+                    <p class="text-base leading-relaxed" style="color: var(--text-light);">
                         BMT Diagnostics closes this gap by bringing instant, reliable testing directly to the point-of-care. Our patented platform is designed for maximum ease-of-use.
-                        <br><strong class="font-semibold" style="color: var(--brand-blue);">No-Step. No Confusion. Just Results.</strong>
+                        <br><strong class="font-semibold block mt-2" style="color: var(--text-dark);">No-Step. No Confusion. Just Results.</strong>
                     </p>
                 </div>
             </section>
 
             <!-- תכונות עיקריות -->
-            <section class="mb-6 mt-10">
-                 <h2 class="text-xl font-bold text-center mb-6" style="color: var(--brand-blue-dark);">Why Lab-On-Time™ is the Right Choice</h2>
-                 <div class="grid grid-cols-4 gap-6 text-center">
+            <section>
+                 <h2 class="text-2xl font-bold text-center mb-8" style="color: var(--brand-blue-dark);">Why Lab-On-Time™ is the Right Choice</h2>
+                 <div class="grid grid-cols-4 gap-8 text-center">
                     <!-- 
-                        --- איך לשנות את האייקונים ---
-                        כדי להחליף אייקון, החלף את האימוג'י (למשל ⚡) בתמונה קטנה.
-                        לדוגמה: <img src="icon-rapid.png" class="h-8 mx-auto mb-1">
+                        --- שינוי: האימוג'ים הוחלפו באייקוני SVG מקצועיים ---
                     -->
                     <div>
-                        <p class="text-4xl">⚡</p>
-                        <h3 class="font-semibold text-base mt-1">Rapid & Efficient</h3>
-                        <p class="text-sm text-gray-500 mt-1">Get actionable results during a single patient visit.</p>
+                        <svg class="h-10 w-10 mx-auto mb-2 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+                        <h3 class="font-bold text-base mt-1">Rapid & Efficient</h3>
+                        <p class="text-sm text-slate-500 mt-1 px-2">Actionable results during a single patient visit.</p>
                     </div>
                     <div>
-                        <p class="text-4xl">🎯</p>
-                        <h3 class="font-semibold text-base mt-1">Highly Accurate</h3>
-                        <p class="text-sm text-gray-500 mt-1">Closed-system design minimizes user error.</p>
+                        <svg class="h-10 w-10 mx-auto mb-2 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <h3 class="font-bold text-base mt-1">Highly Accurate</h3>
+                        <p class="text-sm text-slate-500 mt-1 px-2">Closed-system design minimizes user error.</p>
                     </div>
                     <div>
-                        <p class="text-4xl">👍</p>
-                        <h3 class="font-semibold text-base mt-1">Exceptionally Simple</h3>
-                        <p class="text-sm text-gray-500 mt-1">Intuitive one-step operation requires minimal training.</p>
+                        <svg class="h-10 w-10 mx-auto mb-2 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <h3 class="font-bold text-base mt-1">Exceptionally Simple</h3>
+                        <p class="text-sm text-slate-500 mt-1 px-2">Intuitive one-step operation requires minimal training.</p>
                     </div>
                     <div>
-                        <p class="text-4xl">♻️</p>
-                        <h3 class="font-semibold text-base mt-1">Eco-Conscious</h3>
-                        <p class="text-sm text-gray-500 mt-1">Reduces plastic and liquid waste compared to other tests.</p>
+                        <svg class="h-10 w-10 mx-auto mb-2 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" /></svg>
+                        <h3 class="font-bold text-base mt-1">Eco-Conscious</h3>
+                        <p class="text-sm text-slate-500 mt-1 px-2">Reduces plastic and liquid waste compared to other tests.</p>
                     </div>
                  </div>
             </section>
@@ -220,15 +233,15 @@
         <!--                         כותרת תחתונה (Footer)                           -->
         <!-- ====================================================================== -->
         <footer class="footer">
-             <div class="border-t border-gray-300 w-1/2 mx-auto mb-4"></div>
-             <h3 class="font-bold mb-1" style="color: var(--text-dark);">Join Us in the Diagnostics Revolution</h3>
-             <p class="text-xs mb-2 text-gray-600">
+             <div class="footer-separator w-1/3 mx-auto mb-4"></div>
+             <h3 class="font-bold text-base mb-1" style="color: var(--text-dark);">Join Us in the Diagnostics Revolution</h3>
+             <p class="text-sm mb-3 text-slate-500">
                 We are actively seeking global strategic partners, distributors, and OEM collaborators.
              </p>
             <p class="text-xs">
                 <strong>Contact:</strong> Phone: +972-4-639116 | Email: <a href="mailto:info@bmtdx.com">info@bmtdx.com</a> | Website: <a href="http://www.bio-marketing-t.com" target="_blank" rel="noopener noreferrer">www.bio-marketing-t.com</a>
                 <br>
-                &copy; 2025 BMT Diagnostics. All rights reserved.
+                <span class="mt-2 block">&copy; 2025 BMT Diagnostics. All rights reserved.</span>
             </p>
         </footer>
     </div>
