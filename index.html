@@ -25,11 +25,12 @@
         }
 
         body {
+            /* שימוש בפונט Assistant שהינו פונט כללי ונוח לקריאה */
             font-family: 'Assistant', sans-serif;
             color: #374151;
             background-color: #D1D5DB; /* צבע הרקע מסביב לדף */
         }
-        
+         
         .a4-page {
             background-color: white;
             width: 210mm;
@@ -38,7 +39,7 @@
             box-shadow: 0 0 15px rgba(0,0,0,0.15);
             display: flex;
             flex-direction: column;
-            padding: 15mm; /* שוליים לדף A4 */
+            padding: 15mm; /* שוליים פנימיים לדף A4 */
         }
 
         /* הגדרות הדפסה כדי שהקובץ ייראה מושלם ב-PDF */
@@ -84,12 +85,12 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-200">
     <div class="a4-page">
         <!-- ====================================================================== -->
-        <!--                              HEADER                                    -->
+        <!--                            כותרת עליונה (Header)                         -->
         <!-- ====================================================================== -->
-        <header class="flex justify-between items-start mb-4 pb-4 border-b">
+        <header class="flex justify-between items-start mb-4 pb-3 border-b">
             <div>
                 <!-- 
                     --- איך להחליף ולשנות את הלוגו ---
@@ -105,11 +106,11 @@
         </header>
 
         <!-- ====================================================================== -->
-        <!--                            MAIN CONTENT                                -->
+        <!--                         תוכן מרכזי (Main Content)                        -->
         <!-- ====================================================================== -->
         <main class="flex-grow">
-            <!-- Hero Image Section -->
-            <section class="hero-section mb-8">
+            <!-- אזור תמונה ראשית -->
+            <section class="hero-section mb-6">
                 <!-- 
                     --- איך להחליף את תמונת הרקע העליונה ---
                     1. ודא שתמונת הרקע שלך נמצאת באותה תיקייה כמו קובץ ה-HTML הזה.
@@ -117,7 +118,7 @@
                 -->
                 <div style="background-image: url('your-hero-image.jpg'); background-size: cover; background-position: center;" class="absolute inset-0"></div>
                 <div class="absolute inset-0 bg-black opacity-40"></div>
-                
+                 
                 <div class="relative z-10 text-white">
                     <h1 class="text-4xl font-bold hero-title">The Future of Diagnostics is Here.</h1>
                     <p class="text-lg mt-3 max-w-xl mx-auto hero-title">
@@ -125,17 +126,17 @@
                     </p>
                 </div>
             </section>
-            
-            <!-- Product Image Section -->
-            <section class="mb-8 p-3 rounded-xl" style="background-color: var(--bg-separator-blue);">
+             
+            <!-- אזור תמונת המוצר -->
+            <section class="mb-6 p-2 rounded-xl" style="background-color: var(--bg-separator-blue);">
                 <!-- 
                     --- איך להחליף את תמונת המוצר ---
                     החלף את "image.png" בשם קובץ התמונה שלך.
                 -->
-                <img src="image.png" alt="Lab-On-Time Device" class="w-full h-auto rounded-lg shadow-md max-w-md mx-auto">
+                <img src="image.png" alt="Lab-On-Time Device" class="w-full h-auto rounded-lg shadow-md max-w-sm mx-auto">
             </section>
 
-            <!-- Stats Section -->
+            <!-- נתונים מרכזיים -->
             <section class="grid grid-cols-4 gap-4 text-center mb-8">
                 <div class="bg-gray-100 p-3 rounded-lg">
                     <p class="text-2xl font-bold" style="color: var(--brand-blue);">1-Step</p>
@@ -155,12 +156,13 @@
                 </div>
             </section>
 
-            <!-- Problem & Solution Section -->
-            <section class="grid grid-cols-2 gap-24 mb-10 text-center">
+            <!-- אזור האתגר והפתרון -->
+            <!-- !!! שינוי: הריפוד השמאלי הוגדל (ל-pl-12) כדי להזיז את הטקסט עוד ימינה !!! -->
+            <section class="grid grid-cols-2 gap-12 mb-10 pl-12">
                 <div>
                     <h2 class="text-xl font-bold mb-2" style="color: var(--brand-blue-dark);">The Challenge: Delays in Diagnostics</h2>
                     <p class="text-base leading-relaxed" style="color: var(--text-light);">
-                        Traditional diagnostic methods are often slow and lab-dependent, creating bottlenecks that delay crucial treatment. This inefficiency strains healthcare resources and can compromise patient care. 
+                        Traditional diagnostic methods are often slow and lab-dependent, creating bottlenecks that delay crucial treatment. This inefficiency strains healthcare resources and can compromise patient care.
                     </p>
                 </div>
                  <div>
@@ -172,8 +174,8 @@
                 </div>
             </section>
 
-            <!-- Key Features Section -->
-            <section class="mb-6 mt-16">
+            <!-- תכונות עיקריות -->
+            <section class="mb-6 mt-10">
                  <h2 class="text-xl font-bold text-center mb-6" style="color: var(--brand-blue-dark);">Why Lab-On-Time™ is the Right Choice</h2>
                  <div class="grid grid-cols-4 gap-6 text-center">
                     <!-- 
@@ -183,30 +185,30 @@
                     -->
                     <div>
                         <p class="text-4xl">⚡</p>
-                        <h3 class="font-semibold text-lg mt-1">Rapid & Efficient</h3>
-                        <p class="text-base text-gray-500 mt-1">Get actionable results during a single patient visit.</p>
+                        <h3 class="font-semibold text-base mt-1">Rapid & Efficient</h3>
+                        <p class="text-sm text-gray-500 mt-1">Get actionable results during a single patient visit.</p>
                     </div>
                     <div>
                         <p class="text-4xl">🎯</p>
-                        <h3 class="font-semibold text-lg mt-1">Highly Accurate</h3>
-                        <p class="text-base text-gray-500 mt-1">Closed-system design minimizes user error.</p>
+                        <h3 class="font-semibold text-base mt-1">Highly Accurate</h3>
+                        <p class="text-sm text-gray-500 mt-1">Closed-system design minimizes user error.</p>
                     </div>
                     <div>
                         <p class="text-4xl">👍</p>
-                        <h3 class="font-semibold text-lg mt-1">Exceptionally Simple</h3>
-                        <p class="text-base text-gray-500 mt-1">Intuitive one-step operation requires minimal training.</p>
+                        <h3 class="font-semibold text-base mt-1">Exceptionally Simple</h3>
+                        <p class="text-sm text-gray-500 mt-1">Intuitive one-step operation requires minimal training.</p>
                     </div>
                     <div>
                         <p class="text-4xl">♻️</p>
-                        <h3 class="font-semibold text-lg mt-1">Eco-Conscious</h3>
-                        <p class="text-base text-gray-500 mt-1">Reduces plastic and liquid waste compared to other tests.</p>
+                        <h3 class="font-semibold text-base mt-1">Eco-Conscious</h3>
+                        <p class="text-sm text-gray-500 mt-1">Reduces plastic and liquid waste compared to other tests.</p>
                     </div>
                  </div>
             </section>
         </main>
-        
+         
         <!-- ====================================================================== -->
-        <!--                              FOOTER                                    -->
+        <!--                         כותרת תחתונה (Footer)                           -->
         <!-- ====================================================================== -->
         <footer class="footer">
              <div class="border-t border-gray-300 w-1/2 mx-auto mb-4"></div>
