@@ -64,7 +64,7 @@
             position: relative;
             border-radius: 0.75rem; /* פינות מעוגלות */
             overflow: hidden;
-            height: 190px; /* גובה מעט נמוך יותר */
+            height: 250px; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -115,33 +115,24 @@
 <body>
     <div class="a4-page">
         <!-- ====================================================================== -->
-        <!--                            כותרת עליונה (Header)                         -->
-        <!-- ====================================================================== -->
-        <header class="flex justify-between items-center mb-6 pb-4 border-b border-slate-200">
-            <div>
-                <!-- 
-                    --- איך להחליף ולשנות את הלוגו ---
-                    1. החלף את "unnamed.png" בשם קובץ הלוגו שלך. ודא שהוא באותה תיקייה.
-                    2. כדי לשנות את גודל הלוגו, שנה את המספר ב- `style="height: 55px;"`.
-                -->
-                <img src="unnamed.png" alt="BMT Diagnostics Logo" style="height: 100px;">
-            </div>
-        </header>
-
-        <!-- ====================================================================== -->
         <!--                         תוכן מרכזי (Main Content)                        -->
         <!-- ====================================================================== -->
         <main class="flex-grow">
-            <!-- אזור תמונה ראשית -->
+            <!-- אזור תמונה ראשית עם לוגו משולב -->
             <section class="hero-section mb-8">
                 <!-- 
                     --- איך להחליף את תמונת הרקע העליונה ---
                     החלף את "your-hero-image.jpg" בשם קובץ התמונה שלך.
                 -->
                 <div style="background-image: url('BMT Lab On Time - Strep A brochure  (1).pdf.png'); background-size: cover; background-position: center;" class="absolute inset-0"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-black/20"></div>
+                <!-- !!! שינוי: שכבת העל שונתה כדי להפוך את התמונה לשקופה יותר. !!! -->
+                <div class="absolute inset-0 bg-black/60"></div>
                  
-                <div class="relative z-10 text-white">
+                <div class="absolute top-6 left-6 z-20">
+                    <img src="unnamed.png" alt="BMT Diagnostics Logo" style="height: 60px;">
+                </div>
+                
+                <div class="relative z-10 text-white mt-12">
                     <h1 class="text-5xl font-bold hero-title">The Future of Diagnostics is Here.</h1>
                     <p class="text-lg mt-4 max-w-2xl mx-auto hero-title leading-relaxed">
                         Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
@@ -160,13 +151,19 @@
                 </div>
             </section>
              
-            <!-- אזור תמונת המוצר -->
+            <!-- אזור תמונת המוצר והפטנט -->
             <section class="mb-8">
-                <!-- 
-                    --- איך להחליף את תמונת המוצר ---
-                    החלף את "image.png" בשם קובץ התמונה שלך.
-                -->
-                <img src="image.png" alt="Lab-On-Time Device" class="w-full h-auto max-w-lg mx-auto">
+                <div class="flex justify-center items-center gap-x-8">
+                    <!-- תמונת המוצר -->
+                    <div class="flex-shrink-0" style="max-width: 500px;">
+                        <img src="image.png" alt="Lab-On-Time Device" class="w-full h-auto">
+                    </div>
+                    <!-- תמונת הפטנט -->
+                    <div class="flex-shrink-0">
+                        <!-- ודא ששם הקובץ של תמונת הפטנט נכון -->
+                        <img src="טקסט הפסקה שלך.png" alt="Patented Product" class="opacity-75" style="width: 120px;">
+                    </div>
+                </div>
             </section>
 
             <!-- נתונים מרכזיים -->
@@ -206,7 +203,6 @@
             <!-- תכונות עיקריות -->
             <section>
                  <h2 class="text-2xl font-bold text-center mb-8" style="color: var(--brand-blue-dark);">Why Lab-On-Time™ is the Right Choice</h2>
-                 <!-- !!! שינוי: הטקסטים שוכתבו מחדש לאורך אחיד כדי להבטיח מראה סימטרי. !!! -->
                  <div class="grid grid-cols-4 gap-8 text-center">
                     <div class="flex flex-col">
                         <svg class="h-10 w-10 mx-auto mb-2 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
@@ -220,7 +216,6 @@
                     </div>
                     <div class="flex flex-col">
                         <svg class="h-10 w-10 mx-auto mb-2 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <!-- !!! שינוי: הכותרת פוצלה לשתי שורות כדי לשמור על גובה אחיד. !!! -->
                         <h3 class="font-bold text-base mt-1">Superior<br>Accuracy</h3>
                         <p class="text-sm text-slate-500 mt-1 px-1 flex-grow">Our physician-driven, closed-system design provides lab-grade results.</p>
                     </div>
