@@ -6,6 +6,8 @@
     <title>BMT Diagnostics - One Pager (A4 Professional Design)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- !!! שינוי: הוספת פונט חדש לכותרת הראשית. !!! -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
         /*
         ========================================================================
@@ -64,7 +66,6 @@
             position: relative;
             border-radius: 0.75rem; /* פינות מעוגלות */
             overflow: hidden;
-            /* !!! שינוי: הגובה הוגדל כדי שהכיתוב ייכנס למסגרת. !!! */
             height: 280px; 
             display: flex;
             align-items: center;
@@ -76,6 +77,11 @@
         .hero-title {
             /* הצללה רכה יותר לכותרת */
             text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+        
+        /* !!! שינוי: הגדרת הפונט החדש לכותרת הראשית. !!! */
+        .hero-font {
+            font-family: 'Playfair Display', serif;
         }
 
         .footer {
@@ -126,15 +132,15 @@
                     החלף את "your-hero-image.jpg" בשם קובץ התמונה שלך.
                 -->
                 <div style="background-image: url('BMT Lab On Time - Strep A brochure  (1).pdf.png'); background-size: cover; background-position: center;" class="absolute inset-0"></div>
-                <div class="absolute inset-0 bg-black/40"></div>
+                <div class="absolute inset-0 bg-black/20"></div>
                  
                 <div class="absolute top-6 left-6 z-20">
                     <img src="unnamed.png" alt="BMT Diagnostics Logo" style="height: 60px;">
                 </div>
                 
-                <!-- !!! שינוי: הטקסט הוזז כלפי מטה כדי לא להפריע ללוגו. !!! -->
-                <div class="relative z-10 text-white mt-20">
-                    <h1 class="text-5xl font-bold hero-title">The Future of Diagnostics is Here.</h1>
+                <div class="relative z-10 text-white mt-28">
+                    <!-- !!! שינוי: הוספת קלאס לפונט החדש. !!! -->
+                    <h1 class="text-5xl font-bold hero-title hero-font">The Future of Diagnostics is Here.</h1>
                     <p class="text-lg mt-4 max-w-2xl mx-auto hero-title leading-relaxed">
                         Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
                     </p>
