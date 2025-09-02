@@ -501,7 +501,6 @@
 
         /**
          * מטפל בשליחת הטופס לשרת
-         * --- START OF MODIFIED CODE ---
          */
         async function handleFormSubmit(event) {
             event.preventDefault();
@@ -539,10 +538,10 @@
 
             // 3. Send data to PythonAnywhere server
             try {
-                //  
-                //  !!!   חשוב מאוד: החלף את הכתובת הבאה בכתובת האתר שלך ב-PythonAnywhere   !!!
-                //  
-                const apiUrl = 'https://bmtbiomarketingopen.pythonanywhere.com/'; 
+                // 
+                // !!!   זוהי הכתובת הנכונה עם הנתיב המלא ל-API   !!!
+                // 
+                const apiUrl = 'https://bmtbiomarketingopen.pythonanywhere.com/api/submit_order'; 
                 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -553,11 +552,11 @@
                 const result = await response.json();
 
                 if (response.ok) {
-                    statusMessageEl.textContent = 'ההזמנה נשלחה בהצלחה!';
-                    statusMessageEl.className = 'success';
+                    statusMessageEl.textContent = 'ההזמנה אושרה ונשלחה בהצלחה!';
+                    statusMessageEl.className = 'success'; // Use 'success' for green styling
                     statusMessageEl.style.display = 'block';
                     form.reset();
-                    populateProducts(); // Resets totals as well
+                    populateProducts(); // Resets products and totals
                 } else {
                     throw new Error(result.message || 'אירעה שגיאה לא צפויה בשליחת ההזמנה.');
                 }
@@ -565,7 +564,7 @@
             } catch (error) {
                 console.error('Submission Error:', error);
                 statusMessageEl.textContent = `שגיאה בשליחת ההזמנה: ${error.message}`;
-                statusMessageEl.className = 'error';
+                statusMessageEl.className = 'error'; // Use 'error' for red styling
                 statusMessageEl.style.display = 'block';
             } finally {
                 // Re-enable the submit button after a short delay
@@ -575,7 +574,6 @@
                 }, 3000);
             }
         }
-        // --- END OF MODIFIED CODE ---
 
         // --- מאזינים לאירועים ---
         placeTypeSelect.addEventListener('change', () => {
@@ -598,3 +596,4 @@
 
 </body>
 </html>
+
