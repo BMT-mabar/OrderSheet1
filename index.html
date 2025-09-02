@@ -1,457 +1,535 @@
-‏<!‏DOCTYPE html‏>‏
-‏<‏html lang="he‏">‏
-‏<‏head‏>‏
-‏    <‏meta charset="UTF-8‎‏">‏
-‏    <‏meta name="viewport" content="width=device-width, initial-scale=1.0‎‏">‏
-‏    <‏title‏>הזמנה</‏title‏>‏
-‏    <‏style‏>‏
-‏        ‏body‏ {‏
-‏            ‏font-family: Arial, sans-serif‏;‏
-‏            ‏background-color: #f4f4f9‎‏;‏
-‏            ‏margin: 0‎‏;‏
-‏            ‏padding: 0‎‏;‏
-‏            ‏display: flex‏;‏
-‏            ‏justify-content: center‏;‏
-‏            ‏align-items: center‏;‏
-‏            ‏min-height: 100vh‏;‏
-‏            ‏transition: all 0.3s ease‏;‏
-‏        }‏
-‏        .‏container‏ {‏
-‏            ‏background-color: #fff‏;‏
-‏            ‏padding: 20px‏;‏
-‏            ‏border-radius: 8px‏;‏
-‏            ‏box-shadow: 0 0 10px rgba‏(0, 0, 0, 0.1);‏
-‏            ‏width: 100%‎‏;‏
-‏            ‏max-width: 600px‏;‏
-‏            ‏margin-top: 20px‏;‏
-‏            ‏display: flex‏;‏
-‏            ‏flex-direction: column‏;‏
-‏            ‏transition: margin-left 0.3s ease‏;‏
-‏        }‏
-‏        .‏form-container‏ {‏
-‏            ‏flex: 1‎‏;‏
-‏        }‏
-‏        ‏h1, h2‎‏ {‏
-‏            ‏color: #333‎‏;‏
-‏            ‏text-align: center‏;‏
-‏        }‏
-‏        ‏label‏ {‏
-‏            ‏display: block‏;‏
-‏            ‏margin: 15px 0 5px‏;‏
-‏            ‏color: #333‎‏;‏
-‏        }‏
-‏        ‏input[type="text"], input[type="tel"], input[type="number"], select‏ {‏
-‏            ‏width: 100%‎‏;‏
-‏            ‏padding: 8px‏;‏
-‏            ‏margin-top: 5px‏;‏
-‏            ‏border: 1px solid #ccc‏;‏
-‏            ‏border-radius: 4px‏;‏
-‏            ‏direction: rtl‏;‏
-‏        }‏
-‏        .‏hidden‏ {‏
-‏            ‏display: none‏;‏
-‏        }‏
-‏        .‏product‏ {‏
-‏            ‏display: flex‏;‏
-‏            ‏align-items: center‏;‏
-‏            ‏margin-bottom: 10px‏;‏
-‏            ‏justify-content: space-between‏;‏
-‏        }‏
-‏        .‏product label‏ {‏
-‏            ‏flex: 1‎‏;‏
-‏            ‏display: flex‏;‏
-‏            ‏align-items: center‏;‏
-‏            ‏justify-content: flex-end‏;‏
-‏        }‏
-‏        .‏product input[type="number"]‎‏ {‏
-‏            ‏width: 60px‏;‏
-‏        }‏
-‏        #‏totalPriceContainer‏ {‏
-‏            ‏margin-top: 20px‏;‏
-‏            ‏padding-top: 10px‏;‏
-‏            ‏border-top: 1px solid #ccc‏;‏
-‏        }‏
-‏        #‏totalPriceLabel‏ {‏
-‏            ‏margin-bottom: 10px‏;‏
-‏            ‏font-size: 1.5em‏;‏
-‏            ‏font-weight: bold‏;‏
-‏        }‏
-‏        #‏preTaxPrice‏ {‏
-‏            ‏margin-top: 15px‏;‏
-‏            ‏font-size: 1em‏;‏
-‏            ‏font-weight: normal‏;‏
-‏            ‏direction: rtl‏;‏
-‏        }‏
-‏        #‏totalPriceWithTax‏ {‏
-‏            ‏margin-top: 15px‏;‏
-‏            ‏font-size: 1em‏;‏
-‏            ‏font-weight: normal‏;‏
-‏            ‏direction: rtl‏;‏
-‏        }‏
-‏        ‏button‏ {‏
-‏            ‏background-color: #007bff‏;‏
-‏            ‏color: #fff‏;‏
-‏            ‏border: none‏;‏
-‏            ‏padding: 10px 20px‏;‏
-‏            ‏border-radius: 4px‏;‏
-‏            ‏cursor: pointer‏;‏
-‏            ‏font-size: 1em‏;‏
-‏            ‏margin-right: 10px‏;‏
-‏            ‏display: block‏;‏
-‏            ‏width: 100%‎‏;‏
-‏            ‏box-sizing: border-box‏;‏
-‏        }‏
-‏        ‏button:hover‏ {‏
-‏            ‏background-color: #0056b3‎‏;‏
-‏        }‏
-‏        #‏creditCardCheckbox‏ {‏
-‏            ‏margin-top: 22px‏;‏
-‏            ‏margin-bottom: 10px‏;‏
-‏            ‏display: flex‏;‏
-‏            ‏align-items: center‏;‏
-‏            ‏font-size: 1.05em‏;‏
-‏        }‏
-‏        #‏creditCardCheckbox input‏ {‏
-‏            ‏margin-left: 10px‏;‏
-‏        }‏
-‏        .‏image-container‏ {‏
-‏            ‏width: auto‏;‏
-‏            ‏height: 100vh‏;‏
-‏            ‏overflow: hidden‏;‏
-‏            ‏position: fixed‏;‏
-‏            ‏left: 5px‏;‏
-‏            ‏top: 0‎‏;‏
-‏            ‏display: flex‏;‏
-‏            ‏align-items: center‏;‏
-‏            ‏justify-content: left‏;‏
-‏        }‏
-‏        #‏pharmacyImage‏ {‏
-‏            ‏display: none‏;‏
-‏            ‏height: 100%‎‏;‏
-‏            ‏width:auto‏;‏
-‏            ‏border-radius: 8px‏;‏
-‏        }‏
-‏        /* סגנונות למחשב */‏
-‏        @media (min-width: 601px)‎‏ {‏
-‏            ‏body.align-left .container‏ {‏
-‏                ‏margin-left: 20px‏; ‏
-‏            }‏
-‏            .‏image-container‏ {‏
-‏                ‏display: none‏; ‏
-‏                ‏width: 50%‎‏;‏
-‏            }‏
-‏            .‏container.align-left .image-container‏ {‏
-‏                ‏display: flex‏;‏
-‏                ‏justify-content: left‏; ‏
-‏            }‏
-‏        }‏
-‏        @media (max-width: 600px)‎‏ {‏
-‏            .‏container‏ {‏
-‏                ‏flex-direction: column‏; ‏
-‏                ‏padding: 10px‏; ‏
-‏            }‏
-‏            ‏h1, h2‎‏ {‏
-‏                ‏font-size: 1.5em‏; ‏
-‏            }‏
-‏            ‏label‏ {‏
-‏                ‏margin: 10px 0 5px‏; ‏
-‏            }‏
-‏            ‏input[type="text"], input[type="tel"], input[type="number"], select‏ {‏
-‏                ‏padding: 6px‏; ‏
-‏            }‏
-‏            .‏product label‏ {‏
-‏                ‏font-size: 0.9em‏; ‏
-‏            }‏
-‏            .‏product input[type="number"]‎‏ {‏
-‏                ‏width: 50px‏;‏
-‏            }‏
-‏            ‏button‏ {‏
-‏                ‏font-size: 0.9em‏; ‏
-‏            }‏
-‏            .‏image-container‏ {‏
-‏                ‏height: 350px‏; ‏
-‏            }‏
-‏            .‏container.margin-top-320‎‏ {‏
-‏                ‏margin-top: 320px‏;‏
-‏            }‏
-‏        }‏
-‏    </‏style‏>‏
-‏</‏head‏>‏
-‏<‏body‏>‏
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>טופס הזמנה</title>
+    <style>
+        /* --- משתני עיצוב גלובליים --- */
+        :root {
+            --primary-color: #005A9C; /* כחול עמוק */
+            --secondary-color: #00A9E0; /* תכלת */
+            --background-color: #f8f9fa; /* אפור בהיר רקע */
+            --form-background: #ffffff; /* לבן */
+            --text-color: #333333; /* שחור-אפרפר */
+            --border-color: #dee2e6; /* אפור גבולות */
+            --success-color: #28a745; /* ירוק */
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
 
-‏<‏div class="container‏">‏
-‏    <‏div class="form-container‏">‏
-‏        <‏h1‎‏>הזמנה</‏h1‎‏>‏
+        /* --- עיצוב בסיסי --- */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
 
-‏        <‏form id="orderForm‏">‏
-‏            <‏label style="direction: rtl‏">שם המזמין:‏
-‏                <‏input type="text" id="customerName" required‏>‏
-‏            </‏label‏>‏
-‏            <‏label style="direction: rtl‏">בית מרקחת:‏
-‏                <‏select style="direction: rtl" id="placeType" required ‎onchange="updateForm‏()">‏
-‏                    <‏option style="text-align: center;" value="" disabled selected‏>-- ‏בחר/י --</‏option‏>‏
-‏                    <‏option style="text-align: center;" value="pharmacy‏">בית ‏מרקחת</‏option‏>‏
-‏                    <‏option style="text-align: center;" value="future_pharmacy‏">בית ‏מרקחת - רוקחים עתיד</‏option‏>‏
-‏                    <‏option style="text-align: center;" value="shrem_pharmacy‏">בית ‏מרקחת - שרמ</‏option‏>‏
-‏                </‏select‏>‏
-‏            </‏label‏>‏
-‏            <‏label style="direction: rtl" id="placeNameLabel‏">שם בית המרקחת:‏
-‏                <‏input type="text" id="placeName" required‏>‏
-‏            </‏label‏>‏
-‏            <‏label style="direction: rtl‏">מספר פלאפון של המזמין:‏
-‏                <‏input type="tel" id="phoneNumber" required‏>‏
-‏            </‏label‏>‏
+        /* --- קונטיינר ראשי --- */
+        .main-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            align-items: flex-start;
+        }
 
-‏            <‏h2‎‏>רשימת מוצרים</‏h2‎‏>‏
-‏            <‏div id="productList‏">‏
-‏                <!-- מוצרים יתווספו כאן דינאמית -->‏
-‏            </‏div‏>‏
+        /* --- קונטיינר הטופס --- */
+        .form-container {
+            background-color: var(--form-background);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            flex: 1;
+            max-width: 650px;
+            transition: all 0.3s ease;
+        }
 
-‏            <‏div id="totalPriceContainer‏">‏
-‏                <‏div style="text-align: center;" id="totalPriceLabel‏">:סה"כ ‏לתשלום</‏div‏>‏
-‏                <‏div style="direction: rtl;" id="preTaxPrice‏">סה"כ לתשלום ללא מע"מ: 0 ‏ש"ח</‏div‏>‏
-‏                <‏div style="direction: rtl;" id="totalPriceWithTax‏">סה"כ לתשלום כולל ‏מע"מ: 0 ש"ח</‏div‏>‏
-‏            </‏div‏>‏
-‏            <‏div style="direction: rtl;" id="creditCardCheckbox‏">‏
-‏                <‏label style="font-weight: bold;" for="creditCard‏">‏
-‏                    <‏input type="checkbox" id="creditCard" required‏>מאשר תשלום ‏בכרטיס אשראי
-‏                </‏label‏>‏
-‏            </‏div‏>‏
+        /* --- קונטיינר התמונה --- */
+        .image-container {
+            flex-basis: 45%;
+            position: sticky;
+            top: 20px;
+            display: none; /* התמונה מוסתרת בהתחלה */
+        }
 
-‏            <‏button type="submit‏">שלח הזמנה</‏button‏>‏
-‏        </‏form‏>‏
-‏    </‏div‏>‏
+        #pharmacyImage {
+            width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
 
-‏    <‏div class="image-container hide‏">‏
-‏        <‏img id="pharmacyImage" src="" alt‏="תמונת בית מרקחת">‏
-‏    </‏div‏>‏
-‏</‏div‏>‏
+        /* --- כותרות --- */
+        h1, h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+        }
+        
+        h2 {
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            font-size: 1.6em;
+        }
 
-‏<‏script‏>‏
-‏    // מאזין לשינוי ה-‏placeType‏ כדי להציג תמונה בצד
-‏    ‏document.getElementById('placeType').addEventListener('change', function‏() ‏‏{‏
-‏        ‏const imageContainer = document.querySelector('.image-container')‎‏;‏
-‏        ‏const formContainer = document.querySelector('.container')‎‏;‏
-‏        ‏
-‏        ‏if (window.innerWidth >= 601)‎‏ {‏
-‏            ‏imageContainer.style.display = 'flex‏'; ‏
-‏            ‏formContainer.style.marginLeft = '700px‏';‏
-‏        } ‏else if (window.innerWidth <= 600‎‏) { ‏
-‏            ‏formContainer.classList.add('margin-top-320')‎‏; ‏
-‏            ‏imageContainer.style.display = 'flex‏';‏
-‏            ‏document.querySelector('body').classList.add('align-center')‎‏; ‏
-‏        }‏
-‏    });‏
-‏</‏script‏>‏
+        /* --- עיצוב כללי לטופס --- */
+        #orderForm fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 20px;
+        }
 
-‏<‏script style="direction: rtl‏ ;">‏
-‏    ‏const productList‏ = {‏
-‏        ‏pharmacy‏: [‏
-‏            ‏
-‏            {‏id: 'quantity14', name‏: 'בדיקה לאבחון שפעת + קורונה', ‏price: 24, ‎bulkPrice: 20, bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity1', name‏: 'פורמט עט - ‏NO STEP‏ בדיקות דלקת גרון', ‏price: ‎‎19.90, bulkPrice: 17.90, bulkThreshold:100‎‏},‏
-‏            {‏id: 'quantity2', name: 'STREP T‏ בדיקה לדלקת גרון', ‏price: 13.90, bulkPrice: ‎‎12.90, bulkThreshold:100‎‏},‏
-‏            {‏id: 'quantity3', name: 'A + B‏ בדיקה לשפעת - פורמט עט' , ‏price: 19.90, ‎bulkPrice: 17.90, bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity4', name‏: 'בדיקת הריון 1', ‏price: 5.20‎‏},‏
-‏            {‏id: 'quantity5', name‏: 'בדיקת הריון 2', ‏price: 6.50‎‏},‏
-‏            {‏id: 'quantity13', name‏: '"בדיקת הריון "בשעה טובה', ‏price: 18.90‎‏},‏
-‏            {‏id: 'quantity6', name‏: 'בדיקה לדלקת בשתן', ‏price: 13.90, bulkPrice: 10, ‎bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity7', name‏: 'בדיקת קנדידה וגינאלית', ‏price: 17.20, bulkPrice: 10, ‎bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity8', name‏: 'בדיקת סמים 8 פרמטרים', ‏price: 33.90‎‏},‏
-‏            {‏id: 'quantity9', name‏: 'בדיקה לגילוי דם סמוי בצואה', ‏price: 24.90‎‏},‏
-‏            {‏id: 'quantity10', name‏: 'בדיקה לאבחון וירוס הקורונה', ‏price: 30.00‎‏},‏
-‏            {‏id: 'quantity11', name‏: 'בדיקת ביוץ - 7 באריזה', ‏price: 21.00‎‏},‏
-‏            {‏id: 'quantity12', name‏: '"בדיקת ביוץ "בשעה טובה', ‏price: 29.90‎‏},‏
-‏            ‏
-‏        ],‏
-‏        ‏future_pharmacy‏: [‏
-‏            {‏id: 'quantity14', name‏: 'בדיקה לאבחון שפעת + קורונה', ‏price: 24, ‎bulkPrice: 20, bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity10', name‏: 'בדיקה לאבחון וירוס הקורונה', ‏price: 30.00‎‏},‏
-‏            {‏id: 'quantity1', name‏: 'פורמט עט - ‏NO STEP‏ בדיקות דלקת גרון', ‏price: ‎‎19.90, bulkPrice: 17.90, bulkThreshold:100‎‏},‏
-‏            {‏id: 'quantity2', name: 'STREP T‏ בדיקה לדלקת גרון', ‏price: 13.90, bulkPrice: ‎‎12.90, bulkThreshold:100‎‏},‏
-‏            {‏id: 'quantity3', name: 'A + B‏ בדיקה לשפעת - פורמט עט', ‏price: 19.90, ‎bulkPrice: 17.90, bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity4', name‏: 'בדיקת הריון 1 - רוקחים עתיד', ‏price: 2.90‎‏},‏
-‏            {‏id: 'quantity5', name‏: 'בדיקת הריון 2 - רוקחים עתיד', ‏price: 5.20‎‏},‏
-‏            {‏id: 'quantity6', name‏: '"בדיקת הריון "בשעה טובה', ‏price: 18.90‎‏},‏
-‏            {‏id: 'quantity7', name‏: '"בדיקת ביוץ "בשעה טובה', ‏price: 29.90‎‏},‏
-‏            {‏id: 'quantity8', name‏: 'בדיקת ביוץ 7 באריזה', ‏price: 21.00‎‏},‏
-‏            {‏id: 'quantity9', name‏: 'בדיקה לדלקת בשתן', ‏price: 13.90, bulkPrice: 10, ‎bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity11', name‏: 'בדיקת קנדידה וגינאלית', ‏price: 17.20, bulkPrice: ‎‎10, bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity12', name‏: 'בדיקה לגילוי דם סמוי בצואה', ‏price: 24.90‎‏},‏
-‏            {‏id: 'quantity13', name‏: 'בדיקת סמים 8 פרמטרים', ‏price: 33.90‎‏}‏
-‏            ‏
-‏        ],‏
-‏        ‏shrem_pharmacy‏: [‏
-‏            ‏
-‏            {‏id: 'quantity14', name‏: 'בדיקה לאבחון שפעת + קורונה', ‏price: 24, ‎bulkPrice: 20, bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity1', name‏: 'פורמט עט - ‏NO STEP‏ בדיקות דלקת גרון', ‏price: ‎‎19.90, bulkPrice: 17.90, bulkThreshold:100‎‏},‏
-‏            {‏id: 'quantity2', name: 'STREP T‏ בדיקה לדלקת גרון', ‏price: 13.90, bulkPrice: ‎‎12.90, bulkThreshold:100‎‏},‏
-‏            {‏id: 'quantity3', name: 'A + B‏ בדיקה לשפעת - פורמט עט' , ‏price: 19.90, ‎bulkPrice: 17.90, bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity4', name‏: 'בדיקת הריון 1', ‏price: 5.20‎‏},‏
-‏            {‏id: 'quantity5', name‏: 'בדיקת הריון 2', ‏price: 6.50‎‏},‏
-‏            {‏id: 'quantity13', name‏: '"בדיקת הריון "בשעה טובה', ‏price: 18.90‎‏},‏
-‏            {‏id: 'quantity6', name‏: 'בדיקה לדלקת בשתן', ‏price: 13.90, bulkPrice: 10, ‎bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity7', name‏: 'בדיקת קנדידה וגינאלית', ‏price: 17.20, bulkPrice: 10, ‎bulkThreshold:1‎‏},‏
-‏            {‏id: 'quantity8', name‏: 'בדיקת סמים 8 פרמטרים', ‏price: 33.90‎‏},‏
-‏            {‏id: 'quantity9', name‏: 'בדיקה לגילוי דם סמוי בצואה', ‏price: 24.90‎‏},‏
-‏            {‏id: 'quantity10', name‏: 'בדיקה לאבחון וירוס הקורונה', ‏price: 30.00‎‏},‏
-‏            {‏id: 'quantity11', name‏: 'בדיקת ביוץ - 7 באריזה', ‏price: 21.00‎‏},‏
-‏            {‏id: 'quantity12', name‏: '"בדיקת ביוץ "בשעה טובה', ‏price: 29.90‎‏},‏
-‏            ‏
-‏        ]‏
-‏    };‏
+        .form-group {
+            margin-bottom: 15px;
+        }
 
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-color);
+            font-weight: bold;
+        }
 
-‏    ‏function updateForm‏() {‏
-‏        ‏const placeType = document.getElementById('placeType').value‏;‏
-‏        ‏const productListDiv = document.getElementById('productList')‎‏;‏
-‏        ‏productListDiv.innerHTML‏ = '';‏
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
 
-‏        ‏if (placeType)‎‏ {‏
-‏            ‏const products = productList[placeType]‎‏;‏
-‏            ‏products.forEach(product‏ => {‏
-‏                ‏const productDiv = document.createElement('div')‎‏;‏
-‏                ‏productDiv.className = 'product‏';‏
-‏                ‏productDiv.innerHTML‏ = `‏
-‏                    <‏input type="number" id="${product.id}" min="0" value="0" ‎oninput="calculateTotal‏()">‏
-‏                    <‏label for="${product.id}">${product.name}</label‏>‏
-‏                `;‏
-‏                ‏productListDiv.appendChild(productDiv)‎‏;‏
-‏            });‏
-‏            ‏document.body.classList.add('align-right')‎‏;‏
-‏            ‏document.body.classList.remove('align-center')‎‏;‏
-‏            ‏document.querySelector('.image-container').classList.add('show')‎‏;‏
-‏            ‏document.querySelector('.image-container').classList.remove('hide')‎‏;‏
-‏        } ‏else‏ {‏
-‏            ‏document.body.classList.add('align-center')‎‏;‏
-‏            ‏document.body.classList.remove('align-right')‎‏;‏
-‏            ‏document.querySelector('.image-container').classList.add('hide')‎‏;‏
-‏            ‏document.querySelector('.image-container').classList.remove('show')‎‏;‏
-‏        }‏
-‏        ‏
-‏        ‏updateImage‏();‏
-‏    }‏
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(0, 90, 156, 0.25);
+        }
 
-‏    ‏function calculateTotal‏() {‏
-‏        ‏let total = 0‎‏;‏
-‏        ‏let totalProducts = 0‎‏; // מוגדר למעקב כמות
-‏        ‏const placeType = document.getElementById('placeType').value‏;‏
-‏        ‏if (placeType)‎‏ {‏
-‏            ‏const products = productList[placeType]‎‏;‏
-‏            ‏products.forEach(product‏ => {‏
-‏                ‏const quantityInput = document.getElementById(product.id)‎‏;‏
-‏                ‏if (quantityInput.value > 0)‎‏ {‏
-‏                    ‏const quantity = parseInt(quantityInput.value)‎‏;‏
-‏                    ‏let finalQuantity = quantity‏;‏
+        /* --- רשימת מוצרים --- */
+        #products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #products-header small {
+            font-weight: normal;
+            color: #6c757d;
+        }
+        
+        .product {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .product:last-child {
+            border-bottom: none;
+        }
 
-‏                    // בדיקת סף/בונוס
-‏                    ‏if (product.bonusQuantity && product.bulkThreshold && quantity ‎‎>= product.bulkThreshold)‎‏ {‏
-‏                        ‏finalQuantity += product.bonusQuantity‏;‏
-‏                    }‏
+        .product label {
+            flex: 1;
+            margin: 0 15px;
+            font-weight: normal;
+        }
 
-‏                    // ★★★ כאן מוסיפים לוגיקה להנחה (‏bulkPrice‏) ★★★‏
-‏                    // אם יש ‏bulkPrice, bulkThreshold‏, וכמות (או ‏finalQuantity‏?) עוברת ‏את הסף, נשתמש ב-‏bulkPrice
-‏                    // אחרת, נשתמש במחיר הרגיל (‏price‏).‏
-‏                    ‏let actualPrice‏;‏
-‏                    ‏if (product.bulkPrice !== undefined && product.bulkThreshold && ‎quantity >= product.bulkThreshold)‎‏ {‏
-‏                        ‏actualPrice = product.bulkPrice‏;‏
-‏                    } ‏else‏ {‏
-‏                        ‏actualPrice = product.price‏;‏
-‏                    }‏
+        .product input[type="number"] {
+            width: 80px;
+            text-align: center;
+        }
+        
+        /* --- סיכום תשלום --- */
+        #summary-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
 
-‏                    ‏totalProducts += finalQuantity‏;‏
-‏                    // במקום ‏total += price * quantity‏;‏
-‏                    ‏total += actualPrice * quantity‏;‏
-‏                }‏
-‏            });‏
-‏        }‏
-‏        ‏const preTaxTotal = total‏;‏
-‏        ‏const taxTotal = preTaxTotal * 1.18‎‏;‏
-‏        ‏document.getElementById('preTaxPrice').innerText‏ = `סה"כ ללא מע"מ: ‏‏${‏preTaxTotal.toFixed‏(2)} ש"ח`;‏
-‏        ‏document.getElementById('totalPriceWithTax').innerText‏ = `סה"כ כולל מע"מ: ‏‏${‏taxTotal.toFixed‏(2)} ש"ח`;‏
-‏    }‏
+        #summary-container h3 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
 
-‏    ‏function updateImage‏() {‏
-‏        ‏const pharmacyImage = document.getElementById('pharmacyImage')‎‏;‏
-‏        ‏const placeType = document.getElementById('placeType').value‏;‏
-‏        ‏if (placeType === 'pharmacy')‎‏ {‏
-‏            ‏pharmacyImage.src‏ = 'טופס הזמנה מרץ פרטיים.‏jpg‏'; ‏
-‏        } ‏else if (placeType === 'future_pharmacy‏') {‏
-‏            ‏pharmacyImage.src‏ = 'טופס הזמנה 03-25  רוקחים עתיד.‏png‏'; ‏
-‏        } ‏else if (placeType === 'shrem_pharmacy‏') {‏
-‏            ‏pharmacyImage.src‏ = 'טופס הזמנה מרץ פרטיים.‏jpg‏'; ‏
-‏        }‏
-‏        ‏pharmacyImage.style.display = placeType ? 'block' : 'none‏';‏
-‏    }‏
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1em;
+            padding: 8px 0;
+        }
+        
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 1.3em;
+            color: var(--primary-color);
+            border-top: 2px solid var(--border-color);
+            margin-top: 10px;
+            padding-top: 10px;
+        }
 
-‏    ‏document.getElementById('orderForm').addEventListener('submit', ‎function(event‏) {‏
-‏        ‏event.preventDefault‏();‏
+        /* --- אישור ותשלום --- */
+        #creditCardCheckbox {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+        }
+        
+        #creditCardCheckbox label {
+            margin: 0 10px 0 0;
+            font-size: 1.1em;
+        }
+        
+        #creditCardCheckbox input {
+            width: auto;
+            height: 1.2em;
+            width: 1.2em;
+        }
 
-‏        ‏const customerName = ‎document.getElementById('customerName').value‏;‏
-‏        ‏const placeType = document.getElementById('placeType').value‏;‏
-‏        ‏const placeName = document.getElementById('placeName').value‏;‏
-‏        ‏const phoneNumber = document.getElementById('phoneNumber').value‏;‏
+        /* --- כפתור שליחה --- */
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.2s;
+        }
 
-‏        ‏let productSummary‏ = "";‏
-‏        ‏if (placeType)‎‏ {‏
-‏            ‏const products = productList[placeType]‎‏;‏
-‏            ‏products.forEach(product‏ => {‏
-‏                ‏const quantityInput = document.getElementById(product.id)‎‏;‏
-‏                ‏if (quantityInput.value > 0)‎‏ {‏
-‏                    ‏const quantity = parseInt(quantityInput.value)‎‏;‏
+        button:hover:not(:disabled) {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background-color: #a0a0a0;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-‏                    // חישוב הבונוס
-‏                    ‏let bonusCount = 0‎‏;‏
-‏                    ‏if (product.bonusQuantity && product.bulkThreshold && quantity ‎‎>= product.bulkThreshold)‎‏ {  ‏
-‏                        ‏bonusCount = product.bonusQuantity‏;‏
-‏                    }‏
+        /* --- רספונסיביות --- */
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+            }
 
-‏                    // מוסיפים את שם המוצר ושורת כמות
-‏                    ‏productSummary += `- ${product.name}\r\n‏   כמות הזמנה: ‏‏$‏‎{quantity}\r\n‏`;‏
-‏                    ‏
-‏                    // אם יש בונוס, מציגים
-‏                    ‏if (bonusCount > 0 && quantity >= product.bulkThreshold)‎‏ {‏
-‏                        ‏productSummary‏ += `   בונוס למוצר זה: $‏‎{bonusCount}\r\n‏`;‏
-‏                    }‏
-‏                    ‏productSummary += `\r\n‏`; // רווח בין מוצרים
-‏                }‏
-‏            });‏
-‏        }‏
+            .image-container {
+                position: static;
+                width: 100%;
+                max-width: 650px;
+                margin-bottom: 20px;
+                display: none; /* מוסתר גם כאן, JS יטפל בהצגה */
+            }
+            
+            .form-container {
+                 width: 100%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .form-container {
+                padding: 20px;
+            }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.4em; }
+        }
+    </style>
+</head>
+<body>
 
-‏        ‏const preTaxPrice = document.getElementById('preTaxPrice').innerText‏;‏
-‏        ‏const totalPriceWithTax = ‎document.getElementById('totalPriceWithTax').innerText‏;‏
+<main class="main-container">
+    <div class="form-container">
+        <h1>טופס הזמנה</h1>
+        
+        <form id="orderForm" novalidate>
+            <fieldset>
+                <legend><h2>פרטי המזמין</h2></legend>
+                <div class="form-group">
+                    <label for="customerName">שם מלא:</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="placeType">סוג העסק:</label>
+                    <select id="placeType" required>
+                        <option value="" disabled selected>-- יש לבחור --</option>
+                        <option value="pharmacy">בית מרקחת</option>
+                        <option value="future_pharmacy">בית מרקחת - רוקחים עתיד</option>
+                        <option value="shrem_pharmacy">בית מרקחת - שרמ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="placeName">שם בית המרקחת:</label>
+                    <input type="text" id="placeName" required>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">מספר טלפון:</label>
+                    <input type="tel" id="phoneNumber" required>
+                </div>
+            </fieldset>
 
-‏        ‏const shortOrderDetails‏ =‏
-‏`פרטי המזמין:‏
-‏----------------‏
-שם המזמין: ${‏customerName‏}‏
-סוג המקום: ${‏placeType‏}‏
-שם המקום: ${‏placeName‏}‏
-מספר פלאפון: ${‏phoneNumber‏}‏
+            <fieldset>
+                <div id="products-header">
+                    <legend><h2>רשימת מוצרים</h2></legend>
+                    <small>(המחירים אינם כוללים מע"מ)</small>
+                </div>
+                <div id="productList">
+                    </div>
+            </fieldset>
+            
+            <div id="summary-container">
+                <h3>סיכום הזמנה</h3>
+                <div class="summary-row">
+                    <span>סכום ביניים:</span>
+                    <span id="subtotal">0.00 ₪</span>
+                </div>
+                <div class="summary-row">
+                    <span>מע"מ (18%):</span>
+                    <span id="vat">0.00 ₪</span>
+                </div>
+                <div class="summary-row total">
+                    <span>סה"כ לתשלום:</span>
+                    <span id="total">0.00 ₪</span>
+                </div>
+            </div>
 
-מוצרים בהזמנה:‏
-‏----------------‏
-‏${‏productSummary‏}‏
+            <div id="creditCardCheckbox">
+                <input type="checkbox" id="creditCard" required>
+                <label for="creditCard">מאשר/ת תשלום בכרטיס אשראי</label>
+            </div>
+            
+            <button type="submit" id="submitBtn" disabled>שלח הזמנה</button>
+        </form>
+    </div>
 
+    <aside class="image-container">
+        <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
+    </aside>
+</main>
 
-סיכום:‏
-‏----------------‏
-‏${‏preTaxPrice‏}‏
-‏${‏totalPriceWithTax‏}‏
-‏`;‏
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
 
-‏        ‏window.location.href = `mailto:info@bmtdx.com?subject‏=הזמנה ‏חדשה&body=${encodeURIComponent(shortOrderDetails)}‎‏`;‏
-‏    });‏
-‏</‏script‏>‏
+        // --- קבועים ומשתנים ---
+        const VAT_RATE = 0.18; // 💙 כאן מעדכנים את שיעור המע"מ
+        const productData = {
+            pharmacy: [
+                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה',price: 24, bulkPrice: 20, bulkThreshold:1},
+                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט' , price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+                {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20},
+                {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50},
+                {id: 'quantity13', name: '"בדיקת הריון "בשעה טובה', price: 18.90},
+                {id: 'quantity6', name: 'בדיקה לדלקת בשתן', price: 13.90, bulkPrice: 10, bulkThreshold:1},
+                {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית',price: 17.20, bulkPrice: 10, bulkThreshold:1},
+                {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים',price: 33.90},
+                {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה',price: 24.90},
+                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה',price: 30.00},
+                {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה',price: 21.00},
+                {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
+            ],
+            future_pharmacy: [
+                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה',price: 24, bulkPrice: 20, bulkThreshold:1},
+                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה',price: 30.00},
+                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+                {id: 'quantity4', name: 'בדיקת הריון 1 - רוקחים עתיד', price: 2.90},
+                {id: 'quantity5', name: 'בדיקת הריון 2 - רוקחים עתיד', price: 5.20},
+                {id: 'quantity6', name: '"בדיקת הריון "בשעה טובה', price: 18.90},
+                {id: 'quantity7', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
+                {id: 'quantity8', name: 'בדיקת ביוץ 7 באריזה',price: 21.00},
+                {id: 'quantity9', name: 'בדיקה לדלקת בשתן', price: 13.90, bulkPrice: 10, bulkThreshold:1},
+                {id: 'quantity11', name: 'בדיקת קנדידה וגינאלית',price: 17.20, bulkPrice: 10, bulkThreshold:1},
+                {id: 'quantity12', name: 'בדיקה לגילוי דם סמוי בצואה',price: 24.90},
+                {id: 'quantity13', name: 'בדיקת סמים 8 פרמטרים',price: 33.90}
+            ],
+            shrem_pharmacy: [
+                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה',price: 24, bulkPrice: 20, bulkThreshold:1},
+                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט' , price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+                {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20},
+                {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50},
+                {id: 'quantity13', name: '"בדיקת הריון "בשעה טובה', price: 18.90},
+                {id: 'quantity6', name: 'בדיקה לדלקת בשתן', price: 13.90, bulkPrice: 10, bulkThreshold:1},
+                {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית',price: 17.20, bulkPrice: 10, bulkThreshold:1},
+                {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים',price: 33.90},
+                {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה',price: 24.90},
+                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה',price: 30.00},
+                {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה',price: 21.00},
+                {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90},
+            ]
+        };
+        
+        // --- אלמנטים מה-DOM ---
+        const form = document.getElementById('orderForm');
+        const placeTypeSelect = document.getElementById('placeType');
+        const productListDiv = document.getElementById('productList');
+        const imageContainer = document.querySelector('.image-container');
+        const pharmacyImage = document.getElementById('pharmacyImage');
+        const submitBtn = document.getElementById('submitBtn');
+        const subtotalEl = document.getElementById('subtotal');
+        const vatEl = document.getElementById('vat');
+        const totalEl = document.getElementById('total');
 
-‏</‏body‏>‏
-‏<!-- השארנו את ה-<‏body‏> המשוכפל בהערה כדי לא להסיר שורות -->‏
-‏<!-- ‏
-‏<‏body class="align-center‏">‏
-‏    <‏div class="image-container hide‏">‏
-‏        <‏img id="pharmacyImage" src="" alt‏="תמונת בית מרקחת">‏
-‏    </‏div‏>‏
-‏</‏body‏>‏
-‏-->‏
+        // --- פונקציות ---
 
-‏</‏html‏>‏
+        /** מעדכן את רשימת המוצרים בהתאם לסוג העסק שנבחר */
+        function populateProducts() {
+            const placeType = placeTypeSelect.value;
+            productListDiv.innerHTML = '';
+            
+            if (placeType && productData[placeType]) {
+                productData[placeType].forEach(product => {
+                    const productDiv = document.createElement('div');
+                    productDiv.className = 'product';
+                    productDiv.innerHTML = `
+                        <input type="number" id="${product.id}" min="0" value="0" data-price="${product.price}" 
+                               ${product.bulkPrice ? `data-bulk-price="${product.bulkPrice}"` : ''} 
+                               ${product.bulkThreshold ? `data-bulk-threshold="${product.bulkThreshold}"` : ''}>
+                        <label for="${product.id}">${product.name}</label>
+                    `;
+                    productListDiv.appendChild(productDiv);
+                });
+            }
+            calculateTotal();
+        }
+        
+        /** מחשב את הסכומים ומעדכן את הסיכום */
+        function calculateTotal() {
+            let subtotal = 0;
+            const productInputs = productListDiv.querySelectorAll('input[type="number"]');
+
+            productInputs.forEach(input => {
+                const quantity = parseInt(input.value) || 0;
+                if (quantity > 0) {
+                    const price = parseFloat(input.dataset.price);
+                    const bulkPrice = parseFloat(input.dataset.bulkPrice);
+                    const bulkThreshold = parseInt(input.dataset.bulkThreshold);
+                    
+                    let effectivePrice = price;
+                    if (bulkPrice && bulkThreshold && quantity >= bulkThreshold) {
+                        effectivePrice = bulkPrice;
+                    }
+                    subtotal += quantity * effectivePrice;
+                }
+            });
+            
+            const vat = subtotal * VAT_RATE;
+            const total = subtotal + vat;
+            
+            subtotalEl.textContent = `${subtotal.toFixed(2)} ₪`;
+            vatEl.textContent = `${vat.toFixed(2)} ₪`;
+            totalEl.textContent = `${total.toFixed(2)} ₪`;
+            
+            return subtotal;
+        }
+
+        /** מעדכן את התמונה המוצגת בצד */
+        function updateImage() {
+            const placeType = placeTypeSelect.value;
+            const images = {
+                pharmacy: 'טופס הזמנה מרץ פרטיים.jpg',
+                future_pharmacy: 'טופס הזמנה 03-25  רוקחים עתיד.png',
+                shrem_pharmacy: 'טופס הזמנה מרץ פרטיים.jpg'
+            };
+
+            if (placeType && images[placeType]) {
+                pharmacyImage.src = images[placeType];
+                imageContainer.style.display = 'block';
+            } else {
+                imageContainer.style.display = 'none';
+            }
+        }
+        
+        /** בודק האם הטופס תקין ומאפשר שליחה */
+        function validateForm() {
+            const isFormValid = form.checkValidity();
+            const hasProducts = calculateTotal() > 0;
+            submitBtn.disabled = !(isFormValid && hasProducts);
+        }
+
+        /** מטפל בשליחת הטופס */
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const customerName = document.getElementById('customerName').value;
+            const placeType = placeTypeSelect.options[placeTypeSelect.selectedIndex].text;
+            const placeName = document.getElementById('placeName').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+
+            let productSummary = "";
+            productData[placeTypeSelect.value].forEach(product => {
+                const quantityInput = document.getElementById(product.id);
+                if (quantityInput && quantityInput.value > 0) {
+                    const quantity = parseInt(quantityInput.value);
+                    productSummary += `- ${product.name}: ${quantity} יחידות\r\n`;
+                }
+            });
+            
+            const orderDetails = `
+פרטי הזמנה חדשה:
+-------------------------
+שם המזמין: ${customerName}
+סוג העסק: ${placeType}
+שם בית המרקחת: ${placeName}
+מספר טלפון: ${phoneNumber}
+-------------------------
+
+מוצרים שהוזמנו:
+-------------------------
+${productSummary}
+-------------------------
+
+סיכום תשלום:
+-------------------------
+סכום ביניים: ${subtotalEl.textContent}
+מע"מ: ${vatEl.textContent}
+סה"כ לתשלום: ${totalEl.textContent}
+-------------------------
+            `;
+            
+            window.location.href = `mailto:info@bmtdx.com?subject=הזמנה חדשה מ-${customerName}&body=${encodeURIComponent(orderDetails)}`;
+        }
+
+        // --- מאזינים לאירועים ---
+        placeTypeSelect.addEventListener('change', () => {
+            populateProducts();
+            updateImage();
+            validateForm();
+        });
+        
+        form.addEventListener('input', validateForm);
+        form.addEventListener('submit', handleFormSubmit);
+    });
+</script>
+
+</body>
+</html>
