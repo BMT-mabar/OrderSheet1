@@ -1,254 +1,547 @@
+
+ <!DOCTYPE html>
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="he">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMT Diagnostics - One Pager (A4 Professional Design)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- !!! שינוי: הוספת פונט חדש לכותרת הראשית. !!! -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <style>
-        /*
-        ========================================================================
-        הסבר על הגדרות עיצוב כלליות
-        ========================================================================
-        */
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>הזמנה מלאה עם EmailJS</title>
 
-        /* --- איך לשנות את צבעי המותג ---
-            כאן מוגדרים צבעי המותג הראשיים. כדי לשנות, פשוט החלף את קוד הצבע (לדוגמה: #0ea5e9) בצבע הרצוי.
-        */
-        :root {
-            --brand-blue: #0ea5e9; /* Sky-500 */
-            --brand-blue-dark: #0369a1; /* Sky-700 */
-            --text-dark: #1e293b; /* Slate-800 - גוון כהה ומעודן יותר */
-            --text-light: #475569; /* Slate-600 - גוון אפור קריא יותר */
-            --bg-page: #f8fafc; /* Slate-50 - רקע לבן עם נגיעה של אפור */
-            --bg-outer: #e2e8f0; /* Slate-200 - רקע חיצוני מעט כהה יותר */
-        }
+  <!-- טעינת גרסת ה-SDK העדכנית מ-JSDelivr -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function() {
+      // הכניסי כאן את ה-Public Key שלך מ-EmailJS
+      emailjs.init("96gsI3kIpoTMDmG46");
+    })();
+  </script>
 
-        body {
-            font-family: 'Assistant', sans-serif;
-            color: var(--text-dark);
-            background-color: var(--bg-outer);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-         
-        .a4-page {
-            background-color: var(--bg-page);
-            width: 210mm;
-            min-height: 297mm;
-            margin: 2rem auto; /* רווח קבוע לצפייה נוחה על המסך */
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); /* הצללה מעודנת יותר */
-            display: flex;
-            flex-direction: column;
-            /* שינוי בריווח הפנימי כדי להפחית שטח מת עליון */
-            padding: 12mm 15mm; 
-        }
-
-        /* הגדרות הדפסה כדי שהקובץ ייראה מושלם ב-PDF */
-        @media print {
-            body {
-                background-color: #fff !important;
-            }
-            .a4-page {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                box-shadow: none;
-                padding: 10mm;
-                 background-color: #fff;
-            }
-        }
-
-        .hero-section {
-            position: relative;
-            border-radius: 0.75rem; /* פינות מעוגלות */
-            overflow: hidden;
-            height: 280px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 1.5rem;
-        }
-
-        .hero-title {
-            /* הצללה רכה יותר לכותרת */
-            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-        }
-        
-        /* !!! שינוי: הגדרת הפונט החדש לכותרת הראשית. !!! */
-        .hero-font {
-            font-family: 'Playfair Display', serif;
-        }
-
-        .footer {
-            padding-top: 1.5rem;
-            margin-top: auto;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-        .footer a {
-            color: var(--brand-blue);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .footer a:hover {
-            color: var(--brand-blue-dark);
-        }
-        
-        /* עיצוב עדין לקו המפריד בפוטר */
-        .footer-separator {
-            border-top: 1px solid #cbd5e1; /* Slate-300 */
-        }
-        
-        /* עיצוב משופר לקופסאות הנתונים */
-        .stat-box {
-            background-color: #fff;
-            border: 1px solid #e2e8f0; /* Slate-200 */
-            border-radius: 0.75rem;
-            padding: 0.75rem;
-            transition: all 0.2s ease-in-out;
-        }
-        .stat-box:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px -2px rgba(0,0,0,0.05);
-        }
-    </style>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+      margin: 40px auto;
+    }
+    h1, h2 {
+      color: #333;
+      text-align: center;
+      margin: 0 0 20px 0;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      color: #333;
+      text-align: center;
+    }
+    input[type="text"],
+    input[type="tel"],
+    input[type="number"],
+    select {
+      width: 80%;
+      padding: 8px;
+      margin: 0 auto 10px auto;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      display: block;
+      text-align: center;
+      direction: rtl; 
+    }
+    #productList {
+      margin-top: 10px;
+    }
+    /* כל שורת מוצר */
+    .product {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* המוצר בצד ימין, הכמות בשמאל */
+      margin-bottom: 10px;
+    }
+    /* שם המוצר בימין */
+    .product-name {
+      flex: 1; /* תופס את הרוחב כך שהשם יהיה בימין */
+      text-align: right;
+      margin-left: 10px; /* מרווח משמאל כדי לא להיצמד לכמויות */
+    }
+    /* הכמויות */
+    .quantity-container {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .quantity-container button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: #fff;
+    }
+    .quantity-container input[type="number"] {
+      width: 60px;
+      text-align: center;
+    }
+    #totalPriceContainer {
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 1px solid #ccc;
+      text-align: center;
+    }
+    #totalPriceLabel {
+      margin-bottom: 10px;
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+    #preTaxPrice,
+    #totalPriceWithTax {
+      margin-top: 15px;
+      font-size: 1em;
+      font-weight: normal;
+      direction: rtl;
+      text-align: center;
+    }
+    button {
+      background-color: #007bff;
+      color: #fff;
+      margin: 20px auto 0 auto;
+      display: block;
+      width: 80%;
+      box-sizing: border-box;
+      font-size: 1em;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #creditCardCheckbox {
+      margin-top: 22px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      font-size: 1.05em;
+      justify-content: center;
+    }
+    /* להפוך גם את הכיתוב וגם את התיבה לקליקים */
+    #creditCardCheckbox label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    #creditCardCheckbox input {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    /* אזור התמונה (מופיע כשבוחרים בית מרקחת) */
+    .image-container {
+      width: auto;
+      height: 100vh;
+      overflow: hidden;
+      position: fixed;
+      left: 5px;
+      top: 0;
+      display: none; /* מוסתר כברירת מחדל */
+      align-items: center;
+      justify-content: left;
+    }
+    #pharmacyImage {
+      display: none;
+      height: 100%;
+      width: auto;
+      border-radius: 8px;
+    }
+    /* התאמות למובייל */
+    @media (max-width: 600px) {
+      .container {
+        padding: 10px;
+        margin-top: 20px;
+      }
+      .quantity-container button {
+        padding: 5px 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="a4-page">
-        <!-- ====================================================================== -->
-        <!--                         תוכן מרכזי (Main Content)                        -->
-        <!-- ====================================================================== -->
-        <main class="flex-grow">
-            <!-- אזור תמונה ראשית עם לוגו משולב -->
-            <section class="hero-section mb-8">
-                <!-- 
-                    --- איך להחליף את תמונת הרקע העליונה ---
-                    החלף את "your-hero-image.jpg" בשם קובץ התמונה שלך.
-                -->
-                <div style="background-image: url('BMT Lab On Time - Strep A brochure  (1).pdf.png'); background-size: cover; background-position: center;" class="absolute inset-0"></div>
-                <div class="absolute inset-0 bg-black/20"></div>
-                 
-                <div class="absolute top-6 left-6 z-20">
-                    <img src="unnamed.png" alt="BMT Diagnostics Logo" style="height: 60px;">
-                </div>
-                
-                <div class="relative z-10 text-white mt-28">
-                    <!-- !!! שינוי: הוספת קלאס לפונט החדש. !!! -->
-                    <h1 class="text-5xl font-bold hero-title hero-font">The Future of Diagnostics is Here.</h1>
-                    <p class="text-lg mt-4 max-w-2xl mx-auto hero-title leading-relaxed">
-                        Lab-On-Time™ delivers lab-grade accuracy to the point-of-care with a revolutionary single-step process.
-                    </p>
-                </div>
-            </section>
-            
-            <!-- אזור האתגר -->
-            <section class="mb-8 text-center max-w-4xl mx-auto">
-                <div>
-                    <h3 class="text-base font-semibold uppercase tracking-wider mb-2" style="color: var(--brand-blue);">The Challenge</h3>
-                    <h2 class="text-4xl font-bold mb-4" style="color: var(--text-dark);">Delays in Diagnostics</h2>
-                    <p class="text-lg leading-relaxed max-w-3xl mx-auto" style="color: var(--text-light);">
-                        Traditional diagnostic methods are often slow and lab-dependent, creating bottlenecks that delay crucial treatment. This inefficiency strains healthcare resources and can compromise patient care.
-                    </p>
-                </div>
-            </section>
-             
-            <!-- אזור תמונת המוצר והפטנט -->
-            <section class="mb-8">
-                <div class="flex justify-center items-center gap-x-8">
-                    <!-- תמונת המוצר -->
-                    <div class="flex-shrink-0" style="max-width: 500px;">
-                        <img src="image.png" alt="Lab-On-Time Device" class="w-full h-auto">
-                    </div>
-                    <!-- תמונת הפטנט -->
-                    <div class="flex-shrink-0">
-                        <img src="טקסט הפסקה שלך.png" alt="Patented Product" class="opacity-75" style="width: 120px;">
-                    </div>
-                </div>
-            </section>
+<div class="container">
+  <h1>הזמנה</h1>
+  <form id="orderForm">
+    <label>
+      שם המזמין:
+      <input type="text" id="customerName" required />
+    </label>
+    <label>
+      בית מרקחת:
+      <select id="placeType" required onchange="onPlaceTypeChange()">
+        <option value="" disabled selected>-- בחר/י --</option>
+        <option value="pharmacy">בית מרקחת</option>
+        <option value="future_pharmacy">בית מרקחת - רוקחים עתיד</option>
+        <option value="shrem_pharmacy">בית מרקחת - שרמ</option>
+      </select>
+    </label>
+    <label id="placeNameLabel">
+      שם בית המרקחת:
+      <input type="text" id="placeName" required />
+    </label>
+    <label>
+      מספר פלאפון של המזמין:
+      <input type="tel" id="phoneNumber" required />
+    </label>
 
-            <!-- נתונים מרכזיים -->
-            <section class="grid grid-cols-4 gap-5 text-center mb-10">
-                <div class="stat-box">
-                    <p class="text-3xl font-bold" style="color: var(--brand-blue);">1-Step</p>
-                    <p class="text-xs text-slate-500 tracking-wide uppercase">Operation</p>
-                </div>
-                <div class="stat-box">
-                    <p class="text-3xl font-bold" style="color: var(--brand-blue);">~5 Min</p>
-                    <p class="text-xs text-slate-500 tracking-wide uppercase">Time to Result</p>
-                </div>
-                <div class="stat-box">
-                    <p class="text-3xl font-bold" style="color: var(--brand-blue);">95.1%</p>
-                    <p class="text-xs text-slate-500 tracking-wide uppercase">Sensitivity</p>
-                </div>
-                <div class="stat-box">
-                    <p class="text-3xl font-bold" style="color: var(--brand-blue);">97.8%</p>
-                    <p class="text-xs text-slate-500 tracking-wide uppercase">Specificity</p>
-                </div>
-            </section>
-            
-            <!-- אזור הפתרון -->
-            <section class="text-center max-w-4xl mx-auto">
-                <div>
-                    <h3 class="text-base font-semibold uppercase tracking-wider mb-2" style="color: var(--brand-blue);">The Solution</h3>
-                    <img src="unnamed (1).png" alt="Lab-On-Time Logo" class="h-16 mx-auto mb-4">
-                    <p class="text-lg leading-relaxed max-w-3xl mx-auto" style="color: var(--text-light);">
-                        BMT Diagnostics closes this gap by bringing instant, reliable testing directly to the point-of-care. Our patented platform is designed for maximum ease-of-use.
-                        <br><strong class="font-bold block mt-3 text-lg" style="color: var(--brand-blue);">No-Step. No Confusion. Just Results.</strong>
-                    </p>
-                </div>
-            </section>
+    <h2>רשימת מוצרים</h2>
+    <div id="productList"></div>
 
-            <div class="w-24 h-px bg-slate-300 my-10 mx-auto"></div>
-
-            <!-- תכונות עיקריות -->
-            <section>
-                 <h2 class="text-2xl font-bold text-center mb-8" style="color: var(--brand-blue-dark);">Why Lab-On-Time™ is the Right Choice</h2>
-                 <div class="grid grid-cols-4 gap-8 text-center">
-                    <div class="flex flex-col">
-                        <svg class="h-10 w-10 mx-auto mb-2 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
-                        <h3 class="font-bold text-base mt-1">Immediate Treatment</h3>
-                        <p class="text-sm text-slate-500 mt-1 px-1 flex-grow">Enables instant treatment decisions with results in about 5 minutes.</p>
-                    </div>
-                    <div class="flex flex-col">
-                        <svg class="h-10 w-10 mx-auto mb-2 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <h3 class="font-bold text-base mt-1">Unmatched Simplicity</h3>
-                        <p class="text-sm text-slate-500 mt-1 px-1 flex-grow">A patented 1-step process with less than one minute of hands-on time.</p>
-                    </div>
-                    <div class="flex flex-col">
-                        <svg class="h-10 w-10 mx-auto mb-2 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <h3 class="font-bold text-base mt-1">Superior<br>Accuracy</h3>
-                        <p class="text-sm text-slate-500 mt-1 px-1 flex-grow">Our physician-driven, closed-system design provides lab-grade results.</p>
-                    </div>
-                    <div class="flex flex-col">
-                        <svg class="h-10 w-10 mx-auto mb-2 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.623 0-1.631-.465-3.163-1.282-4.471m-2.11-1.138A11.959 11.959 0 0112 3.465c-1.144 0-2.234.226-3.235.632m12.332 3.292a11.962 11.962 0 01-3.235-.632" /></svg>
-                        <h3 class="font-bold text-base mt-1">Error-Proof by Design</h3>
-                        <p class="text-sm text-slate-500 mt-1 px-1 flex-grow">The all-in-one system has zero open transfers, ensuring complete safety.</p>
-                    </div>
-                 </div>
-            </section>
-        </main>
-         
-        <!-- ====================================================================== -->
-        <!--                         כותרת תחתונה (Footer)                           -->
-        <!-- ====================================================================== -->
-        <footer class="footer">
-             <div class="footer-separator w-1/3 mx-auto mb-4"></div>
-             <h3 class="font-bold text-base mb-1" style="color: var(--text-dark);">Join Us in the Diagnostics Revolution</h3>
-             <p class="text-sm mb-3 text-slate-500">
-                We are actively seeking global strategic partners, distributors, and OEM collaborators.
-             </p>
-            <p class="text-xs">
-                <strong>Contact:</strong> Phone: +972-4-639116 | Email: <a href="mailto:idan@bmtdx.com">idan@bmtdx.com</a> | Website: <a href="http://www.bio-marketing-t.com" target="_blank" rel="noopener noreferrer">www.bio-marketing-t.com</a>
-                <br>
-                <span class="mt-2 block">&copy; 2025 BMT Diagnostics. All rights reserved.</span>
-            </p>
-        </footer>
+    <div id="totalPriceContainer">
+      <div id="totalPriceLabel">סיכום לתשלום</div>
+      <div id="preTaxPrice">סה\"כ לתשלום ללא מע\"מ: 0 ש\"ח</div>
+      <div id="totalPriceWithTax">סה\"כ לתשלום כולל מע\"מ: 0 ש\"ח</div>
+      <div id="preTaxPrice">סה"כ לתשלום ללא מע"מ: 0 ש"ח</div>
+      <div id="totalPriceWithTax">סה"כ לתשלום כולל מע"מ: 0 ש"ח</div>
     </div>
+
+    <div id="creditCardCheckbox">
+      <label style="font-weight: bold;">
+        <input type="checkbox" id="creditCard" required />
+        מאשר תשלום בכרטיס אשראי
+      </label>
+    </div>
+
+    <button type="submit">שלח הזמנה</button>
+  </form>
+</div>
+
+<!-- אזור התמונה (ייפתח כשבוחרים בית מרקחת) -->
+<div class="image-container">
+  <img id="pharmacyImage" src="" alt="תמונת בית מרקחת" />
+</div>
+
+<script>
+// פונקציה לעיצוב מספרים (פסיק לאלפים, שתי ספרות אחרי הנקודה)
+function formatNumber(num) {
+  return num.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+// מופעל בכל פעם שמשתנה הבחירה ב'בית מרקחת'
+function onPlaceTypeChange() {
+  const placeType = document.getElementById("placeType").value;
+  const imageContainer = document.querySelector(".image-container");
+  const formContainer = document.querySelector(".container");
+
+  if (placeType !== "") {
+    // מציגים תמונה
+    if (window.innerWidth >= 601) {
+      imageContainer.style.display = "flex";
+      formContainer.style.marginLeft = "700px";
+    } else {
+      formContainer.classList.add("margin-top-320");
+      imageContainer.style.display = "flex";
+      document.querySelector("body").classList.add("align-center");
+    }
+    updateImage(placeType);
+    updateForm(placeType);
+  } else {
+    // אם חזרנו לערך ריק => מסתירים
+    imageContainer.style.display = "none";
+    formContainer.classList.remove("margin-top-320");
+    document.querySelector("body").classList.remove("align-center");
+    document.getElementById("productList").innerHTML = "";
+    calculateTotal();
+  }
+}
+
+// בחירת התמונה לפי בית מרקחת
+function updateImage(placeType) {
+  const pharmacyImage = document.getElementById("pharmacyImage");
+  if (placeType === "pharmacy") {
+    pharmacyImage.src = "טופס הזמנה מרץ פרטיים.jpg";
+  } else if (placeType === "future_pharmacy") {
+    pharmacyImage.src = "טופס הזמנה 03-25  רוקחים עתיד.png";
+  } else if (placeType === "shrem_pharmacy") {
+    pharmacyImage.src = "טופס הזמנה מרץ פרטיים.jpg";
+  }
+  pharmacyImage.style.display = placeType ? "block" : "none";
+}
+
+        // אובייקט עם רשימת מוצרים
+        const productList = {
+            pharmacy: [
+                {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+                {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+                {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+                {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+                {id: "quantity4", name: "בדיקת הריון 1", price: 5.20},
+                {id: "quantity5", name: "בדיקת הריון 2", price: 6.50},
+                {id: "quantity13", name: ""בדיקת הריון "בשעה טובה", price: 18.90},
+                {id: "quantity6", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity7", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity8", name: "בדיקת סמים 8 פרמטרים", price: 33.90},
+                {id: "quantity9", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+                {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+                {id: "quantity11", name: "בדיקת ביוץ - 7 באריזה", price: 21.00},
+                {id: "quantity12", name: ""בדיקת ביוץ "בשעה טובה", price: 29.90}
+            ],
+            future_pharmacy: [
+                {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+                {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+                {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+                {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+                {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+                {id: "quantity4", name: "בדיקת הריון 1 - רוקחים עתיד", price: 2.90},
+                {id: "quantity5", name: "בדיקת הריון 2 - רוקחים עתיד", price: 5.20},
+                {id: "quantity6", name: ""בדיקת הריון "בשעה טובה", price: 18.90},
+                {id: "quantity7", name: ""בדיקת ביוץ "בשעה טובה", price: 29.90},
+                {id: "quantity8", name: "בדיקת ביוץ 7 באריזה", price: 21.00},
+                {id: "quantity9", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity11", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity12", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+                {id: "quantity13", name: "בדיקת סמים 8 פרמטרים", price: 33.90}
+            ],
+            shrem_pharmacy: [
+                {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+                {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+                {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+                {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+                {id: "quantity4", name: "בדיקת הריון 1", price: 5.20},
+                {id: "quantity5", name: "בדיקת הריון 2", price: 6.50},
+                {id: "quantity13", name: ""בדיקת הריון "בשעה טובה", price: 18.90},
+                {id: "quantity6", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity7", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+                {id: "quantity8", name: "בדיקת סמים 8 פרמטרים", price: 33.90},
+                {id: "quantity9", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+                {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+                {id: "quantity11", name: "בדיקת ביוץ - 7 באריזה", price: 21.00},
+                {id: "quantity12", name: ""בדיקת ביוץ "בשעה טובה", price: 29.90}
+            ]
+        };
+// פונקציה שמעדכנת את התמונה לפי הבחירה
+function updateImage(placeType) {
+    const pharmacyImage = document.getElementById("pharmacyImage");
+    if (placeType === "pharmacy") {
+        pharmacyImage.src = "טופס הזמנה מרץ פרטיים.jpg";
+    } else if (placeType === "future_pharmacy") {
+        pharmacyImage.src = "טופס הזמנה 03-25  רוקחים עתיד.png";
+    } else if (placeType === "shrem_pharmacy") {
+        pharmacyImage.src = "טופס הזמנה מרץ פרטיים.jpg";
+    }
+    pharmacyImage.style.display = placeType ? "block" : "none";
+}
+
+        // מכניס מוצרים למסך לאחר בחירת בית מרקחת
+        function updateForm() {
+            const placeType = document.getElementById("placeType").value;
+            const productListDiv = document.getElementById("productList");
+            productListDiv.innerHTML = "";
+// אובייקט עם רשימת מוצרים
+const productList = {
+    pharmacy: [
+        {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+        {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+        {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+        {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+        {id: "quantity4", name: "בדיקת הריון 1", price: 5.20},
+        {id: "quantity5", name: "בדיקת הריון 2", price: 6.50},
+        {id: "quantity13", name: "\"בדיקת הריון \"בשעה טובה", price: 18.90},
+        {id: "quantity6", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity7", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity8", name: "בדיקת סמים 8 פרמטרים", price: 33.90},
+        {id: "quantity9", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+        {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+        {id: "quantity11", name: "בדיקת ביוץ - 7 באריזה", price: 21.00},
+        {id: "quantity12", name: "\"בדיקת ביוץ \"בשעה טובה", price: 29.90}
+    ],
+    future_pharmacy: [
+        {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+        {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+        {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+        {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+        {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+        {id: "quantity4", name: "בדיקת הריון 1 - רוקחים עתיד", price: 2.90},
+        {id: "quantity5", name: "בדיקת הריון 2 - רוקחים עתיד", price: 5.20},
+        {id: "quantity6", name: "\"בדיקת הריון \"בשעה טובה", price: 18.90},
+        {id: "quantity7", name: "\"בדיקת ביוץ \"בשעה טובה", price: 29.90},
+        {id: "quantity8", name: "בדיקת ביוץ 7 באריזה", price: 21.00},
+        {id: "quantity9", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity11", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity12", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+        {id: "quantity13", name: "בדיקת סמים 8 פרמטרים", price: 33.90}
+    ],
+    shrem_pharmacy: [
+        {id: "quantity14", name: "בדיקה לאבחון שפעת + קורונה", price: 24, bulkPrice: 20, bulkThreshold:1},
+        {id: "quantity1", name: "פורמט עט - NO STEP בדיקות דלקת גרון", price: 19.90, bulkPrice: 17.90, bulkThreshold:100},
+        {id: "quantity2", name: "STREP T בדיקה לדלקת גרון", price: 13.90, bulkPrice: 12.90, bulkThreshold:100},
+        {id: "quantity3", name: "A + B בדיקה לשפעת - פורמט עט", price: 19.90, bulkPrice: 17.90, bulkThreshold:1},
+        {id: "quantity4", name: "בדיקת הריון 1", price: 5.20},
+        {id: "quantity5", name: "בדיקת הריון 2", price: 6.50},
+        {id: "quantity13", name: "\"בדיקת הריון \"בשעה טובה", price: 18.90},
+        {id: "quantity6", name: "בדיקה לדלקת בשתן", price: 13.90, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity7", name: "בדיקת קנדידה וגינאלית", price: 17.20, bulkPrice: 10, bulkThreshold:1},
+        {id: "quantity8", name: "בדיקת סמים 8 פרמטרים", price: 33.90},
+        {id: "quantity9", name: "בדיקה לגילוי דם סמוי בצואה", price: 24.90},
+        {id: "quantity10", name: "בדיקה לאבחון וירוס הקורונה", price: 30.00},
+        {id: "quantity11", name: "בדיקת ביוץ - 7 באריזה", price: 21.00},
+        {id: "quantity12", name: "\"בדיקת ביוץ \"בשעה טובה", price: 29.90}
+    ]
+};
+
+            function updateForm(placeType) {
+
+// מציגים את המוצרים (שם מימין, כמות משמאל: כפתור מינוס -/תיבה/כפתור פלוס +)
+function updateForm(placeType) {
+  const productListDiv = document.getElementById("productList");
+  productListDiv.innerHTML = "";
+
+  const products = productListData[placeType] || [];
+  products.forEach(product => {
+    const productDiv = document.createElement("div");
+    productDiv.className = "product";
+    productDiv.innerHTML = `
+      <span class="product-name">${product.name}</span>
+      <div class="quantity-container">
+        <button type="button" onclick="decreaseQuantity('${product.id}')">-</button>
+        <input type="number" id="${product.id}" min="0" value="0" oninput="calculateTotal()" />
+        <button type="button" onclick="increaseQuantity('${product.id}')">+</button>
+      </div>
+    `;
+    productListDiv.appendChild(productDiv);
+  });
+
+  calculateTotal();
+}
+
+// כפתור "-"
+function decreaseQuantity(id) {
+  const inputEl = document.getElementById(id);
+  let val = parseInt(inputEl.value) || 0;
+  if (val > 0) {
+    val -= 1;
+  }
+  inputEl.value = val;
+  calculateTotal();
+}
+
+// כפתור "+"
+function increaseQuantity(id) {
+  const inputEl = document.getElementById(id);
+  let val = parseInt(inputEl.value) || 0;
+  val += 1;
+  inputEl.value = val;
+  calculateTotal();
+}
+
+// מחשב את הסכום הכולל
+function calculateTotal() {
+  let total = 0;
+  const placeType = document.getElementById("placeType").value;
+
+  if (placeType) {
+    const products = productListData[placeType];
+    products.forEach(product => {
+      const quantityInput = document.getElementById(product.id);
+      if (quantityInput) {
+        const quantity = parseInt(quantityInput.value) || 0;
+        if (quantity > 0) {
+          const price = product.price || 0;
+          total += price * quantity;
+        }
+      }
+    });
+  }
+
+  const preTaxTotal = total;
+  const taxTotal = preTaxTotal * 1.18;
+
+  document.getElementById("preTaxPrice").innerText = 
+    `סה"כ לתשלום ללא מע"מ: ${formatNumber(preTaxTotal)} ש"ח`;
+    `סה\"כ לתשלום ללא מע\"מ: ${formatNumber(preTaxTotal)} ש\"ח`;
+  document.getElementById("totalPriceWithTax").innerText =
+    `סה"כ לתשלום כולל מע"מ: ${formatNumber(taxTotal)} ש"ח`;
+    `סה\"כ לתשלום כולל מע\"מ: ${formatNumber(taxTotal)} ש\"ח`;
+}
+
+// שליחת הטופס ל-EmailJS
+document.getElementById("orderForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const customerName = document.getElementById("customerName").value;
+  const placeType = document.getElementById("placeType").value;
+  const placeName = document.getElementById("placeName").value;
+  const phoneNumber = document.getElementById("phoneNumber").value;
+
+  let productSummary = "";
+  if (placeType) {
+    const products = productListData[placeType];
+    products.forEach(product => {
+      const quantityInput = document.getElementById(product.id);
+      if (quantityInput) {
+        const quantity = parseInt(quantityInput.value) || 0;
+        if (quantity > 0) {
+          const lineTotal = (product.price || 0) * quantity;
+          productSummary += 
+`- ${product.name}
+  כמות: ${quantity}
+  מחיר ליחידה: ${formatNumber(product.price || 0)} ש"ח
+  סה"כ למוצר זה: ${formatNumber(lineTotal)} ש"ח
+
+`;
+        }
+      }
+    });
+  }
+
+  const preTaxPrice = document.getElementById("preTaxPrice").innerText;
+  const totalPriceWithTax = document.getElementById("totalPriceWithTax").innerText;
+
+  // כותרות בולטות במייל באמצעות פסיקים/שורות
+  const shortOrderDetails = 
+`************* פרטי המזמין *************
+שם המזמין: ${customerName}
+סוג המקום: ${placeType}
+שם המקום: ${placeName}
+מספר פלאפון: ${phoneNumber}
+
+************* מוצרים בהזמנה *************
+${productSummary}
+
+************* סיכום הזמנה *************
+${preTaxPrice}
+${totalPriceWithTax}
+`;
+
+  // הכניסי כאן את ה-Service ID וה-Template ID שלך
+  const serviceID = "YOUR_SERVICE_ID";
+  const templateID = "YOUR_TEMPLATE_ID";
+  const serviceID = "service_ja10oz8";
+  const templateID = "template_cbiw9df";
+
+  const templateParams = {
+    customer_name: customerName,
+    place_type: placeType,
+    place_name: placeName,
+    phone_number: phoneNumber,
+    shortOrderDetails: shortOrderDetails,
+  };
+
+  emailjs.send(serviceID, templateID, templateParams)
+    .then(() => {
+      alert("ההזמנה נשלחה בהצלחה!");
+    }, (error) => {
+      alert("שגיאה בשליחת ההזמנה: " + JSON.stringify(error));
+    });
+});
+</script>
 </body>
 </html>
