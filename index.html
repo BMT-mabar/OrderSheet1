@@ -513,7 +513,7 @@
             // 1. Prepare order data object
             const orderData = {
                 customerName: document.getElementById('customerName').value,
-                placeType: placeTypeSelect.options[placeTypeSelect.selectedIndex].text,
+                placeType: document.getElementById('placeType').value,
                 placeName: document.getElementById('placeName').value,
                 phoneNumber: document.getElementById('phoneNumber').value,
                 products: [],
@@ -596,4 +596,5 @@
 
 </body>
 </html>
+
 
