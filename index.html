@@ -7,14 +7,14 @@
     <style>
         /* --- משתני עיצוב גלובליים --- */
         :root {
-            --primary-color: #005A9C; /* כחול עמוק */
-            --secondary-color: #00A9E0; /* תכלת */
-            --background-color: #f8f9fa; /* אפור בהיר רקע */
-            --form-background: #ffffff; /* לבן */
-            --text-color: #333333; /* שחור-אפרפר */
-            --border-color: #dee2e6; /* אפור גבולות */
-            --success-color: #28a745; /* ירוק */
-            --danger-color: #dc3545; /* אדום */
+            --primary-color: #005A9C;
+            --secondary-color: #00A9E0;
+            --background-color: #f8f9fa;
+            --form-background: #ffffff;
+            --text-color: #333333;
+            --border-color: #dee2e6;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
             --border-radius: 8px;
             --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
@@ -50,37 +50,11 @@
             max-width: 650px;
             transition: all 0.3s ease;
         }
-
-        /* --- קונטיינר התמונה --- */
-        .image-container {
-            flex-basis: 45%;
-            position: sticky;
-            top: 20px;
-            display: none; /* התמונה מוסתרת בהתחלה */
-        }
-
-        #pharmacyImage {
-            width: 100%;
-            height: auto;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-        }
-
-        /* --- כותרות --- */
+        
         h1, h2 {
             color: var(--primary-color);
             text-align: center;
             margin-bottom: 25px;
-        }
-        
-        h1 {
-            font-size: 2.2em;
-        }
-        
-        h2 {
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 10px;
-            font-size: 1.6em;
         }
 
         /* --- עיצוב כללי לטופס --- */
@@ -121,17 +95,6 @@
         }
 
         /* --- רשימת מוצרים --- */
-        #products-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        #products-header small {
-            font-weight: normal;
-            color: #6c757d;
-        }
-        
         .product {
             display: flex;
             align-items: center;
@@ -155,58 +118,8 @@
             text-align: center;
         }
         
-        /* --- סיכום תשלום --- */
-        #summary-container {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-        }
-
-        #summary-container h3 {
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1em;
-            padding: 8px 0;
-        }
-        
-        .summary-row.total {
-            font-weight: bold;
-            font-size: 1.3em;
-            color: var(--primary-color);
-            border-top: 2px solid var(--border-color);
-            margin-top: 10px;
-            padding-top: 10px;
-        }
-
-        /* --- אישור ותשלום --- */
-        #creditCardCheckbox {
-            display: flex;
-            align-items: center;
-            margin: 25px 0;
-        }
-        
-        #creditCardCheckbox label {
-            margin: 0 10px 0 0;
-            font-size: 1.1em;
-        }
-        
-        #creditCardCheckbox input {
-            width: auto;
-            height: 1.2em;
-            width: 1.2em;
-        }
-
         /* --- כפתור שליחה --- */
-        button {
+        button[type="submit"] {
             background-color: var(--secondary-color);
             color: white;
             border: none;
@@ -236,7 +149,7 @@
             padding: 10px;
             margin-top: 15px;
             border-radius: 5px;
-            display: none; /* מוסתר כברירת מחדל */
+            display: none;
             font-weight: bold;
         }
         #statusMessage.success {
@@ -248,37 +161,6 @@
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
-        }
-
-        /* --- רספונסיביות --- */
-        @media (max-width: 992px) {
-            .main-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .image-container {
-                position: static;
-                width: 100%;
-                max-width: 650px;
-                margin-bottom: 20px;
-                display: none; /* מוסתר גם כאן, JS יטפל בהצגה */
-            }
-            
-            .form-container {
-                 width: 100%;
-            }
-        }
-        
-        @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            .form-container {
-                padding: 20px;
-            }
-            h1 { font-size: 1.8em; }
-            h2 { font-size: 1.4em; }
         }
     </style>
 </head>
@@ -315,116 +197,78 @@
             </fieldset>
 
             <fieldset>
-                <div id="products-header">
-                    <legend><h2>רשימת מוצרים</h2></legend>
-                    <small>(המחירים אינם כוללים מע"מ)</small>
-                </div>
+                <legend><h2>רשימת מוצרים</h2></legend>
                 <div id="productList">
                     </div>
             </fieldset>
-            
-            <div id="summary-container">
-                <h3>סיכום הזמנה</h3>
-                <div class="summary-row">
-                    <span>סכום ביניים:</span>
-                    <span id="subtotal">0.00 ₪</span>
-                </div>
-                <div class="summary-row">
-                    <span>מע"מ (18%):</span>
-                    <span id="vat">0.00 ₪</span>
-                </div>
-                <div class="summary-row total">
-                    <span>סה"כ לתשלום:</span>
-                    <span id="total">0.00 ₪</span>
-                </div>
-            </div>
-
-            <div id="creditCardCheckbox">
-                <input type="checkbox" id="creditCard" required>
-                <label for="creditCard">מאשר/ת תשלום בכרטיס אשראי</label>
-            </div>
             
             <button type="submit" id="submitBtn" disabled>שלח הזמנה</button>
             <div id="statusMessage"></div>
         </form>
     </div>
-
-    <aside class="image-container">
-        <img id="pharmacyImage" src="" alt="תמונת בית מרקחת">
-    </aside>
 </main>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-        // --- קבועים ומשתנים ---
-        const VAT_RATE = 0.18; // 💙 כאן מעדכנים את שיעור המע"מ
         const productData = {
             pharmacy: [
-                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה',price: 24, bulkPrice: 20, bulkThreshold:1,sku:'7290019098546'},
-                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100,sku:'7290013882080'},
-                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100,sku:'7290008123723},
-                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט' , price: 19.90,bulkPrice: 17.90, bulkThreshold:1,sku:'7290013882165'},
-                {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20,sku:'7290013882097'},
-                {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50,sku:'7290013882103'},
-                {id: 'quantity13', name: '"בדיקת הריון "בשעה טובה', price: 18.90,sku:'7290013882172-7'},
-                {id: 'quantity6', name: 'בדיקה לדלקת בשתן', price: 13.90, bulkPrice: 10, bulkThreshold:1,sku:'7290013882035'},
-                {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית',price: 17.20, bulkPrice: 10, bulkThreshold:1,sku:'7290013882042'},
-                {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים',price: 33.90,sku:'7290013882127'},
-                {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה',price: 24.90,sku:'7290013882066'},
-                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה',price: 30.00,sku:'7290019098409'},
-                {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה',price: 21.00,sku:'7290013882028-7'},
-                {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90,sku:'7290013882073-12'},
+                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
+                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', sku: '7290013882080', price: 19.90},
+                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', sku: '7290008123723', price: 13.90},
+                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', sku: '7290013882165', price: 19.90},
+                {id: 'quantity4', name: 'בדיקת הריון 1', sku: '7290013882097', price: 5.20},
+                {id: 'quantity5', name: 'בדיקת הריון 2', sku: '7290013882103', price: 6.50},
+                {id: 'quantity13', name: '"בדיקת הריון "בשעה טובה', sku: '7290013882172-7', price: 18.90},
+                {id: 'quantity6', name: 'בדיקה לדלקת בשתן', sku: '7290013882035', price: 13.90},
+                {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית', sku: '7290013882042', price: 17.20},
+                {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים', sku: '7290013882127', price: 33.90},
+                {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', sku: '7290013882066', price: 24.90},
+                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', sku: '7290019098409', price: 30.00},
+                {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', sku: '7290013882028-7', price: 21.00},
+                {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', sku: '7290013882073-12', price: 29.90},
             ],
             future_pharmacy: [
-                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה',price: 24, bulkPrice: 20, bulkThreshold:1,sku:'7290019098546'},
-                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה',price: 30.00,sku:'7290019098409'},
-                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90,bulkPrice: 17.90, bulkThreshold:100,sku:'7290013882080'},
-                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100,sku:'7290008123723'},
-                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', price: 19.90, bulkPrice: 17.90, bulkThreshold:1,sku:'7290013882165'},
-                {id: 'quantity4', name: 'בדיקת הריון 1 - רוקחים עתיד', price: 2.90, sku:'7290013882134'},
-                {id: 'quantity5', name: 'בדיקת הריון 2 - רוקחים עתיד', price: 5.20,sku:'7290013882196'},
-                {id: 'quantity6', name: '"בדיקת הריון "בשעה טובה', price: 18.90,sku:'7290013882172-7'},
-                {id: 'quantity7', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90,sku:'7290013882073-12'},
-                {id: 'quantity8', name: 'בדיקת ביוץ 7 באריזה',price: 21.00,sku:'7290013882028-7'},
-                {id: 'quantity9', name: 'בדיקה לדלקת בשתן', price: 13.90, bulkPrice: 10, bulkThreshold:1,sku:'7290013882035'},
-                {id: 'quantity11', name: 'בדיקת קנדידה וגינאלית',price: 17.20, bulkPrice: 10, bulkThreshold:1,sku:'7290013882042'},
-                {id: 'quantity12', name: 'בדיקה לגילוי דם סמוי בצואה',price: 24.90,sku:'7290013882066'},
-                {id: 'quantity13', name: 'בדיקת סמים 8 פרמטרים',price: 33.90,sku:'7290013882127'}
+                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
+                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', sku: '7290019098409', price: 30.00},
+                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', sku: '7290013882080', price: 19.90},
+                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', sku: '7290008123723', price: 13.90},
+                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', sku: '7290013882165', price: 19.90},
+                {id: 'quantity4', name: 'בדיקת הריון 1 - רוקחים עתיד', sku: '7290013882134', price: 2.90},
+                {id: 'quantity5', name: 'בדיקת הריון 2 - רוקחים עתיד', sku: '7290013882196', price: 5.20},
+                {id: 'quantity6', name: '"בדיקת הריון "בשעה טובה', sku: '7290013882172-7', price: 18.90},
+                {id: 'quantity7', name: '"בדיקת ביוץ "בשעה טובה', sku: '7290013882073-12', price: 29.90},
+                {id: 'quantity8', name: 'בדיקת ביוץ 7 באריזה', sku: '7290013882028-7', price: 21.00},
+                {id: 'quantity9', name: 'בדיקה לדלקת בשתן', sku: '7290013882035', price: 13.90},
+                {id: 'quantity11', name: 'בדיקת קנדידה וגינאלית', sku: '7290013882042', price: 17.20},
+                {id: 'quantity12', name: 'בדיקה לגילוי דם סמוי בצואה', sku: '7290013882066', price: 24.90},
+                {id: 'quantity13', name: 'בדיקת סמים 8 פרמטרים', sku: '7290013882127', price: 33.90}
             ],
             shrem_pharmacy: [
-                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה',price: 24, bulkPrice: 20, bulkThreshold:1,sku:'7290019098546'},
-                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', price: 19.90, bulkPrice: 17.90, bulkThreshold:100,sku:'7290013882080'},
-                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', price: 13.90, bulkPrice: 12.90, bulkThreshold:100,sku:'7290008123723},
-                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט' , price: 19.90,bulkPrice: 17.90, bulkThreshold:1,sku:'7290013882165'},
-                {id: 'quantity4', name: 'בדיקת הריון 1', price: 5.20,sku:'7290013882097'},
-                {id: 'quantity5', name: 'בדיקת הריון 2', price: 6.50,sku:'7290013882103'},
-                {id: 'quantity13', name: '"בדיקת הריון "בשעה טובה', price: 18.90,sku:'7290013882172-7'},
-                {id: 'quantity6', name: 'בדיקה לדלקת בשתן', price: 13.90,bulkPrice: 10, bulkThreshold:1,sku:'7290013882035'},
-                {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית',price: 17.20, bulkPrice: 10, bulkThreshold:1,sku:'7290013882042'},
-                {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים',price: 33.90,sku:'7290013882127'},
-                {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה',price: 24.90,sku:'7290013882066'},
-                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה',price: 30.00,sku:'7290019098409'},
-                {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה',price: 21.00,sku:'7290013882028-7'},
-                {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', price: 29.90,sku:'7290013882073-12'},
+                // Assuming the same product list as 'pharmacy' for this example
+                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
+                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', sku: '7290013882080', price: 19.90},
+                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', sku: '7290008123723', price: 13.90},
+                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', sku: '7290013882165', price: 19.90},
+                {id: 'quantity4', name: 'בדיקת הריון 1', sku: '7290013882097', price: 5.20},
+                {id: 'quantity5', name: 'בדיקת הריון 2', sku: '7290013882103', price: 6.50},
+                {id: 'quantity13', name: '"בדיקת הריון "בשעה טובה', sku: '7290013882172-7', price: 18.90},
+                {id: 'quantity6', name: 'בדיקה לדלקת בשתן', sku: '7290013882035', price: 13.90},
+                {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית', sku: '7290013882042', price: 17.20},
+                {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים', sku: '7290013882127', price: 33.90},
+                {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', sku: '7290013882066', price: 24.90},
+                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', sku: '7290019098409', price: 30.00},
+                {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', sku: '7290013882028-7', price: 21.00},
+                {id: 'quantity12', name: '"בדיקת ביוץ "בשעה טובה', sku: '7290013882073-12', price: 29.90},
             ]
         };
         
-        // --- אלמנטים מה-DOM ---
         const form = document.getElementById('orderForm');
         const placeTypeSelect = document.getElementById('placeType');
         const productListDiv = document.getElementById('productList');
-        const imageContainer = document.querySelector('.image-container');
-        const pharmacyImage = document.getElementById('pharmacyImage');
         const submitBtn = document.getElementById('submitBtn');
-        const subtotalEl = document.getElementById('subtotal');
-        const vatEl = document.getElementById('vat');
-        const totalEl = document.getElementById('total');
         const statusMessageEl = document.getElementById('statusMessage');
 
-        // --- פונקציות ---
-
-        /** מעדכן את רשימת המוצרים בהתאם לסוג העסק שנבחר */
         function populateProducts() {
             const placeType = placeTypeSelect.value;
             productListDiv.innerHTML = '';
@@ -434,97 +278,46 @@
                     const productDiv = document.createElement('div');
                     productDiv.className = 'product';
                     productDiv.innerHTML = `
-                        <input type="number" id="${product.id}" class="product-quantity" min="0" value="0" data-price="${product.price}" 
-                               ${product.bulkPrice ? `data-bulk-price="${product.bulkPrice}"` : ''} 
-                               ${product.bulkThreshold ? `data-bulk-threshold="${product.bulkThreshold}"` : ''}>
                         <label for="${product.id}">${product.name}</label>
+                        <input type="number" id="${product.id}" class="product-quantity" min="0" value="0" data-price="${product.price}">
                     `;
                     productListDiv.appendChild(productDiv);
                 });
             }
-            calculateTotal();
+            validateForm();
         }
         
-        /** מחשב את הסכומים ומעדכן את הסיכום */
-        function calculateTotal() {
-            let subtotal = 0;
+        function hasProductsSelected() {
             const productInputs = productListDiv.querySelectorAll('.product-quantity');
-
-            productInputs.forEach(input => {
-                const quantity = parseInt(input.value) || 0;
-                if (quantity > 0) {
-                    const price = parseFloat(input.dataset.price);
-                    const bulkPrice = parseFloat(input.dataset.bulkPrice);
-                    const bulkThreshold = parseInt(input.dataset.bulkThreshold);
-                    
-                    let effectivePrice = price;
-                    if (bulkPrice && bulkThreshold && quantity >= bulkThreshold) {
-                        effectivePrice = bulkPrice;
-                    }
-                    subtotal += quantity * effectivePrice;
+            for (const input of productInputs) {
+                if (parseInt(input.value, 10) > 0) {
+                    return true;
                 }
-            });
-            
-            const vat = subtotal * VAT_RATE;
-            const total = subtotal + vat;
-            
-            subtotalEl.textContent = `${subtotal.toFixed(2)} ₪`;
-            vatEl.textContent = `${vat.toFixed(2)} ₪`;
-            totalEl.textContent = `${total.toFixed(2)} ₪`;
-            
-            return subtotal;
-        }
-
-        /** מעדכן את התמונה המוצגת בצד */
-        function updateImage() {
-            const placeType = placeTypeSelect.value;
-            const images = {
-                pharmacy: 'טופס הזמנה מרץ פרטיים.jpg',
-                future_pharmacy: 'טופס הזמנה 03-25  רוקחים עתיד.png',
-                shrem_pharmacy: 'טופס הזמנה מרץ פרטיים.jpg'
-            };
-
-            if (placeType && images[placeType]) {
-                pharmacyImage.src = images[placeType];
-                imageContainer.style.display = 'block';
-            } else {
-                imageContainer.style.display = 'none';
             }
+            return false;
         }
-        
-        /** בודק האם הטופס תקין ומאפשר שליחה */
+
         function validateForm() {
             const isFormValid = form.checkValidity();
-            const hasProducts = calculateTotal() > 0;
+            const hasProducts = hasProductsSelected();
             submitBtn.disabled = !(isFormValid && hasProducts);
         }
 
-        /**
-         * מטפל בשליחת הטופס לשרת
-         */
         async function handleFormSubmit(event) {
             event.preventDefault();
             
-            // Disable button and show loading state
             submitBtn.disabled = true;
             submitBtn.textContent = 'שולח...';
             statusMessageEl.style.display = 'none';
 
-            // 1. Prepare order data object
             const orderData = {
                 customerName: document.getElementById('customerName').value,
                 placeType: document.getElementById('placeType').value,
                 placeName: document.getElementById('placeName').value,
                 phoneNumber: document.getElementById('phoneNumber').value,
-                products: [],
-                summary: {
-                    subtotal: subtotalEl.textContent,
-                    vat: vatEl.textContent,
-                    total: totalEl.textContent
-                }
+                products: []
             };
 
-            // 2. Populate products array
             const selectedPlaceType = placeTypeSelect.value;
             productData[selectedPlaceType].forEach(product => {
                 const quantityInput = document.getElementById(product.id);
@@ -537,13 +330,8 @@
                 }
             });
 
-            // 3. Send data to PythonAnywhere server
             try {
-                // 
-                // !!!   זוהי הכתובת הנכונה עם הנתיב המלא ל-API   !!!
-                // 
                 const apiUrl = 'https://bmtbiomarketingopen.pythonanywhere.com/api/submit_order'; 
-                
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -553,11 +341,14 @@
                 const result = await response.json();
 
                 if (response.ok) {
+                    // --- הודעה קופצת עם אישור ---
+                    alert('ההזמנה נקלטה בהצלחה!'); 
+                    
                     statusMessageEl.textContent = 'ההזמנה אושרה ונשלחה בהצלחה!';
-                    statusMessageEl.className = 'success'; // Use 'success' for green styling
+                    statusMessageEl.className = 'success';
                     statusMessageEl.style.display = 'block';
                     form.reset();
-                    populateProducts(); // Resets products and totals
+                    populateProducts();
                 } else {
                     throw new Error(result.message || 'אירעה שגיאה לא צפויה בשליחת ההזמנה.');
                 }
@@ -565,10 +356,9 @@
             } catch (error) {
                 console.error('Submission Error:', error);
                 statusMessageEl.textContent = `שגיאה בשליחת ההזמנה: ${error.message}`;
-                statusMessageEl.className = 'error'; // Use 'error' for red styling
+                statusMessageEl.className = 'error';
                 statusMessageEl.style.display = 'block';
             } finally {
-                // Re-enable the submit button after a short delay
                 setTimeout(() => {
                     submitBtn.textContent = 'שלח הזמנה';
                     validateForm();
@@ -576,30 +366,13 @@
             }
         }
 
-        // --- מאזינים לאירועים ---
-        placeTypeSelect.addEventListener('change', () => {
-            populateProducts();
-            updateImage();
-            validateForm();
-        });
-        
-        // Use 'input' event on the product list container for better performance
-        productListDiv.addEventListener('input', calculateTotal);
-        
+        placeTypeSelect.addEventListener('change', populateProducts);
         form.addEventListener('input', validateForm);
         form.addEventListener('submit', handleFormSubmit);
 
-        // Initial population and validation
-        populateProducts();
-        validateForm();
+        validateForm(); // Initial validation check
     });
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
