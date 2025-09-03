@@ -1,3 +1,6 @@
+</html>
+
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -5,34 +8,281 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>טופס הזמנה</title>
     <style>
+        /* --- משתני עיצוב גלובליים --- */
         :root {
-            --primary-color: #005A9C; --secondary-color: #00A9E0; --background-color: #f8f9fa;
-            --form-background: #ffffff; --text-color: #333333; --border-color: #dee2e6;
-            --border-radius: 8px; --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --primary-color: #005A9C; /* כחול עמוק */
+            --secondary-color: #00A9E0; /* תכלת */
+            --background-color: #f8f9fa; /* אפור בהיר רקע */
+            --form-background: #ffffff; /* לבן */
+            --text-color: #333333; /* שחור-אפרפר */
+            --border-color: #dee2e6; /* אפור גבולות */
+            --success-color: #28a745; /* ירוק */
+            --danger-color: #dc3545; /* אדום */
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
+
+        /* --- עיצוב בסיסי --- */
         body {
-            font-family: 'Arial', sans-serif; background-color: var(--background-color); margin: 0;
-            padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
         }
-        .main-container { display: flex; gap: 20px; width: 100%; max-width: 1200px; align-items: flex-start; }
-        .form-container { background-color: var(--form-background); padding: 30px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); flex: 1; max-width: 650px; }
-        .image-container { flex-basis: 45%; position: sticky; top: 20px; display: none; }
-        #pharmacyImage { width: 100%; height: auto; border-radius: var(--border-radius); box-shadow: var(--box-shadow); }
-        h1, h2 { color: var(--primary-color); text-align: center; margin-bottom: 25px; }
-        #orderForm fieldset { border: none; padding: 0; margin: 0 0 20px 0; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: var(--text-color); font-weight: bold; }
-        input, select { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; }
-        .product { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
-        .product:last-child { border-bottom: none; }
-        .product label { flex: 1; margin: 0 15px; font-weight: normal; }
-        .product input[type="number"] { width: 80px; text-align: center; }
-        #summary-container { margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: var(--border-radius); border: 1px solid var(--border-color); }
-        #summary-container h3 { text-align: center; margin-top: 0; margin-bottom: 20px; color: var(--primary-color); }
-        .summary-row { display: flex; justify-content: space-between; font-size: 1.1em; padding: 8px 0; }
-        .summary-row.total { font-weight: bold; font-size: 1.3em; color: var(--primary-color); border-top: 2px solid var(--border-color); margin-top: 10px; padding-top: 10px; }
-        button[type="submit"] { background-color: var(--secondary-color); color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-size: 1.2em; font-weight: bold; width: 100%; margin-top: 20px; }
-        button:disabled { background-color: #a0a0a0; cursor: not-allowed; }
+
+        /* --- קונטיינר ראשי --- */
+        .main-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            align-items: flex-start;
+        }
+
+        /* --- קונטיינר הטופס --- */
+        .form-container {
+            background-color: var(--form-background);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            flex: 1;
+            max-width: 650px;
+            transition: all 0.3s ease;
+        }
+
+        /* --- קונטיינר התמונה --- */
+        .image-container {
+            flex-basis: 45%;
+            position: sticky;
+            top: 20px;
+            display: none; /* התמונה מוסתרת בהתחלה */
+        }
+
+        #pharmacyImage {
+            width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        /* --- כותרות --- */
+        h1, h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+        }
+        
+        h2 {
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            font-size: 1.6em;
+        }
+
+        /* --- עיצוב כללי לטופס --- */
+        #orderForm fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(0, 90, 156, 0.25);
+        }
+
+        /* --- רשימת מוצרים --- */
+        #products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #products-header small {
+            font-weight: normal;
+            color: #6c757d;
+        }
+        
+        .product {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .product:last-child {
+            border-bottom: none;
+        }
+
+        .product label {
+            flex: 1;
+            margin: 0 15px;
+            font-weight: normal;
+        }
+
+        .product input[type="number"] {
+            width: 80px;
+            text-align: center;
+        }
+        
+        /* --- סיכום תשלום --- */
+        #summary-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        #summary-container h3 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1em;
+            padding: 8px 0;
+        }
+        
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 1.3em;
+            color: var(--primary-color);
+            border-top: 2px solid var(--border-color);
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+
+        /* --- אישור ותשלום --- */
+        #creditCardCheckbox {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+        }
+        
+        #creditCardCheckbox label {
+            margin: 0 10px 0 0;
+            font-size: 1.1em;
+        }
+        
+        #creditCardCheckbox input {
+            width: auto;
+            height: 1.2em;
+            width: 1.2em;
+        }
+
+        /* --- כפתור שליחה --- */
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background-color: #a0a0a0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* --- הודעת סטטוס --- */
+        #statusMessage {
+            text-align: center;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+            display: none; /* מוסתר כברירת מחדל */
+            font-weight: bold;
+        }
+        #statusMessage.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        #statusMessage.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* --- רספונסיביות --- */
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .image-container {
+                position: static;
+                width: 100%;
+                max-width: 650px;
+                margin-bottom: 20px;
+                display: none; /* מוסתר גם כאן, JS יטפל בהצגה */
+            }
+            
+            .form-container {
+                 width: 100%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .form-container {
+                padding: 20px;
+            }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.4em; }
+        }
     </style>
 </head>
 <body>
@@ -68,11 +318,14 @@
             </fieldset>
 
             <fieldset>
-                <legend><h2>רשימת מוצרים</h2></legend>
-                <small>(המחירים אינם כוללים מע"מ)</small>
-                <div id="productList" style="margin-top: 10px;"></div>
+                <div id="products-header">
+                    <legend><h2>רשימת מוצרים</h2></legend>
+                    <small>(המחירים אינם כוללים מע"מ)</small>
+                </div>
+                <div id="productList">
+                    </div>
             </fieldset>
-
+            
             <div id="summary-container">
                 <h3>סיכום הזמנה</h3>
                 <div class="summary-row">
@@ -80,7 +333,7 @@
                     <span id="subtotal">0.00 ₪</span>
                 </div>
                 <div class="summary-row">
-                    <span>מע"מ (17%):</span>
+                    <span>מע"מ (18%):</span>
                     <span id="vat">0.00 ₪</span>
                 </div>
                 <div class="summary-row total">
@@ -88,7 +341,14 @@
                     <span id="total">0.00 ₪</span>
                 </div>
             </div>
+
+            <div id="creditCardCheckbox">
+                <input type="checkbox" id="creditCard" required>
+                <label for="creditCard">מאשר/ת תשלום בכרטיס אשראי</label>
+            </div>
+            
             <button type="submit" id="submitBtn" disabled>שלח הזמנה</button>
+            <div id="statusMessage"></div>
         </form>
     </div>
 
@@ -99,10 +359,12 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const VAT_RATE = 0.18; // מע"מ 17%
+
+        // --- קבועים ומשתנים ---
+        const VAT_RATE = 0.18; // 💙 כאן מעדכנים את שיעור המע"מ
         const productData = {
             pharmacy: [
-                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
+                                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
                 {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', sku: '7290013882080', price: 19.90},
                 {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', sku: '7290008123723', price: 13.90},
                 {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', sku: '7290013882165', price: 19.90},
@@ -152,18 +414,21 @@
             ]
         };
         
-          const form = document.getElementById('orderForm');
+        // --- אלמנטים מה-DOM ---
+        const form = document.getElementById('orderForm');
         const placeTypeSelect = document.getElementById('placeType');
         const productListDiv = document.getElementById('productList');
-        const submitBtn = document.getElementById('submitBtn');
         const imageContainer = document.querySelector('.image-container');
         const pharmacyImage = document.getElementById('pharmacyImage');
-        // --- אלמנטים חדשים לסיכום ---
+        const submitBtn = document.getElementById('submitBtn');
         const subtotalEl = document.getElementById('subtotal');
         const vatEl = document.getElementById('vat');
         const totalEl = document.getElementById('total');
-        // -------------------------
+        const statusMessageEl = document.getElementById('statusMessage');
 
+        // --- פונקציות ---
+
+        /** מעדכן את רשימת המוצרים בהתאם לסוג העסק שנבחר */
         function populateProducts() {
             const placeType = placeTypeSelect.value;
             productListDiv.innerHTML = '';
@@ -173,25 +438,35 @@
                     const productDiv = document.createElement('div');
                     productDiv.className = 'product';
                     productDiv.innerHTML = `
+                        <input type="number" id="${product.id}" class="product-quantity" min="0" value="0" data-price="${product.price}" 
+                               ${product.bulkPrice ? `data-bulk-price="${product.bulkPrice}"` : ''} 
+                               ${product.bulkThreshold ? `data-bulk-threshold="${product.bulkThreshold}"` : ''}>
                         <label for="${product.id}">${product.name}</label>
-                        <input type="number" id="${product.id}" class="product-quantity" min="0" value="0" data-price="${product.price}">
                     `;
                     productListDiv.appendChild(productDiv);
                 });
             }
             calculateTotal();
-            validateForm();
         }
         
-        // --- פונקציית חישוב המחיר (הוחזרה) ---
+        /** מחשב את הסכומים ומעדכן את הסיכום */
         function calculateTotal() {
             let subtotal = 0;
             const productInputs = productListDiv.querySelectorAll('.product-quantity');
 
             productInputs.forEach(input => {
                 const quantity = parseInt(input.value) || 0;
-                const price = parseFloat(input.dataset.price) || 0;
-                subtotal += quantity * price;
+                if (quantity > 0) {
+                    const price = parseFloat(input.dataset.price);
+                    const bulkPrice = parseFloat(input.dataset.bulkPrice);
+                    const bulkThreshold = parseInt(input.dataset.bulkThreshold);
+                    
+                    let effectivePrice = price;
+                    if (bulkPrice && bulkThreshold && quantity >= bulkThreshold) {
+                        effectivePrice = bulkPrice;
+                    }
+                    subtotal += quantity * effectivePrice;
+                }
             });
             
             const vat = subtotal * VAT_RATE;
@@ -201,14 +476,15 @@
             vatEl.textContent = `${vat.toFixed(2)} ₪`;
             totalEl.textContent = `${total.toFixed(2)} ₪`;
             
-            validateForm();
+            return subtotal;
         }
 
+        /** מעדכן את התמונה המוצגת בצד */
         function updateImage() {
             const placeType = placeTypeSelect.value;
             const images = {
                 pharmacy: 'טופס הזמנה מרץ פרטיים.jpg',
-                future_pharmacy: 'טופס הזמנה 03-25 רוקחים עתיד.png',
+                future_pharmacy: 'טופס הזמנה 03-25  רוקחים עתיד.png',
                 shrem_pharmacy: 'טופס הזמנה מרץ פרטיים.jpg'
             };
 
@@ -219,24 +495,29 @@
                 imageContainer.style.display = 'none';
             }
         }
-
-        function hasProductsSelected() {
-            return Array.from(productListDiv.querySelectorAll('.product-quantity')).some(input => parseInt(input.value) > 0);
-        }
-
+        
+        /** בודק האם הטופס תקין ומאפשר שליחה */
         function validateForm() {
-            submitBtn.disabled = !(form.checkValidity() && hasProductsSelected());
+            const isFormValid = form.checkValidity();
+            const hasProducts = calculateTotal() > 0;
+            submitBtn.disabled = !(isFormValid && hasProducts);
         }
 
+        /**
+         * מטפל בשליחת הטופס לשרת
+         */
         async function handleFormSubmit(event) {
             event.preventDefault();
             
+            // Disable button and show loading state
             submitBtn.disabled = true;
             submitBtn.textContent = 'שולח...';
+            statusMessageEl.style.display = 'none';
 
+            // 1. Prepare order data object
             const orderData = {
                 customerName: document.getElementById('customerName').value,
-                placeType: placeTypeSelect.value,
+                placeType: document.getElementById('placeType').value,
                 placeName: document.getElementById('placeName').value,
                 phoneNumber: document.getElementById('phoneNumber').value,
                 products: [],
@@ -247,6 +528,7 @@
                 }
             };
 
+            // 2. Populate products array
             const selectedPlaceType = placeTypeSelect.value;
             productData[selectedPlaceType].forEach(product => {
                 const quantityInput = document.getElementById(product.id);
@@ -259,38 +541,61 @@
                 }
             });
 
+            // 3. Send data to PythonAnywhere server
             try {
+                // 
+                // !!!   זוהי הכתובת הנכונה עם הנתיב המלא ל-API   !!!
+                // 
                 const apiUrl = 'https://bmtbiomarketingopen.pythonanywhere.com/api/submit_order'; 
+                
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(orderData)
                 });
-                const result = await response.json();
-                if (!response.ok) throw new Error(result.message);
 
-                alert('ההזמנה נקלטה בהצלחה!');
-                form.reset();
-                populateProducts();
+                const result = await response.json();
+
+                if (response.ok) {
+                    statusMessageEl.textContent = 'ההזמנה אושרה ונשלחה בהצלחה!';
+                    statusMessageEl.className = 'success'; // Use 'success' for green styling
+                    statusMessageEl.style.display = 'block';
+                    form.reset();
+                    populateProducts(); // Resets products and totals
+                } else {
+                    throw new Error(result.message || 'אירעה שגיאה לא צפויה בשליחת ההזמנה.');
+                }
 
             } catch (error) {
-                alert(`שגיאה בשליחת ההזמנה: ${error.message}`);
+                console.error('Submission Error:', error);
+                statusMessageEl.textContent = `שגיאה בשליחת ההזמנה: ${error.message}`;
+                statusMessageEl.className = 'error'; // Use 'error' for red styling
+                statusMessageEl.style.display = 'block';
             } finally {
-                submitBtn.textContent = 'שלח הזמנה';
-                validateForm();
+                // Re-enable the submit button after a short delay
+                setTimeout(() => {
+                    submitBtn.textContent = 'שלח הזמנה';
+                    validateForm();
+                }, 3000);
             }
         }
 
+        // --- מאזינים לאירועים ---
         placeTypeSelect.addEventListener('change', () => {
             populateProducts();
             updateImage();
+            validateForm();
         });
         
-        // --- מאזין חדש לחישוב המחירים ---
+        // Use 'input' event on the product list container for better performance
         productListDiv.addEventListener('input', calculateTotal);
         
         form.addEventListener('input', validateForm);
         form.addEventListener('submit', handleFormSubmit);
+
+        // Initial population and validation
+        populateProducts();
+        validateForm();
     });
 </script>
 
