@@ -1,6 +1,3 @@
-</html>
-
-
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -269,7 +266,7 @@
             }
             
             .form-container {
-                 width: 100%;
+                width: 100%;
             }
         }
         
@@ -323,7 +320,8 @@
                     <small>(המחירים אינם כוללים מע"מ)</small>
                 </div>
                 <div id="productList">
-                    </div>
+                    <!-- Products will be populated by JavaScript -->
+                </div>
             </fieldset>
             
             <div id="summary-container">
@@ -364,7 +362,7 @@
         const VAT_RATE = 0.18; // 💙 כאן מעדכנים את שיעור המע"מ
         const productData = {
             pharmacy: [
-                                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
+                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
                 {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', sku: '7290013882080', price: 19.90},
                 {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', sku: '7290008123723', price: 13.90},
                 {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', sku: '7290013882165', price: 19.90},
@@ -509,7 +507,6 @@
         async function handleFormSubmit(event) {
             event.preventDefault();
             
-            // Disable button and show loading state
             submitBtn.disabled = true;
             submitBtn.textContent = 'שולח...';
             statusMessageEl.style.display = 'none';
@@ -543,9 +540,9 @@
 
             // 3. Send data to PythonAnywhere server
             try {
-                // 
-                // !!!   זוהי הכתובת הנכונה עם הנתיב המלא ל-API   !!!
-                // 
+                //  
+                // !!!    זוהי הכתובת הנכונה עם הנתיב המלא ל-API    !!!
+                //  
                 const apiUrl = 'https://bmtbiomarketingopen.pythonanywhere.com/api/submit_order'; 
                 
                 const response = await fetch(apiUrl, {
@@ -558,7 +555,7 @@
 
                 if (response.ok) {
                     statusMessageEl.textContent = 'ההזמנה אושרה ונשלחה בהצלחה!';
-                    statusMessageEl.className = 'success'; // Use 'success' for green styling
+                    statusMessageEl.className = 'success';
                     statusMessageEl.style.display = 'block';
                     form.reset();
                     populateProducts(); // Resets products and totals
@@ -569,10 +566,9 @@
             } catch (error) {
                 console.error('Submission Error:', error);
                 statusMessageEl.textContent = `שגיאה בשליחת ההזמנה: ${error.message}`;
-                statusMessageEl.className = 'error'; // Use 'error' for red styling
+                statusMessageEl.className = 'error';
                 statusMessageEl.style.display = 'block';
             } finally {
-                // Re-enable the submit button after a short delay
                 setTimeout(() => {
                     submitBtn.textContent = 'שלח הזמנה';
                     validateForm();
@@ -587,7 +583,6 @@
             validateForm();
         });
         
-        // Use 'input' event on the product list container for better performance
         productListDiv.addEventListener('input', calculateTotal);
         
         form.addEventListener('input', validateForm);
@@ -601,9 +596,4 @@
 
 </body>
 </html>
-
-
-
-
-
 
