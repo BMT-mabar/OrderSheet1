@@ -497,103 +497,58 @@
         /** בודק האם הטופס תקין ומאפשר שליחה */
         function validateForm() {
             const isFormValid = form.checkValidity();
-            const hasProducts = calculateTotal() > 0;
+            let hasProducts = Array.from(productListDiv.querySelectorAll('.product-quantity')).some(i => parseInt(i.value) > 0);
             submitBtn.disabled = !(isFormValid && hasProducts);
         }
 
-        /**
-         * מטפל בשליחת הטופס לשרת
-         */
         async function handleFormSubmit(event) {
             event.preventDefault();
-            
             submitBtn.disabled = true;
             submitBtn.textContent = 'שולח...';
             statusMessageEl.style.display = 'none';
 
-            // 1. Prepare order data object
             const orderData = {
                 customerName: document.getElementById('customerName').value,
                 placeType: document.getElementById('placeType').value,
                 placeName: document.getElementById('placeName').value,
                 phoneNumber: document.getElementById('phoneNumber').value,
-                products: [],
-                summary: {
-                    subtotal: subtotalEl.textContent,
-                    vat: vatEl.textContent,
-                    total: totalEl.textContent
-                }
+                products: Array.from(productListDiv.querySelectorAll('.product-quantity'))
+                                .filter(i => parseInt(i.value) > 0)
+                                .map(i => ({ name: i.dataset.name, sku: i.dataset.sku, quantity: parseInt(i.value) }))
             };
 
-            // 2. Populate products array
-            const selectedPlaceType = placeTypeSelect.value;
-            productData[selectedPlaceType].forEach(product => {
-                const quantityInput = document.getElementById(product.id);
-                if (quantityInput && parseInt(quantityInput.value) > 0) {
-                    orderData.products.push({
-                        name: product.name,
-                        sku: product.sku,
-                        quantity: parseInt(quantityInput.value)
-                    });
-                }
-            });
-
-            // 3. Send data to PythonAnywhere server
             try {
-                //  
-                // !!!    זוהי הכתובת הנכונה עם הנתיב המלא ל-API    !!!
-                //  
-                const apiUrl = 'https://bmtbiomarketingopen.pythonanywhere.com/api/submit_order'; 
+                // הכתובת תוקנה כדי לפנות לשרת הניהול שלך ב-Render
+                const forwarderApiUrl = 'https://database-disk.onrender.com/api/receive_external_order'; 
                 
-                const response = await fetch(apiUrl, {
+                const response = await fetch(forwarderApiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(orderData)
                 });
-
                 const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'שגיאה בשליחת ההזמנה');
 
-                if (response.ok) {
-                    statusMessageEl.textContent = 'ההזמנה אושרה ונשלחה בהצלחה!';
-                    statusMessageEl.className = 'success';
-                    statusMessageEl.style.display = 'block';
-                    form.reset();
-                    populateProducts(); // Resets products and totals
-                } else {
-                    throw new Error(result.message || 'אירעה שגיאה לא צפויה בשליחת ההזמנה.');
-                }
-
+                statusMessageEl.textContent = 'ההזמנה נשלחה בהצלחה!';
+                statusMessageEl.className = 'success';
+                form.reset();
+                populateProducts();
             } catch (error) {
-                console.error('Submission Error:', error);
-                statusMessageEl.textContent = `שגיאה בשליחת ההזמנה: ${error.message}`;
+                statusMessageEl.textContent = `שגיאה: ${error.message}`;
                 statusMessageEl.className = 'error';
-                statusMessageEl.style.display = 'block';
             } finally {
-                setTimeout(() => {
-                    submitBtn.textContent = 'שלח הזמנה';
-                    validateForm();
-                }, 3000);
+                statusMessageEl.style.display = 'block';
+                submitBtn.textContent = 'שלח הזמנה';
+                validateForm();
             }
         }
 
-        // --- מאזינים לאירועים ---
-        placeTypeSelect.addEventListener('change', () => {
-            populateProducts();
-            updateImage();
-            validateForm();
-        });
-        
-        productListDiv.addEventListener('input', calculateTotal);
-        
+        placeTypeSelect.addEventListener('change', populateProducts);
+        productListDiv.addEventListener('input', validateForm);
         form.addEventListener('input', validateForm);
         form.addEventListener('submit', handleFormSubmit);
-
-        // Initial population and validation
         populateProducts();
-        validateForm();
     });
 </script>
-
 </body>
 </html>
-
