@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>טופס הזמנה</title>
+    <title>טופס הזמנה מקצועי</title>
     <style>
         /* --- משתני עיצוב גלובליים --- */
         :root {
@@ -17,6 +17,7 @@
             --danger-color: #dc3545; /* אדום */
             --border-radius: 8px;
             --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --box-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
         }
 
         /* --- עיצוב בסיסי --- */
@@ -56,7 +57,7 @@
             flex-basis: 45%;
             position: sticky;
             top: 20px;
-            display: none; /* התמונה מוסתרת בהתחלה */
+            display: none; /* התמונה מוסתרת בהתחלה, JS יטפל בהצגה */
         }
 
         #pharmacyImage {
@@ -87,8 +88,7 @@
         #orderForm fieldset {
             border: none;
             padding: 0;
-            margin: 0;
-            margin-bottom: 20px;
+            margin: 0 0 20px 0;
         }
 
         .form-group {
@@ -133,9 +133,10 @@
         }
         
         .product {
-            display: flex;
+            display: grid;
+            grid-template-columns: 80px 1fr;
             align-items: center;
-            justify-content: space-between;
+            gap: 15px;
             padding: 10px 0;
             border-bottom: 1px solid var(--border-color);
         }
@@ -145,13 +146,13 @@
         }
 
         .product label {
-            flex: 1;
-            margin: 0 15px;
+            margin: 0;
             font-weight: normal;
+            cursor: pointer;
         }
 
         .product input[type="number"] {
-            width: 80px;
+            width: 100%;
             text-align: center;
         }
         
@@ -192,21 +193,24 @@
             display: flex;
             align-items: center;
             margin: 25px 0;
+            cursor: pointer;
         }
         
         #creditCardCheckbox label {
             margin: 0 10px 0 0;
             font-size: 1.1em;
+            cursor: pointer;
         }
         
         #creditCardCheckbox input {
-            width: auto;
-            height: 1.2em;
             width: 1.2em;
+            height: 1.2em;
+            cursor: pointer;
         }
 
         /* --- כפתור שליחה --- */
-        button {
+        #submitBtn {
+            position: relative;
             background-color: var(--secondary-color);
             color: white;
             border: none;
@@ -216,19 +220,53 @@
             font-size: 1.2em;
             font-weight: bold;
             width: 100%;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
         }
 
-        button:hover:not(:disabled) {
+        #submitBtn:hover:not(:disabled) {
             background-color: var(--primary-color);
             transform: translateY(-2px);
+            box-shadow: var(--box-shadow-hover);
         }
         
-        button:disabled {
+        #submitBtn:disabled {
             background-color: #a0a0a0;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
+
+        /* --- ספינר טעינה לכפתור --- */
+        .loader {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #FFF;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* כשהכפתור במצב טעינה */
+        #submitBtn.loading .button-text {
+            visibility: hidden;
+        }
+        #submitBtn.loading .loader {
+            visibility: visible;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #submitBtn .loader {
+             visibility: hidden;
+        }
+
 
         /* --- הודעת סטטוס --- */
         #statusMessage {
@@ -262,7 +300,7 @@
                 width: 100%;
                 max-width: 650px;
                 margin-bottom: 20px;
-                display: none; /* מוסתר גם כאן, JS יטפל בהצגה */
+                display: none; /* JS יטפל בהצגה */
             }
             
             .form-container {
@@ -279,6 +317,9 @@
             }
             h1 { font-size: 1.8em; }
             h2 { font-size: 1.4em; }
+            .product {
+                grid-template-columns: 70px 1fr;
+            }
         }
     </style>
 </head>
@@ -320,8 +361,7 @@
                     <small>(המחירים אינם כוללים מע"מ)</small>
                 </div>
                 <div id="productList">
-                    <!-- Products will be populated by JavaScript -->
-                </div>
+                    </div>
             </fieldset>
             
             <div id="summary-container">
@@ -331,7 +371,7 @@
                     <span id="subtotal">0.00 ₪</span>
                 </div>
                 <div class="summary-row">
-                    <span>מע"מ (18%):</span>
+                    <span>מע"מ (17%):</span>
                     <span id="vat">0.00 ₪</span>
                 </div>
                 <div class="summary-row total">
@@ -345,7 +385,10 @@
                 <label for="creditCard">מאשר/ת תשלום בכרטיס אשראי</label>
             </div>
             
-            <button type="submit" id="submitBtn" disabled>שלח הזמנה</button>
+            <button type="submit" id="submitBtn" disabled>
+                <span class="button-text">שלח הזמנה</span>
+                <span class="loader"></span>
+            </button>
             <div id="statusMessage"></div>
         </form>
     </div>
@@ -356,199 +399,250 @@
 </main>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
 
-        // --- קבועים ומשתנים ---
-        const VAT_RATE = 0.18; // 💙 כאן מעדכנים את שיעור המע"מ
-        const productData = {
-            pharmacy: [
-                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
-                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', sku: '7290013882080', price: 19.90},
-                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', sku: '7290008123723', price: 13.90},
-                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', sku: '7290013882165', price: 19.90},
-                {id: 'quantity4', name: 'בדיקת הריון 1', sku: '7290013882097', price: 5.20},
-                {id: 'quantity5', name: 'בדיקת הריון 2', sku: '7290013882103', price: 6.50},
-                {id: 'quantity13', name: 'בדיקת הריון "בשעה טובה"', sku: '7290013882172-7', price: 18.90},
-                {id: 'quantity6', name: 'בדיקה לדלקת בשתן', sku: '7290013882035', price: 13.90},
-                {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית', sku: '7290013882042', price: 17.20},
-                {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים', sku: '7290013882127', price: 33.90},
-                {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', sku: '7290013882066', price: 24.90},
-                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', sku: '7290019098409', price: 30.00},
-                {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', sku: '7290013882028-7', price: 21.00},
-                {id: 'quantity12', name: 'בדיקת ביוץ "בשעה טובה"', sku: '7290013882073-12', price: 29.90},
-            ],
-            future_pharmacy: [
-                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
-                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', sku: '7290019098409', price: 30.00},
-                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', sku: '7290013882080', price: 19.90},
-                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', sku: '7290008123723', price: 13.90},
-                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', sku: '7290013882165', price: 19.90},
-                {id: 'quantity4', name: 'בדיקת הריון 1 - רוקחים עתיד', sku: '7290013882134', price: 2.90},
-                {id: 'quantity5', name: 'בדיקת הריון 2 - רוקחים עתיד', sku: '7290013882196', price: 5.20},
-                {id: 'quantity6', name: 'בדיקת הריון "בשעה טובה"', sku: '7290013882172-7', price: 18.90},
-                {id: 'quantity7', name: '"בדיקת ביוץ "בשעה טובה', sku: '7290013882073-12', price: 29.90},
-                {id: 'quantity8', name: 'בדיקת ביוץ 7 באריזה', sku: '7290013882028-7', price: 21.00},
-                {id: 'quantity9', name: 'בדיקה לדלקת בשתן', sku: '7290013882035', price: 13.90},
-                {id: 'quantity11', name: 'בדיקת קנדידה וגינאלית', sku: '7290013882042', price: 17.20},
-                {id: 'quantity12', name: 'בדיקה לגילוי דם סמוי בצואה', sku: '7290013882066', price: 24.90},
-                {id: 'quantity13', name: 'בדיקת סמים 8 פרמטרים', sku: '7290013882127', price: 33.90}
-            ],
-            shrem_pharmacy: [
-                // Assuming the same product list as 'pharmacy' for this example
-                {id: 'quantity14', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
-                {id: 'quantity1', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', sku: '7290013882080', price: 19.90},
-                {id: 'quantity2', name: 'STREP T בדיקה לדלקת גרון', sku: '7290008123723', price: 13.90},
-                {id: 'quantity3', name: 'A + B בדיקה לשפעת - פורמט עט', sku: '7290013882165', price: 19.90},
-                {id: 'quantity4', name: 'בדיקת הריון 1', sku: '7290013882097', price: 5.20},
-                {id: 'quantity5', name: 'בדיקת הריון 2', sku: '7290013882103', price: 6.50},
-                {id: 'quantity13', name: 'בדיקת הריון "בשעה טובה"', sku: '7290013882172-7', price: 18.90},
-                {id: 'quantity6', name: 'בדיקה לדלקת בשתן', sku: '7290013882035', price: 13.90},
-                {id: 'quantity7', name: 'בדיקת קנדידה וגינאלית', sku: '7290013882042', price: 17.20},
-                {id: 'quantity8', name: 'בדיקת סמים 8 פרמטרים', sku: '7290013882127', price: 33.90},
-                {id: 'quantity9', name: 'בדיקה לגילוי דם סמוי בצואה', sku: '7290013882066', price: 24.90},
-                {id: 'quantity10', name: 'בדיקה לאבחון וירוס הקורונה', sku: '7290019098409', price: 30.00},
-                {id: 'quantity11', name: 'בדיקת ביוץ - 7 באריזה', sku: '7290013882028-7', price: 21.00},
-                {id: 'quantity12', name: 'בדיקת ביוץ "בשעה טובה"', sku: '7290013882073-12', price: 29.90},
-            ]
-        };
+    // ===================================
+    //  קבועים ומשתנים גלובליים
+    // ===================================
+    const VAT_RATE = 0.17; // 💙 כאן מעדכנים את שיעור המע"מ
+    
+    // ⭐ חשוב מאוד: החליפי לכתובת השרת שלך ב-Render
+    const API_URL = 'https://database-disk.onrender.com/api/submit_order';
+
+    const productData = {
+        pharmacy: [
+            {id: 'p-1', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
+            {id: 'p-2', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', sku: '7290013882080', price: 19.90},
+            {id: 'p-3', name: 'STREP T בדיקה לדלקת גרון', sku: '7290008123723', price: 13.90},
+            {id: 'p-4', name: 'A + B בדיקה לשפעת - פורמט עט', sku: '7290013882165', price: 19.90},
+            {id: 'p-5', name: 'בדיקת הריון 1', sku: '7290013882097', price: 5.20},
+            {id: 'p-6', name: 'בדיקת הריון 2', sku: '7290013882103', price: 6.50},
+            {id: 'p-7', name: 'בדיקת הריון "בשעה טובה"', sku: '7290013882172-7', price: 18.90},
+            {id: 'p-8', name: 'בדיקה לדלקת בשתן', sku: '7290013882035', price: 13.90},
+            {id: 'p-9', name: 'בדיקת קנדידה וגינאלית', sku: '7290013882042', price: 17.20},
+            {id: 'p-10', name: 'בדיקת סמים 8 פרמטרים', sku: '7290013882127', price: 33.90},
+            {id: 'p-11', name: 'בדיקה לגילוי דם סמוי בצואה', sku: '7290013882066', price: 24.90},
+            {id: 'p-12', name: 'בדיקה לאבחון וירוס הקורונה', sku: '7290019098409', price: 30.00},
+            {id: 'p-13', name: 'בדיקת ביוץ - 7 באריזה', sku: '7290013882028-7', price: 21.00},
+            {id: 'p-14', name: 'בדיקת ביוץ "בשעה טובה"', sku: '7290013882073-12', price: 29.90},
+        ],
+        future_pharmacy: [
+            {id: 'fp-1', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
+            {id: 'fp-2', name: 'בדיקה לאבחון וירוס הקורונה', sku: '7290019098409', price: 30.00},
+            {id: 'fp-3', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', sku: '7290013882080', price: 19.90},
+            {id: 'fp-4', name: 'STREP T בדיקה לדלקת גרון', sku: '7290008123723', price: 13.90},
+            {id: 'fp-5', name: 'A + B בדיקה לשפעת - פורמט עט', sku: '7290013882165', price: 19.90},
+            {id: 'fp-6', name: 'בדיקת הריון 1 - רוקחים עתיד', sku: '7290013882134', price: 2.90},
+            {id: 'fp-7', name: 'בדיקת הריון 2 - רוקחים עתיד', sku: '7290013882196', price: 5.20},
+            {id: 'fp-8', name: 'בדיקת הריון "בשעה טובה"', sku: '7290013882172-7', price: 18.90},
+            {id: 'fp-9', name: '"בדיקת ביוץ "בשעה טובה', sku: '7290013882073-12', price: 29.90},
+            {id: 'fp-10', name: 'בדיקת ביוץ 7 באריזה', sku: '7290013882028-7', price: 21.00},
+            {id: 'fp-11', name: 'בדיקה לדלקת בשתן', sku: '7290013882035', price: 13.90},
+            {id: 'fp-12', name: 'בדיקת קנדידה וגינאלית', sku: '7290013882042', price: 17.20},
+            {id: 'fp-13', name: 'בדיקה לגילוי דם סמוי בצואה', sku: '7290013882066', price: 24.90},
+            {id: 'fp-14', name: 'בדיקת סמים 8 פרמטרים', sku: '7290013882127', price: 33.90}
+        ],
+        shrem_pharmacy: [
+            // Assuming the same product list as 'pharmacy' for this example
+            {id: 's-1', name: 'בדיקה לאבחון שפעת + קורונה', sku: '7290019098546', price: 24},
+            {id: 's-2', name: 'פורמט עט - NO STEP בדיקות דלקת גרון', sku: '7290013882080', price: 19.90},
+            {id: 's-3', name: 'STREP T בדיקה לדלקת גרון', sku: '7290008123723', price: 13.90},
+            {id: 's-4', name: 'A + B בדיקה לשפעת - פורמט עט', sku: '7290013882165', price: 19.90},
+            {id: 's-5', name: 'בדיקת הריון 1', sku: '7290013882097', price: 5.20},
+            {id: 's-6', name: 'בדיקת הריון 2', sku: '7290013882103', price: 6.50},
+            {id: 's-7', name: 'בדיקת הריון "בשעה טובה"', sku: '7290013882172-7', price: 18.90},
+            {id: 's-8', name: 'בדיקה לדלקת בשתן', sku: '7290013882035', price: 13.90},
+            {id: 's-9', name: 'בדיקת קנדידה וגינאלית', sku: '7290013882042', price: 17.20},
+            {id: 's-10', name: 'בדיקת סמים 8 פרמטרים', sku: '7290013882127', price: 33.90},
+            {id: 's-11', name: 'בדיקה לגילוי דם סמוי בצואה', sku: '7290013882066', price: 24.90},
+            {id: 's-12', name: 'בדיקה לאבחון וירוס הקורונה', sku: '7290019098409', price: 30.00},
+            {id: 's-13', name: 'בדיקת ביוץ - 7 באריזה', sku: '7290013882028-7', price: 21.00},
+            {id: 's-14', name: 'בדיקת ביוץ "בשעה טובה"', sku: '7290013882073-12', price: 29.90},
+        ]
+    };
+    
+    // --- אלמנטים מה-DOM ---
+    const form = document.getElementById('orderForm');
+    const placeTypeSelect = document.getElementById('placeType');
+    const productListDiv = document.getElementById('productList');
+    const imageContainer = document.querySelector('.image-container');
+    const pharmacyImage = document.getElementById('pharmacyImage');
+    const submitBtn = document.getElementById('submitBtn');
+    const subtotalEl = document.getElementById('subtotal');
+    const vatEl = document.getElementById('vat');
+    const totalEl = document.getElementById('total');
+    const statusMessageEl = document.getElementById('statusMessage');
+
+    // ===================================
+    //  פונקציות ליבה
+    // ===================================
+
+    /**
+     * @description מעדכן את רשימת המוצרים בטופס בהתאם לסוג העסק שנבחר.
+     */
+    function populateProducts() {
+        const placeType = placeTypeSelect.value;
+        productListDiv.innerHTML = '';
         
-        // --- אלמנטים מה-DOM ---
-        const form = document.getElementById('orderForm');
-        const placeTypeSelect = document.getElementById('placeType');
-        const productListDiv = document.getElementById('productList');
-        const imageContainer = document.querySelector('.image-container');
-        const pharmacyImage = document.getElementById('pharmacyImage');
-        const submitBtn = document.getElementById('submitBtn');
-        const subtotalEl = document.getElementById('subtotal');
-        const vatEl = document.getElementById('vat');
-        const totalEl = document.getElementById('total');
-        const statusMessageEl = document.getElementById('statusMessage');
-
-        // --- פונקציות ---
-
-        /** מעדכן את רשימת המוצרים בהתאם לסוג העסק שנבחר */
-        function populateProducts() {
-            const placeType = placeTypeSelect.value;
-            productListDiv.innerHTML = '';
-            
-            if (placeType && productData[placeType]) {
-                productData[placeType].forEach(product => {
-                    const productDiv = document.createElement('div');
-                    productDiv.className = 'product';
-                    productDiv.innerHTML = `
-                        <input type="number" id="${product.id}" class="product-quantity" min="0" value="0" data-price="${product.price}" 
-                               ${product.bulkPrice ? `data-bulk-price="${product.bulkPrice}"` : ''} 
-                               ${product.bulkThreshold ? `data-bulk-threshold="${product.bulkThreshold}"` : ''}>
-                        <label for="${product.id}">${product.name}</label>
-                    `;
-                    productListDiv.appendChild(productDiv);
-                });
-            }
-            calculateTotal();
-        }
-        
-        /** מחשב את הסכומים ומעדכן את הסיכום */
-        function calculateTotal() {
-            let subtotal = 0;
-            const productInputs = productListDiv.querySelectorAll('.product-quantity');
-
-            productInputs.forEach(input => {
-                const quantity = parseInt(input.value) || 0;
-                if (quantity > 0) {
-                    const price = parseFloat(input.dataset.price);
-                    const bulkPrice = parseFloat(input.dataset.bulkPrice);
-                    const bulkThreshold = parseInt(input.dataset.bulkThreshold);
-                    
-                    let effectivePrice = price;
-                    if (bulkPrice && bulkThreshold && quantity >= bulkThreshold) {
-                        effectivePrice = bulkPrice;
-                    }
-                    subtotal += quantity * effectivePrice;
-                }
-            });
-            
-            const vat = subtotal * VAT_RATE;
-            const total = subtotal + vat;
-            
-            subtotalEl.textContent = `${subtotal.toFixed(2)} ₪`;
-            vatEl.textContent = `${vat.toFixed(2)} ₪`;
-            totalEl.textContent = `${total.toFixed(2)} ₪`;
-            
-            return subtotal;
-        }
-
-        /** מעדכן את התמונה המוצגת בצד */
-        function updateImage() {
-            const placeType = placeTypeSelect.value;
-            const images = {
-                pharmacy: 'טופס הזמנה 09-25 פרטיים.jpg',
-                future_pharmacy: 'טופס הזמנה 09-25  רוקחים עתיד.jpg',
-                shrem_pharmacy: 'טופס הזמנה 09-25 פרטיים.jpg'
-            };
-
-            if (placeType && images[placeType]) {
-                pharmacyImage.src = images[placeType];
-                imageContainer.style.display = 'block';
-            } else {
-                imageContainer.style.display = 'none';
-            }
-        }
-        
-        /** בודק האם הטופס תקין ומאפשר שליחה */
-        function validateForm() {
-            const isFormValid = form.checkValidity();
-            let hasProducts = Array.from(productListDiv.querySelectorAll('.product-quantity')).some(i => parseInt(i.value) > 0);
-            submitBtn.disabled = !(isFormValid && hasProducts);
-        }
-
-        async function handleFormSubmit(event) {
-            event.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'שולח...';
-            statusMessageEl.style.display = 'none';
-
-            const orderData = {
-                customerName: document.getElementById('customerName').value,
-                placeType: document.getElementById('placeType').value,
-                placeName: document.getElementById('placeName').value,
-                phoneNumber: document.getElementById('phoneNumber').value,
-                products: Array.from(productListDiv.querySelectorAll('.product-quantity'))
-                                .filter(i => parseInt(i.value) > 0)
-                                .map(i => ({ name: i.dataset.name, sku: i.dataset.sku, quantity: parseInt(i.value) }))
-            };
-
-            try {
-                // הכתובת תוקנה כדי לפנות לשרת הניהול שלך ב-Render
-                const forwarderApiUrl = 'https://database-disk.onrender.com/api/receive_external_order'; 
+        if (placeType && productData[placeType]) {
+            productData[placeType].forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
                 
-                const response = await fetch(forwarderApiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderData)
-                });
-                const result = await response.json();
-                if (!response.ok) throw new Error(result.message || 'שגיאה בשליחת ההזמנה');
-
-                statusMessageEl.textContent = 'ההזמנה נשלחה בהצלחה!';
-                statusMessageEl.className = 'success';
-                form.reset();
-                populateProducts();
-            } catch (error) {
-                statusMessageEl.textContent = `שגיאה: ${error.message}`;
-                statusMessageEl.className = 'error';
-            } finally {
-                statusMessageEl.style.display = 'block';
-                submitBtn.textContent = 'שלח הזמנה';
-                validateForm();
-            }
+                // ✔️ תיקון: הוספת data-sku ו-data-name לאינפוט כדי שנוכל לאסוף אותם בשליחה
+                productDiv.innerHTML = `
+                    <input type="number" id="${product.id}" class="product-quantity" 
+                           min="0" value="0" 
+                           data-price="${product.price}" 
+                           data-sku="${product.sku}"
+                           data-name="${product.name}">
+                    <label for="${product.id}">${product.name}</label>
+                `;
+                productListDiv.appendChild(productDiv);
+            });
         }
+        calculateTotal();
+    }
+    
+    /**
+     * @description מחשב את סכומי ההזמנה (ביניים, מע"מ, סה"כ) ומעדכן את התצוגה.
+     * @returns {number} - סכום הביניים של ההזמנה.
+     */
+    function calculateTotal() {
+        let subtotal = 0;
+        const productInputs = productListDiv.querySelectorAll('.product-quantity');
 
-        placeTypeSelect.addEventListener('change', populateProducts);
-        productListDiv.addEventListener('input', validateForm);
-        form.addEventListener('input', validateForm);
-        form.addEventListener('submit', handleFormSubmit);
+        productInputs.forEach(input => {
+            const quantity = parseInt(input.value) || 0;
+            if (quantity > 0) {
+                const price = parseFloat(input.dataset.price);
+                subtotal += quantity * price;
+            }
+        });
+        
+        const vat = subtotal * VAT_RATE;
+        const total = subtotal + vat;
+        
+        subtotalEl.textContent = `${subtotal.toFixed(2)} ₪`;
+        vatEl.textContent = `${vat.toFixed(2)} ₪`;
+        totalEl.textContent = `${total.toFixed(2)} ₪`;
+        
+        return subtotal;
+    }
+
+    /**
+     * @description מעדכן את התמונה המוצגת בצד בהתאם לסוג העסק.
+     */
+    function updateImage() {
+        const placeType = placeTypeSelect.value;
+        // ✔️ תיקון: הסרת רווחים מיותרים בשמות הקבצים
+        const images = {
+            pharmacy: 'טופס הזמנה 09-25 פרטיים.jpg',
+            future_pharmacy: 'טופס הזמנה 09-25 רוקחים עתיד.jpg',
+            shrem_pharmacy: 'טופס הזמנה 09-25 פרטיים.jpg'
+        };
+
+        if (placeType && images[placeType]) {
+            pharmacyImage.src = images[placeType];
+            imageContainer.style.display = 'block';
+        } else {
+            imageContainer.style.display = 'none';
+        }
+    }
+    
+    /**
+     * @description בודק האם הטופס תקין (כל שדות החובה מלאים ונבחר לפחות מוצר אחד)
+     * ומפעיל/מכבה את כפתור השליחה בהתאם.
+     */
+    function validateForm() {
+        const isDetailsValid = form.checkValidity();
+        const hasProducts = calculateTotal() > 0; // בדיקה יעילה יותר
+        submitBtn.disabled = !(isDetailsValid && hasProducts);
+    }
+
+    /**
+     * @description מטפל באירוע שליחת הטופס: איסוף נתונים, שליחה לשרת ומתן משוב למשתמש.
+     * @param {Event} event - אירוע השליחה.
+     */
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+        
+        // הצגת אנימציית טעינה בכפתור
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        statusMessageEl.style.display = 'none';
+
+        // 1. איסוף נתוני ההזמנה לאובייקט
+        const orderData = {
+            customerName: document.getElementById('customerName').value,
+            placeType: document.getElementById('placeType').value,
+            placeName: document.getElementById('placeName').value,
+            phoneNumber: document.getElementById('phoneNumber').value,
+            products: Array.from(productListDiv.querySelectorAll('.product-quantity'))
+                           .filter(i => parseInt(i.value) > 0)
+                           .map(i => ({ 
+                               name: i.dataset.name, 
+                               sku: i.dataset.sku, 
+                               quantity: parseInt(i.value) 
+                           }))
+        };
+
+        // 2. שליחת הנתונים לשרת
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
+
+            const result = await response.json();
+            if (!response.ok) {
+                // אם השרת החזיר שגיאה, נזרוק אותה כדי להגיע ל-catch
+                throw new Error(result.message || 'אירעה שגיאה לא צפויה בשליחת ההזמנה.');
+            }
+
+            // הצלחה
+            statusMessageEl.textContent = 'ההזמנה אושרה ונשלחה בהצלחה!';
+            statusMessageEl.className = 'success';
+            form.reset();
+            populateProducts(); // מאפס את רשימת המוצרים והסיכום
+            updateImage();
+
+        } catch (error) {
+            // כישלון
+            console.error('Submission Error:', error);
+            statusMessageEl.textContent = `שגיאה בשליחת ההזמנה: ${error.message}`;
+            statusMessageEl.className = 'error';
+        } finally {
+            // 3. החזרת הכפתור למצב רגיל ועדכון הטופס
+            statusMessageEl.style.display = 'block';
+            submitBtn.classList.remove('loading');
+            validateForm(); // יעדכן את מצב הכפתור (שיהיה disabled כי הטופס ריק)
+        }
+    }
+
+    // ===================================
+    //  הרצת פונקציות והאזנה לאירועים
+    // ===================================
+    
+    // מאזינים לשינויים בטופס כדי לבצע ולידציה בזמן אמת
+    form.addEventListener('input', validateForm);
+    
+    // מאזינים לבחירת סוג העסק כדי לעדכן את המוצרים והתמונה
+    placeTypeSelect.addEventListener('change', () => {
         populateProducts();
+        updateImage();
+        validateForm();
     });
+    
+    // מאזינים לשליחת הטופס
+    form.addEventListener('submit', handleFormSubmit);
+
+    // אתחול ראשוני של הטופס
+    populateProducts();
+    validateForm();
+});
 </script>
+
 </body>
 </html>
