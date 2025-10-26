@@ -580,11 +580,12 @@ document.addEventListener('DOMContentLoaded', () => {
             phoneNumber: document.getElementById('phoneNumber').value,
             products: Array.from(productListDiv.querySelectorAll('.product-quantity'))
                            .filter(i => parseInt(i.value) > 0)
-                           .map(i => ({ 
-                               name: i.dataset.name, 
-                               sku: i.dataset.sku, 
-                               quantity: parseInt(i.value) 
-                           }))
+                           .map(i => ({ 
+                               name: i.dataset.name, 
+                               sku: i.dataset.sku, 
+                               quantity: parseInt(i.value),
+                               price: parseFloat(i.dataset.price) // 💙 הוספת המחיר לאובייקט שנשלח
+                           }))
         };
 
         // 2. שליחת הנתונים לשרת
@@ -646,4 +647,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
